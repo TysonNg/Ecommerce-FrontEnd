@@ -1,0 +1,148 @@
+.navbar__left {
+    .navbar__left_dropdownToggle {
+        background-color: #cf857e;
+        padding: 30px;
+        font-weight: 600;
+    }
+
+    .navbar__left_dropdown_menu {
+
+        // position: absolute;
+        // max-height: 0px;
+        // overflow: hidden;
+        // transition: 0.5s;
+        li {
+            width: 100%;
+            padding: 8px 30px;
+            border-left: 2px solid #EDF1FF;
+            border-right: 2px solid #EDF1FF;
+            border-bottom: 2px solid #EDF1FF;
+
+            .sub_link p {
+                text-align: start;
+            }
+        }
+
+        .sub_link:hover p {
+            color: #cf857e;
+            font-weight: 600;
+        }
+
+    }
+
+}
+
+
+.body_top {
+    margin-top: 20px;
+    padding: 0px 40px 0px 40px;
+
+    .body__top_container {
+        width: 1200px;
+        margin: 0 auto;
+        position: relative;
+
+        .services__section {
+            border-style: solid;
+            border-width: 1px 1px 1px 1px;
+            border-color: #dce3e5;
+            padding: 30px 30px 30px 30px;
+            width: 100%;
+            position: absolute;
+            top: -20%;
+
+            .services__section_container {
+                justify-content: center;
+
+                .elementor-element {
+                    padding: 20px;
+                }
+            }
+        }
+
+        .categoriesProduct__section {
+            margin-top: 100px;
+            border-style: solid;
+            border-width: 1px 1px 1px 1px;
+            border-color: #dce3e5;
+        }
+    }
+}
+
+.banner {
+    margin-top: 40px;
+    padding: 0px 40px 0px 40px;
+
+    .banner_container {
+        width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+.hotdeal_products {
+    margin-top: 40px;
+    padding: 0px 40px 0px 40px;
+    background-color: white;
+
+    .hotdeal_products_container {
+        width: 1200px;
+        margin: 0 auto;
+        border-style: solid;
+        border-width: 1px 1px 1px 1px;
+        border-color: #dce3e5;
+        .hotdeal_title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 1rem;
+            .seemore {
+                font-size: 1rem;
+                color: #5774e9;
+                padding-left: 0.7rem;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+.elements{
+    margin-top: 40px;
+    padding: 0px 40px 0px 40px;
+    background-color: white;
+    .elements_container{
+        width: 1200px;
+        margin: 0 auto;
+        .headphone{
+            margin-right: 16px;
+            background-color: #f2f2f6;
+        }
+        .grooming{
+            margin: 0 16px 0 16px;
+            background-color: #e9ebed;
+        }
+        .game{
+            margin-left: 16px;
+            background-color: #edcf7d;
+        }
+        li{
+            position: relative;
+            padding: 24px 144px 24px 32px;            
+            border-style: solid;
+            border-width: 1px 1px 1px 1px;
+            border-color: #dce3e5;
+            
+            .element_image{
+                position: absolute;
+                width: auto;
+                height: 256px;
+                top: 25px;
+                left: 215px;
+                .image{
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            
+
+        }
+    }
+}
