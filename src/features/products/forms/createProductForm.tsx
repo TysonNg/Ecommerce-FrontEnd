@@ -1,4 +1,4 @@
-import { createProduct } from "../actions/createProduct";
+import { createProduct } from "../actions/product";
 import CreateProductBtn from "../components/buttons/CreateProduct";
 
 

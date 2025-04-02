@@ -3,14 +3,14 @@ import Link from "next/link"
 
 export const Logo = () => {
    return (
-        <Link className="logo flex justify-center" href="/">
+        <Link className="logo" href="/">
             <Image 
             alt= "e-shop"
             className="logo__image"
             priority
-            src="/logo1.png"
-            width={300}
-            height={300}
+            src="/logo-header.png"
+            width={150}
+            height={100}
             />
         
         </Link>

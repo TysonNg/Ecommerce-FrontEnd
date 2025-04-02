@@ -3,4 +3,10 @@
         border: solid 1px #EDF1FF ;
         padding: 10px;
     }
+
+    .resultsList_container{
+        .box::-webkit-scrollbar{
+            display: none;
+        }
+    }
 }

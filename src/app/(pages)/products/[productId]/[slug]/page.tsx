@@ -2,9 +2,10 @@
 import { getProductDetail, getRelatedProductByCategory } from "@/features/products/data/data";
 import styles from "./detail.module.scss";
 import { BtnToSlideImagesProduct } from "@/features/products/components/buttons/BtnToSlideImageProduct";
-import AddToCart from "@/features/products/components/buttons/AddToCart";
+import HandleCart from "@/features/products/components/buttons/HandleCart";
 import { ChangeStateAtDetailPage } from "@/features/products/components/buttons/ChangeStateAtBottomDetailPage";
 import { ProductGrid } from "@/features/products/components/ProductCard";
+import { CartTab } from "@/features/cart/components/cartTab";
 
 interface ProductInfo {
   _id: string;
@@ -21,13 +22,13 @@ interface ProductInfo {
 }
 
 const ProductDetail = async ({ params }: { params: { productId: string } }) => {
-  const { productId,slug } = params;
-  const productDetails: ProductInfo = await getProductDetail(productId);
-  const productsByCategory: ProductInfo[] = await getRelatedProductByCategory(productDetails.product_type,productDetails._id)
+  const { productId,slug } = await params;
+  const {props: {data: productDetails}} : {props: {data: ProductInfo}} = await getProductDetail(productId);
+ 
 
   console.log('detail', productDetails);
   
-  console.log("data", productsByCategory);
+  const productsByCategory: ProductInfo[] = await getRelatedProductByCategory(productDetails.product_type,productDetails._id)
 
   return (
     <section className={`${styles.body}`}>
@@ -75,10 +76,10 @@ const ProductDetail = async ({ params }: { params: { productId: string } }) => {
                 </ul> 
                   </li>
                   <li className={`${styles.cart}`}>
-                            <AddToCart  name={productDetails.product_name} productId = {productDetails._id} shopId= {productDetails.product_shop} price={productDetails.product_price}/>
-                  </li>
+                          <HandleCart  name={productDetails.product_name} productId = {productDetails._id} shopId= {productDetails.product_shop} price={productDetails.product_price} imgThumb={productDetails.product_thumb} slug={productDetails.product_slug}/>
+                  </li>       
                 </ul>
-              </div>
+              </div>    
             </div>
           </div>
         </div>
@@ -91,9 +92,12 @@ const ProductDetail = async ({ params }: { params: { productId: string } }) => {
       <section className={`${styles.relate_product} mt-15`}>
         <div className={`${styles.relate_product_container}`}>
           <p className="font-bold text-2xl pb-5">Related products</p>
-          <ProductGrid products={productsByCategory}/>               
+          <ProductGrid products={productsByCategory} cartRem={5}/>               
         </div>
       </section>
+      <section className={`${styles.cartTab} `}>
+            <CartTab />
+        </section>
     </section>
   );
 };
