@@ -7,7 +7,6 @@ dotenv.config()
 
 
 const id = Cookies.get('_id')
-console.log('id ne',id);
 
 const api = axios.create({
     baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,

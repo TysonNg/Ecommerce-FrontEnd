@@ -1,6 +1,5 @@
 import { ProductGrid } from "@/features/products/components/ProductCard";
 import dotenv from "dotenv";
-import Carousel from "@/shared/carousel";
 import {
   FontAwesomeIcon,
 } from "@fortawesome/react-fontawesome";
@@ -177,7 +176,9 @@ export default async function Home() {
     <>
       <div className="container-fluid bg-[#f8fbfc]">
         <section className="banner">
-          <Carousel />
+          <div className="w-full h-[650px] mx-auto my-0 relative">
+            <Image className=" object-cover" src="/banner.jpg" fill alt="banner"/>
+          </div>
         </section>
 
         <section className={`${styles.body_top}`}>

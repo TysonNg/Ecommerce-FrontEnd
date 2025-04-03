@@ -1,7 +1,6 @@
 'use client'
 
 import api from "@/app/protected/protected";
-
 interface AddToCart {
     userId: string;
     product:{
@@ -16,7 +15,12 @@ interface AddToCart {
  }
 export async function addToCart(payload:AddToCart) {
     try {
+        
+        console.log('payloadAddtoCart', payload);
+        
         const res = await api.post('/cart',payload)
+        console.log('res add Cart', res.data);
+        
         if(!res.data) throw new Error('Fail to fetch addToCart')
         return res.data
     } catch (error) {

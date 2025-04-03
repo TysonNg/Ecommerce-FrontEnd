@@ -1,48 +1,52 @@
 'use client'
 import { getAllProducts } from '@/features/products/data/data';
 import { ProductGrid } from '@/features/products/components/ProductCard';
-import { useSearchParams } from "next/navigation";
+import { useSearchParams,useRouter } from "next/navigation";
 import dotenv from "dotenv";
 import { useEffect, useState } from 'react';
 import NotFoundProducts from '@/features/cart/components/not-found';
-import LoginModal from '@/features/users/compornents/modalToAccess/LoginModal';
 dotenv.config();
 
 const productsPage = () => {
     const apiKey: string = `${process.env.NEXT_PUBLIC_API_KEY}`;
     const pageSize = 12
     const searchParams = useSearchParams();
-    const [products, setProducts] = useState<[]>([])
-    const [allResults, setAllResults] = useState<[]>([])
+    const router = useRouter()
+    
+    const [products, setProducts] = useState([])
+    const [allResults, setAllResults] = useState([])
     const [paginations, setPaginations] = useState<number[]>([])
     const [categoryParams, setCategoryParams] = useState<string>("")
 
     useEffect(() => {
-        const category :string = searchParams.get('category')??""
-        const page :string = searchParams.get('page')??""
+       
+            const category :string = searchParams.get('category')??""
+            const page :string = searchParams.get('page')??""
+            setCategoryParams(category)
 
-        setCategoryParams(category)
-        const fetchAllProducts = async (category:string) => {
-            try {
-                const res = await getAllProducts(pageSize,category,apiKey,page)
-                const allResultsData = await getAllProducts(0,category,apiKey,page)
-                if(!res) throw new Error("Error fetchAllProducts")
-                setProducts(res)
-                setAllResults(allResultsData)                
-                const pages = Math.ceil(allResultsData.length / pageSize)
-                for (let page = 1; page <= pages; page++) {
-                    setPaginations((prev) => [...prev,page])    
+            const fetchAllProducts = async (category:string) => {
+                try {
+                    const res = await getAllProducts(pageSize,category,apiKey,page)
+                    const allResultsData = await getAllProducts(0,category,apiKey,page)
+                    if(!res) throw new Error("Error fetchAllProducts")
+                    setProducts(res)
+                    setAllResults(allResultsData)                
+                    const pages = Math.ceil(allResultsData.length / pageSize)
+                    const arrayPages = []
+
+                    for (let page = 1; page <= pages; page++) {
+                        arrayPages.push(page)   
+                    }
+                    setPaginations(arrayPages)
+                    
+                } catch (error) {
+                    console.log(error);  
                 }
-            } catch (error) {
-                console.log(error);  
             }
-        }
-        
-        if(products.length === 0){
             fetchAllProducts(category)
-        }
 
-        
+           
+
     },[searchParams.get('category'),searchParams.get('page')])
     
     

@@ -10,7 +10,7 @@ const HandleCart = (props: any) => {
     const {name,productId, shopId,price,imgThumb,cartTab, productQuantityCartTab, productIdCartTab, shopIdCartTab, onHandleChangePrice, slug} = props
     const [quantity, setQuantity] = useState(1);
     const [quantityCartTab, setQuantityCartTab] = useState(productQuantityCartTab)
-
+    
     const inscreaseQuantity = () => {
         setQuantity((prev) => prev + 1 )
     }
@@ -26,15 +26,13 @@ const HandleCart = (props: any) => {
     }
 
     const handleAddToCart = async () => {
-        const guestId : string | undefined = Cookies.get(`guestId`)
-        if (!guestId){
-            throw new Error('guestId is undefined')
-        }
+        const tempId= Cookies.get(`tempId`)
+        
         const id : string | undefined = Cookies.get('_id')
-        const cartUserId : string | undefined = Cookies.get(`guestId_${id}`)
+        const cartUserId : string | undefined = Cookies.get(`cartId_${id}`)
         
         const res = await addToCart({
-            userId: cartUserId? cartUserId:guestId,
+            userId: cartUserId? cartUserId:tempId??"",
             product:{
             name,
             price,
@@ -59,14 +57,13 @@ const HandleCart = (props: any) => {
             throw new Error('guestId is undefined')
         }
         const id : string | undefined = Cookies.get('_id')
-        const cartUserId : string | undefined = Cookies.get(`guestId_${id}`)
+        const cartUserId : string | undefined = Cookies.get(`cartId_${id}`)
         
-        if(!id){
-            Cookies.set('tempIdCart', guestId)
-        }
-        const tempId: string | undefined = Cookies.get('tempIdCart')
+        const tempId: string | undefined = Cookies.get('tempId')
 
         const product = await getProductOfCart()
+       
+        
         await updateQuantityCart({
             userId: cartUserId??tempId??'defaultId',
             shop_order_ids:[{

@@ -6,24 +6,24 @@ import { RightTopHeader } from "./RightTopHeader";
 import { Supports } from "./support";
 import styles from "./ui.module.scss";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 export const Header = () => {
-  const [quantity, setQuantity] = useState<number>(() : any => {
+  const [quantity, setQuantity] = useState<number>(()  => {
     if(typeof window !== 'undefined'){
-      return Number(localStorage.getItem("cartQuantity")) || 0;
+      const value = localStorage.getItem("cartQuantity");
+      return value? Number(localStorage.getItem("cartQuantity")) : 0;
 
     }
+    return 0
   });
  
   useEffect(() =>{
 
     const handleStorageChange = () => {
-      if(!Cookies.get('refreshToken')){
-        localStorage.removeItem('cartQuantity')
-      }
+      
       const updatedQuantity = Number(localStorage.getItem('cartQuantity') || 0)
       setQuantity(updatedQuantity)
     }
+
     window.addEventListener('cartQuantityStorage', handleStorageChange)
     return () => window.removeEventListener("cartQuantityStorage", handleStorageChange)
   },[])

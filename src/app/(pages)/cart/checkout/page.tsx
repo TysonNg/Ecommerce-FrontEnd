@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import styles from "./checkout.module.scss";
 import { getCartById } from "@/features/cart/data/data";
 import Image from "next/image";
-import { checkoutReview } from "@/features/cart/actions/reviewCheckout";
 import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
@@ -68,11 +67,11 @@ interface Payment {
 
 const CheckOutPage = () => {
   const id: string | undefined = Cookies.get("_id");
-  const cartUserId: string | undefined = Cookies.get(`guestId_${id}`);
+  const cartUserId: string | undefined = Cookies.get(`cartId_${id}`);
   const checkoutSession = sessionStorage.getItem(
     `reviewCheckout_${cartUserId}`
   );
-  const payloadCheckout: any = checkoutSession
+  const payloadCheckout: Checkout = checkoutSession
     ? JSON.parse(checkoutSession)
     : null;
 
@@ -86,7 +85,7 @@ const CheckOutPage = () => {
 
   const { noCartTab } = useModal();
   const [cart, setCart] = useState<Array<ProductsCart | undefined>>([]);
-  const [checkout, setCheckout] = useState<Checkout>(payloadCheckout ??
+  const [checkout] = useState<Checkout>(payloadCheckout ??
      {
       checkout_order: {
         totalPrice: 0,
@@ -162,7 +161,7 @@ const CheckOutPage = () => {
               type="text"
               placeholder="Username of Email Address *"
               onChange={(e) =>
-                setUserAddress((prev: any) => ({
+                setUserAddress((prev: UserAddress) => ({
                   ...prev,
                   name: e.target.value,
                 }))
@@ -176,7 +175,7 @@ const CheckOutPage = () => {
                 type="text"
                 placeholder="Street *"
                 onChange={(e) =>
-                  setUserAddress((prev: any) => ({
+                  setUserAddress((prev: UserAddress) => ({
                     ...prev,
                     street: e.target.value,
                   }))
@@ -187,7 +186,7 @@ const CheckOutPage = () => {
                 type="text"
                 placeholder="City *"
                 onChange={(e) =>
-                  setUserAddress((prev: any) => ({
+                  setUserAddress((prev: UserAddress) => ({
                     ...prev,
                     city: e.target.value,
                   }))
@@ -198,7 +197,7 @@ const CheckOutPage = () => {
                 type="text"
                 placeholder="Country *"
                 onChange={(e) =>
-                  setUserAddress((prev: any) => ({
+                  setUserAddress((prev: UserAddress) => ({
                     ...prev,
                     country: e.target.value,
                   }))
@@ -209,9 +208,9 @@ const CheckOutPage = () => {
                 type="text"
                 placeholder="Phone *"
                 onChange={(e) =>
-                  setUserAddress((prev: any) => ({
+                  setUserAddress((prev: UserAddress) => ({
                     ...prev,
-                    phone: e.target.value,
+                    phone: parseInt(e.target.value),
                   }))
                 }
               />
@@ -278,12 +277,12 @@ const CheckOutPage = () => {
               })}
 
               <div className="border-t-1 border-[#a9a9a9] px-3 py-5 text-sm text-[#76797e] flex flex-row justify-between">
-                <p>Subtotal</p>{" "}
+                <p>Subtotal</p>
                 <span>${checkout?.checkout_order.totalPrice}.00</span>
               </div>
 
               <div className="border-t-1 border-[#a9a9a9] px-3 py-5 font-bold flex flex-row justify-between">
-                <p>Total</p>{" "}
+                <p>Total</p>
                 <span>${checkout?.checkout_order.totalCheckout}.00</span>
               </div>
             </div>
@@ -293,10 +292,10 @@ const CheckOutPage = () => {
               }  mt-20 text-xl text-nowrap text-[#0c6334c4]`}
             >
               <p>
-                You're ordered successfully.... Go to{" "}
+                You ordered successfully.... Go to
                 <a className="text-[#d72968] font-bold" href={`/user/order`}>
                   my order
-                </a>{" "}
+                </a>
                 to manage your orders! ✅
               </p>
             </div>

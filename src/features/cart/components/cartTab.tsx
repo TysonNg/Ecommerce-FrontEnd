@@ -27,41 +27,30 @@ interface CheckoutRequest{
     shop_order_ids:{
             shopId: string;
             shop_discount: string[];
-            item_products:[
+            item_products:
                 {
                     price: number;
                     quantity: number;
                     productId: string
-                }
-            ] 
+                }[]          
     }[]
 }
 
 export function CartTab (){
 
     const id: string | undefined = Cookies.get('_id')
-    const cartUserId : string|undefined = Cookies.get(`guestId_${id}`)
+    const cartUserId : string|undefined = Cookies.get(`cartId_${id}`)
     const tempId : string|undefined = Cookies.get('tempId')
+    const guestId : string|undefined = Cookies.get('guestId')
+
 
     const [cart, setCart] = useState<Array<ProductsCart | undefined>>([])
     const [totalPrice,setTotalPrice] = useState<number>(0)
     const {closeCartModal, isCartModalOpen} = useModal()
     const [checkout, setCheckout] = useState<CheckoutRequest>({
-            userId: id??"",
-            cartId: cartUserId??"",
-            shop_order_ids: cart.map(item => (
-                {
-                    shopId: item?.shopId??"",
-                    shop_discount:[],
-                    item_products:[
-                        {
-                            price: item?.price??0,
-                            quantity: item?.quantity??0,
-                            productId: item?.productId??""
-                        }
-                    ]
-                }
-            ))
+            userId: id??guestId??"",
+            cartId: cartUserId??tempId??"",
+            shop_order_ids: []
         })
 
 
@@ -84,10 +73,36 @@ export function CartTab (){
         return () => window.removeEventListener("cartQuantityStorage", fetchCart)
 
     },[])
+    
+    useEffect(() => {
+     
+        if(cart.length > 0){
+            const updatedCheckout = {
+                userId: id??guestId??"",
+                cartId: cartUserId??tempId??"",
+                shop_order_ids: cart?.map(item => (
+                {
+                    shopId: item?.shopId??"",
+                    shop_discount:[],
+                    item_products:[
+                        {
+                            price: item?.price??0,
+                            quantity: item?.quantity??0,
+                            productId: item?.productId??""
+                        }
+                    ]
+                }
+            ))
+            }
+            setCheckout(updatedCheckout)         
+        }        
+
+    },[cart])
 
     useEffect(() => {
         const total = cart.reduce((acc, item: any) => acc + (item.price ?? 0) * (item.quantity ?? 1), 0);
         setTotalPrice(total)
+        
         if(isCartModalOpen){
             document.body.classList.add("overflow-hidden")
         }else{
@@ -97,8 +112,8 @@ export function CartTab (){
          const fetchCheckout = async() => {
                     try {
                         const res = await checkoutReview(checkout?.shop_order_ids[0]? checkout:{
-                            userId: id??"",
-                            cartId: cartUserId??"",
+                            userId: id??guestId??"",
+                            cartId: cartUserId??tempId??"",
                             shop_order_ids: cart.map(item => (
                                 {
                                     shopId: item?.shopId??"",
@@ -141,7 +156,7 @@ export function CartTab (){
 
     const handleDeleteItem = async(productId: string) => {
         const id = Cookies.get('_id')
-        const cartUserId = Cookies.get(`guestId_${id}`)
+        const cartUserId = Cookies.get(`cartId_${id}`)
         const tempId = Cookies.get('tempId')
         setCart((prevCart) => prevCart.filter(item => item?.productId !== productId))
         const res = await deleteItemOfCart({

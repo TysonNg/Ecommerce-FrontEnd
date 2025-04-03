@@ -8,12 +8,7 @@ import { getAllPublish } from "@/features/products/actions/publish";
 import Cookies from "js-cookie";
 import NotFound from "@/app/not-found";
 
-interface LayoutProps {
-    children: ReactElement<{ 
-        setDraftItem: React.Dispatch<React.SetStateAction<number>>,
-        setPublishItems: React.Dispatch<React.SetStateAction<number>>
-     }>;
-}
+
 
 
 export default function Layout({children}: {children: React.ReactNode}) {

@@ -7,10 +7,16 @@ import Cookies from "js-cookie";
 
 export async function getCartById(){
     const userId = Cookies.get(`_id`)
-    const guestId = Cookies.get('guestId')
-    const cartUserId = Cookies.get(`guestId_${userId}`)
+
+    const tempId = Cookies.get('tempId')
+
+    const cartUserId = Cookies.get(`cartId_${userId}`)
+    console.log('cartUserId', cartUserId);
+    
+    
     try {
-        const res = await api.get(`/cart/?userId=${cartUserId??`${guestId}`}`)      
+        const res = await api.get(`/cart/?userId=${cartUserId??`${tempId}`}`)   
+           
         return res.data
     } catch (error) {
         console.log(error);

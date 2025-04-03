@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt, faCircleXmark, faGem, faHeadphones, faHouse, faImage, faKitchenSet, faLaptop, faMobileScreen, faShapes, faShirt, faTabletScreenButton } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import { CldUploadWidget, CldImage } from 'next-cloudinary';
+import { CldUploadWidget} from 'next-cloudinary';
 import { useEffect, useState } from "react";
 import {v4 as uuidv4} from 'uuid'
 import Cookies from "js-cookie";

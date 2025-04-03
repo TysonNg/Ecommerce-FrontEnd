@@ -1,19 +1,21 @@
 import Image from "next/image"
 import Link from "next/link"
-
+import { useRouter } from "next/navigation"
 export const Logo = () => {
-   return (
-        <Link className="logo" href="/">
+    const router = useRouter()
+    const goToHomePage =() => {
+        router.replace('/')
+    }
+
+    return (
             <Image 
+            onClick={goToHomePage}
             alt= "e-shop"
-            className="logo__image"
+            className="logo__image cursor-pointer"
             priority
             src="/logo-header.png"
             width={150}
             height={100}
             />
-        
-        </Link>
-
    )
 }

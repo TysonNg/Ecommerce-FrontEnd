@@ -1,5 +1,4 @@
 "use client"
-
 import Image from "next/image";
 import styles from './productCard.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -66,18 +65,18 @@ export  function ProductGrid(props : Products) {
 export  function ProductCard(props: ProductCardProps) {
     const {_id,product_name,product_price, product_thumb, product_prevPrice, product_slug, product_shop,cartRem} = props;
     const [isHovered, setIsHovered] = useState<Boolean>(false)
+    const guestId = Cookies.get('guestId')
+    const tempId = Cookies.get('tempId')
+    if (!tempId){
+        Cookies.set('tempId', guestId??"",{expires:365*100})
+    }
     
     const handleAddToCart= async() : Promise<CartResponse | undefined>  => {
-        const guestId : string | undefined = Cookies.get(`guestId`)
         const userId = Cookies.get(`_id`)
-
-        if (!guestId){
-            throw new Error('guestId is undefined')
-        }
-        const cartUserId : string | undefined = Cookies.get(`guestId_${userId}`)
+        const cartUserId : string | undefined = Cookies.get(`cartId_${userId}`)
         try {
             const res = await addToCart({
-                userId: cartUserId? cartUserId:guestId,
+                userId: cartUserId? cartUserId:tempId??"",
                 product:{
                     productId: _id,
                     shopId: product_shop,
@@ -88,9 +87,14 @@ export  function ProductCard(props: ProductCardProps) {
                     quantity: 1
                 }
             })
+            
+            
             localStorage.setItem('cartQuantity',res.metadata.cart_products.length)
             window.dispatchEvent(new Event('cartQuantityStorage'))
+
             return res
+         
+            
         } catch (error) {
             console.log('error addToCart', error);
         }

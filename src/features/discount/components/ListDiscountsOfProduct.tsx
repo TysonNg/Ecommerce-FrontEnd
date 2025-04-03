@@ -5,11 +5,12 @@ import { useState } from "react"
 const ListDiscountsOfProduct = (props:any) => {
     const {discounts,productId,activeItem,toggleDown, addDiscountToProduct, 
         removeDiscountFromProduct, userId, quantity, price } = props
+    
         
     const [selectedIndex, setSelectedIntext] = useState<number | null>()
     
     if(activeItem === productId){
-        if(!discounts[0]){
+        if(discounts.length === 0){
             return(
                 <div className="absolute w-full overflow-hidden">
                     <div className={`${toggleDown?'translate-y-0':"-translate-y-100"} transition-transform duration-300 flex flex-row p-3

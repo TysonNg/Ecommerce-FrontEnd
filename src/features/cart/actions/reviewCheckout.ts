@@ -8,15 +8,12 @@ interface Checkout {
     shop_order_ids:{
             shopId: string;
             shop_discount: string[];
-            item_products:[
+            item_products:
                 {
                     price: number;
                     quantity: number;
                     productId: string
-                }
-            ] 
-            
-            
+                }[]
             }[]
 }
 export async function checkoutReview(payload:Checkout) {

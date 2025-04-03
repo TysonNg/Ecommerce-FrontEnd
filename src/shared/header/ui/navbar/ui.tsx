@@ -6,15 +6,22 @@ import { faCartShopping, faChevronDown, faRightFromBracket } from '@fortawesome/
 import { useEffect, useState } from 'react';
 import { logOut } from '@/features/users/actions/access';
 import Cookies from "js-cookie";
+import Link from 'next/link';
+import { getCartById } from '@/features/cart/data/data';
 
 
-export const Navbar = (props:any) => {
+interface NavBarProps {
+  cart: number
+}
+
+export const Navbar = (props: NavBarProps) => {
   const {openModal} = useModal()
   const {cart} = props
   const [name,setName] = useState<string>('')
   const [active, setActive] = useState<string>('')
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const {openCartModal, isPageHaveCartTab} = useModal()
+  
   const handleOpenDropDown = () => {
     setIsOpen(!isOpen)
     console.log(isOpen);
@@ -22,8 +29,7 @@ export const Navbar = (props:any) => {
   }
 
   const handleLogOut = async() => {
-    const res = await logOut()
-    console.log('logOut', res);
+    await logOut()
     localStorage.removeItem('name')
     localStorage.removeItem('isActive')
     setActive('off')
@@ -33,6 +39,12 @@ export const Navbar = (props:any) => {
     if(!Cookies.get('refreshToken')){
       localStorage.removeItem('name')
       localStorage.removeItem('isActive')
+
+      const setQuantityOfTempCart = async() => {
+        const res = await getCartById()
+        localStorage.setItem('cartQuantity',res.metadata.cart_products.length)
+      } 
+      setQuantityOfTempCart()
     }
     const storedName = localStorage.getItem('name')
     const storedActive = String(localStorage.getItem('isActive') || 'off')
@@ -44,25 +56,22 @@ export const Navbar = (props:any) => {
   return (
     <nav className={`${styles.navbar} w-1200 grid-cols-12 grid items-center py-4 text-center`}>
       <ul className="col-span-11 gap-15 flex">
-        <li><a href="/">Home</a></li>
-        <li> <a href="/products?page=1">All products</a></li>
-        <li><a href="/products?category=audioVideo&&page=1">Audio & video</a></li>
-        <li><a href="#">New arrivals</a> </li>
-        <li><a href="#">Today's deal</a> </li>
-        <li> <a href="#">Gift cards</a></li>
+        <li> <Link href={'/'}>Home</Link>  </li>
+        <li> <Link href="/products?page=1">All products</Link></li>
+        <li><Link  href="/products?category=audioVideo&&page=1">Audio & video</Link></li>
+        <li><Link href="#">New arrivals</Link> </li>
+        <li><Link href="#">Today's deal</Link> </li>
+        <li> <Link href="#">Gift cards</Link></li>
       </ul>
       <ul className=" col-span-1 gap-10 pr-20 flex justify-center">
         <li className='relative'>
           {!isPageHaveCartTab? (
-          <a href="/cart">
+          <Link href="/cart">
             <FontAwesomeIcon title='cart' className="text-white cursor-pointer" icon={faCartShopping} />
-          </a> 
+          </Link> 
           ) : (
             <FontAwesomeIcon title='cart' onClick={openCartModal} className="text-white cursor-pointer" icon={faCartShopping} />
           )}
-          {/* <a href="/cart" className={!isCartModalOpen?"pointer-events-none" : ""}>
-            <FontAwesomeIcon title='cart' onClick={openCartModal} className="text-white cursor-pointer" icon={faCartShopping} />
-          </a>  */}
           <span className='absolute font-bold text-xs text-[#0573f0] -right-4 -top-2 rounded rounded-full bg-white px-1 '>{cart}</span>
         </li>
         <li className='relative'>
@@ -72,7 +81,7 @@ export const Navbar = (props:any) => {
           <div className={`${active === 'true'? "name": "hidden"} text-nowrap`}>
           <p onClick={handleOpenDropDown} className='cursor-pointer font-bold hover:opacity-80'> {name} <FontAwesomeIcon icon={faChevronDown}/></p>
             {isOpen && (
-                  <div className='absolute top-7 right-0 w-[200px] text-left rounded-xl border-1 boder-[#c3c3c3] shadow-lg shadow-blue-100'>
+                  <div className='absolute top-7 z-1 right-0 w-[200px] text-left rounded-xl border-1 boder-[#c3c3c3] shadow-lg shadow-blue-100'>
                     <a href="/user/shop/product" title='http://localhost:3000/user/shop/product'>
                       <div className=' top-0 bg-white text-black text-sm w-full pl-4 py-2 font-bold hover:bg-gray-100 transition-color duration-300 rounded-t-lg'>
                         My shop

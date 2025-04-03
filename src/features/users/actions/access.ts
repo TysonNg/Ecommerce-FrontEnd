@@ -2,6 +2,7 @@
 import Cookies from "js-cookie";
 import api from "@/app/protected/protected";
 import { getCartById } from "@/features/cart/data/data";
+import { addToCart } from "@/features/cart/actions/addToCart";
 
 interface LoginType {
     email: string;
@@ -14,6 +15,15 @@ interface SignUpType  {
     password: string;
 }
 
+interface Product{
+    productId: string,
+     shopId: string,
+     quantity: number,
+     imgThumb: string,
+     name: string,
+     price: number,
+     slug: string
+}
 export async function logIn(formLogin:LoginType){
     try {
         const {email, password} = formLogin
@@ -25,27 +35,40 @@ export async function logIn(formLogin:LoginType){
         
         if(!res.data) throw new Error('Pls check email or password again!')
         else{
-            const cartUserId: string | undefined = Cookies.get(`guestId_${res.data.metadata.user._id}`)
+            const cartUserId: string | undefined = Cookies.get(`cartId_${res.data.metadata.user._id}`)
             const guestId: string | undefined = Cookies.get('guestId')
-            if(!cartUserId){
-                Cookies.set(`guestId_${res.data.metadata.user._id}`,`${guestId??""}`,{expires:365 * 100})
-            }
-           
+            
+            
             Cookies.set('_id', `${res.data.metadata.user._id}`,{expires:7})
             Cookies.set('accessToken', `${res.data.metadata.tokens.accessToken}`,{expires: 1})
             Cookies.set('refreshToken', `${res.data.metadata.tokens.refreshToken}`,{expires: 7})
-    
-    
+
+            if(!cartUserId){  
+                const oldCart  = await getCartById()
+                const productsOldCart = oldCart.metadata.cart_products
+                console.log('oldCart', productsOldCart);
+                Cookies.set(`cartId_${res.data.metadata.user._id}`,`${guestId? `${guestId}cart` :""}`,{expires:365 * 100})
+                
+                const getCartUserId = Cookies.get(`cartId_${res.data.metadata.user._id}`)
+
+                //add from guestCart to userCart
+                await productsOldCart.map((item : Product) => {
+                     addToCart({product: item,userId: `${getCartUserId}`})
+                })
+            }
+
             if(cartUserId){
                 const cart = await getCartById()
-               
-                
+
                 if(cart.metadata === null){
                 localStorage.setItem('cartQuantity','0')
                 }else{
                     localStorage.setItem('cartQuantity',cart.metadata.cart_products.length)
+                    window.dispatchEvent(new Event('cartQuantityStorage'))
                 }
             }
+
+            
             return res.data
         }
     } catch (error:any) {
@@ -63,27 +86,30 @@ export async function signUp(formSigup: SignUpType){
         const {metadata} = res.data
         
         
-        const cartUserId: string | undefined = Cookies.get(`guestId_${metadata.metadata.user._id}`)
+        const cartUserId: string | undefined = Cookies.get(`cartId_${metadata.metadata.user._id}`)
         const guestId: string | undefined = Cookies.get('guestId')
+
         if(!cartUserId){
-            Cookies.set(`guestId_${metadata.metadata.user._id}`,`${guestId??""}`,{expires:365 * 100})
+            Cookies.set(`cartId_${metadata.metadata.user._id}`,`${guestId?`${guestId}cart`:""}`,{expires:365 * 100})
         }
        
         Cookies.set('_id', `${metadata.metadata.user._id}`,{expires:7})
         Cookies.set('accessToken', `${metadata.metadata.tokens.accessToken}`,{expires: 1})
         Cookies.set('refreshToken', `${metadata.metadata.tokens.refreshToken}`,{expires: 7})
 
+       
 
         if(cartUserId){
             const cart = await getCartById()
-           
             
             if(cart.metadata === null){
             localStorage.setItem('cartQuantity','0')
             }else{
                 localStorage.setItem('cartQuantity',cart.metadata.cart_products.length)
             }
+
         }
+
         return metadata
     } catch (error) {
         console.log(error);
@@ -100,7 +126,7 @@ export async function logOut(){
         Cookies.remove('accessToken')
         Cookies.remove('refreshToken')
         Cookies.remove('guestId')
-        localStorage.removeItem('cartQuantity')
+        Cookies.remove('cartQuantity')
         setTimeout(() => {
             location.reload();
         },1000)
