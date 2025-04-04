@@ -25,7 +25,7 @@ type PartialProps = Partial<HandleCartProps>
 
 const HandleCart = (props: PartialProps) => {
     const {name,productId, shopId,price,imgThumb,cartTab, productQuantityCartTab, productIdCartTab, shopIdCartTab, onHandleChangePrice, slug} = props
-
+    const tempId = Cookies.get('tempId')
 
     const [quantity, setQuantity] = useState(1);
     const [quantityCartTab, setQuantityCartTab] = useState(productQuantityCartTab)
@@ -39,9 +39,12 @@ const HandleCart = (props: PartialProps) => {
     }
 
     const getProductOfCart = async() => {
-        const res = await getCartById()        
-        const result = res.metadata.cart_products.filter((item : any) => item.productId === `${cartTab? productIdCartTab : productId}`)
-        return result
+        if(tempId){
+            const res = await getCartById()        
+            const result = res.metadata.cart_products.filter((item : any) => item.productId === `${cartTab? productIdCartTab : productId}`)
+            return result
+        }
+        
     }
 
     const handleAddToCart = async () => {

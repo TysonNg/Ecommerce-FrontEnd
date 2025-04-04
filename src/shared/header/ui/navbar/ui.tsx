@@ -45,6 +45,7 @@ export const Navbar = (props: NavBarProps) => {
 
       const setQuantityOfTempCart = async() => {
         const res = await getCartById()
+        
         localStorage.setItem('cartQuantity',res.metadata.cart_products.length)
       } 
       setQuantityOfTempCart()

@@ -57,10 +57,13 @@ export function CartTab() {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const res = await getCartById();
-        setCart(res.metadata.cart_products);
-
-        return res;
+        if(tempId){
+            const res = await getCartById();
+            setCart(res.metadata.cart_products);
+    
+            return res;
+        }
+        
       } catch (error) {
         console.log("err: getCart ", error);
       }
