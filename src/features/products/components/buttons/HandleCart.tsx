@@ -34,7 +34,6 @@ interface ProductOfCart {
 
 const HandleCart = (props: PartialProps) => {
     const {name,productId, shopId,price,imgThumb,cartTab, productQuantityCartTab, productIdCartTab, shopIdCartTab, onHandleChangePrice, slug} = props
-    const tempId = Cookies.get('tempId')
 
     const [quantity, setQuantity] = useState(1);
     const [quantityCartTab, setQuantityCartTab] = useState<number|undefined>(productQuantityCartTab)
