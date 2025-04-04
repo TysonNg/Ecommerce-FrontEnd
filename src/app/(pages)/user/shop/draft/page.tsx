@@ -5,7 +5,8 @@ import { getAllDraft, publishProduct } from "@/features/products/actions/draft"
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 interface DraftProduct {
     _id: string;

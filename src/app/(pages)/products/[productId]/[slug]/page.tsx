@@ -6,6 +6,8 @@ import { ChangeStateAtDetailPage } from "@/features/products/components/buttons/
 import { ProductGrid } from "@/features/products/components/ProductCard";
 import { CartTab } from "@/features/cart/components/cartTab";
 import Link from "next/link";
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 interface ProductInfo {
   _id: string;

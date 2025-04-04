@@ -18,19 +18,31 @@ import { getProductByCategory, getProductsHotDeals } from "@/features/products/d
 import { CartTab } from "@/features/cart/components/cartTab";
 import Image from "next/image";
 import Link from "next/link";
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
+type Product = {
+    _id: string;
+    product_name: string;
+    product_prevPrice: string;
+    product_price:number;
+    product_shop: string;
+    product_slug: string;
+    product_thumb: string;
+    cartRem: number;
+}
+
 
 
 
 //////
 export default async function Home() {
 
-  const productsHotDeal = await getProductsHotDeals();
-
-  const productsElectronics = await getProductByCategory('electronics',4);
-  const productsLaptop = await getProductByCategory('laptop',4);
-  const productsGadget = await getProductByCategory('gadget',4);
-  const productsKitchenAppliances = await getProductByCategory('kitchenAppliances',4);
-  
+  const productsHotDeal: Product[] = await getProductsHotDeals();
+  const productsElectronics: Product[] = await getProductByCategory('electronics', 4);
+  const productsLaptop: Product[] = await getProductByCategory('laptop', 4);
+  const productsGadget: Product[] = await getProductByCategory('gadget', 4);
+  const productsKitchenAppliances: Product[] = await getProductByCategory('kitchenAppliances', 4);
   
   
   type Image = {
@@ -222,7 +234,7 @@ export default async function Home() {
                         className={`${styles.elementor_elenment} col-span-3 text-center bg-white py-10`}
                       >
                         <Link href={product.link}>
-                          <img src={product.url} alt={product.name} />
+                          <Image src={product.url} width={300} height={200} alt={product.name} />
                           <div className="flex flex-col">
                             <p className="font-bold text-lg">{product.name}</p>
                             <span>see more</span>
@@ -241,9 +253,9 @@ export default async function Home() {
           <div className={`${styles.banner_container} grid grid-cols-12 gap-10 `}>
             {bodyBanner.map((banner) => {
               return (
-                <div key={bodyBanner.indexOf(banner)} className="col-span-6">
+                <div key={bodyBanner.indexOf(banner)} className="col-span-6  w-full h-auto">
                   <Link href="#">
-                    <img src={banner.url} alt={banner.name} />
+                    <Image src={banner.url} width={580} height={200} alt={banner.name} />
                   </Link>
                 </div>
               );

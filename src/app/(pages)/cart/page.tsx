@@ -15,6 +15,9 @@ import { getAllDiscountOfProduct } from "@/features/discount/data/data";
 import ListDiscountsOfProduct from "@/features/discount/components/ListDiscountsOfProduct";
 import { amountDiscount } from "@/features/discount/actions/amountDiscount";
 import { cancelDiscount } from "@/features/discount/actions/cancelDiscount";
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 
 interface ProductsCart{
     name: string;

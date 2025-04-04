@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { useModal } from '@/app/context/ModalContext'
 import { logIn, signUp } from '@/features/users/actions/access'
+
 const LoginModal = ()=>{
 
     const [email,setEmail] = useState('')
@@ -34,13 +35,16 @@ const LoginModal = ()=>{
             alert("pls check email or password")
         }else{
             alert('Login Successfully!!!')
-            localStorage.setItem('isActive', "true")
+            if(typeof window !== 'undefined'){
+                localStorage.setItem('isActive', "true")
         
-            localStorage.setItem("name", fetchLogin.metadata.user.name )
-            setTimeout(() => {
-                location.reload();
-            },1000)
-               
+                localStorage.setItem("name", fetchLogin.metadata.user.name )
+                setTimeout(() => {
+                    location.reload();
+                },1000)
+                   
+            }
+           
         }
         
             

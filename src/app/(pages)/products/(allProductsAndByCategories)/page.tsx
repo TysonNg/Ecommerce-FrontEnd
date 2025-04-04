@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import { useEffect, useState } from 'react';
 import NotFoundProducts from '@/features/cart/components/not-found';
 dotenv.config();
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 const ProductsPage = () => {
     const apiKey: string = `${process.env.NEXT_PUBLIC_API_KEY}`;

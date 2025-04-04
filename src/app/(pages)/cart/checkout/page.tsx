@@ -8,6 +8,9 @@ import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { OrderByUser } from "@/features/order/actions/orderByUser";
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 
 interface ProductsCart {
   name: string;

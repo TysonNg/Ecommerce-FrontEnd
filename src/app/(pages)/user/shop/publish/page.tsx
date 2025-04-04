@@ -6,6 +6,8 @@ import { CartTab } from "@/features/cart/components/cartTab";
 import { getAllPublish, unPublish } from "@/features/products/actions/publish";
 import { getAllDiscountOfProduct } from "@/features/discount/data/data";
 import Cookies from "js-cookie";
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 interface PublishProduct {
     _id: string;

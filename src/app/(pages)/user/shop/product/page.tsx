@@ -10,7 +10,8 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { createProduct } from "@/features/products/actions/product";
 import { CartTab } from "@/features/cart/components/cartTab";
-
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 
 interface Product{

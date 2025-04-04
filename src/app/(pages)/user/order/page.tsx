@@ -4,6 +4,9 @@ import { getAllOrders } from "@/features/order/data/data";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 interface GetOrder{
     _id: string;
     order_userId: string;
