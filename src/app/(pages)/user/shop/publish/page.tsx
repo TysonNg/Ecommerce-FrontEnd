@@ -5,7 +5,7 @@ import NotFoundProducts from "@/features/cart/components/not-found";
 import { CartTab } from "@/features/cart/components/cartTab";
 import { getAllPublish, unPublish } from "@/features/products/actions/publish";
 import { getAllDiscountOfProduct } from "@/features/discount/data/data";
-
+import Cookies from "js-cookie";
 
 interface PublishProduct {
     _id: string;
@@ -41,6 +41,8 @@ interface DiscountsShop{
 }
 const PublishPage = () => {
 
+    const id = Cookies.get('_id')
+
     const [publishDatas, setPublishDatas] = useState<PublishProduct[]>([])
     const [discounts, setDiscounts] = useState<DiscountsShop[]>([])
     const [activeItem, setActiveItem] = useState<number>(0)
@@ -48,13 +50,16 @@ const PublishPage = () => {
 
 
     useEffect(() => {
-        const fetchPublishProducts = async() => {
-            const res = await getAllPublish()
-            setPublishDatas(res)
-            return res
+        if(id){
+            const fetchPublishProducts = async() => {
+                const res = await getAllPublish()
+                setPublishDatas(res)
+                return res
+            }
+    
+            fetchPublishProducts()
         }
-
-        fetchPublishProducts()
+        
     },[])
 
 

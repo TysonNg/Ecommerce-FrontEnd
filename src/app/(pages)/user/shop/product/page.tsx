@@ -1,9 +1,9 @@
 'use client'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBolt, faCircleXmark, faGem, faHeadphones, faHouse, faImage, faKitchenSet, faLaptop, faMobileScreen, faShapes, faShirt, faTabletScreenButton } from "@fortawesome/free-solid-svg-icons";
+import { faBolt, faCircleXmark, faGem, faHeadphones, faHouse, faImage, faKitchenSet, faLaptop, faShapes, faShirt, faTabletScreenButton } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import { CldUploadWidget} from 'next-cloudinary';
+import { CldUploadWidget, CloudinaryUploadWidgetInfo, CloudinaryUploadWidgetResults} from 'next-cloudinary';
 import { useEffect, useState } from "react";
 import {v4 as uuidv4} from 'uuid'
 import Cookies from "js-cookie";
@@ -78,7 +78,8 @@ const categories = [
 ]
 
 
-const ProductPage = (props:any) => {
+const ProductPage = () => {
+    
     const shopId = Cookies.get("_id")
     
     const defaultProduct = {
@@ -110,33 +111,49 @@ const ProductPage = (props:any) => {
         setProduct((prev) : Product => ({...prev,product_type: nameCategory}))
     }
 
-    const handleSuccessUploadThumb = (result : any)  => {
-        
-        if(result.event === 'success'){
-            localStorage.setItem('imgThumbUrl', result.info.secure_url)
-            localStorage.setItem('idThumb', result.info.public_id)
-            setImgThumb(result.info.secure_url)
-            setPublicIdThumb(result.info.public_id)
-            setProduct((prev) : Product => ({...prev,product_thumb: `${result.info.secure_url}`}))
+    const handleSuccessUploadThumb = (result : CloudinaryUploadWidgetResults)  => {
+        const event = result.event ? result.event : ''
+        if(event === 'success'){
+            if (typeof result.info === 'object' && result.info !== null) {
+                const info = result.info;
+                const secureUrl = info?.secure_url || '';
+                const publicId = info?.public_id || '';
+    
+                if (secureUrl && publicId) {
+                    localStorage.setItem('imgThumbUrl', secureUrl);
+                    localStorage.setItem('idThumb', publicId);
+                    setImgThumb(secureUrl);
+                    setPublicIdThumb(publicId);
+    
+                    setProduct((prev: Product) => ({
+                        ...prev,
+                        product_thumb: secureUrl,
+                    }));
+                } 
+        }
         }
     }
 
-    const handleSuccessUploadImage = (result : any)  => {
-        
-        if(result.event === 'success'){
-            setImgs(prev => {
-                const updatedImgs = [...prev, result.info.secure_url]
-                localStorage.setItem('imgsUrl',JSON.stringify(updatedImgs))
-                setProduct((prev): Product => ({...prev,product_images: updatedImgs}))
-                return updatedImgs
-            })
-            setPublicIdImage(prev => {
-                const safePrev = Array.isArray(prev) ? prev : []
-                const updatedPublicId = [...safePrev, result.info.public_id]
-                localStorage.setItem('idImg', JSON.stringify(updatedPublicId))
-                return updatedPublicId 
-            })
-            
+    const handleSuccessUploadImage = (result : CloudinaryUploadWidgetResults)  => {
+        const event = result.event ? result.event : ''
+        if(event === 'success'){
+            if(typeof result.info === 'object' && result.info !== null){
+                const info = result.info
+                const secureUrl = info?.secure_url || '';
+                const publicId = info?.public_id || '';
+                setImgs(prev => {
+                    const updatedImgs = [...prev, secureUrl]
+                    localStorage.setItem('imgsUrl',JSON.stringify(updatedImgs))
+                    setProduct((prev): Product => ({...prev,product_images: updatedImgs}))
+                    return updatedImgs
+                })
+                setPublicIdImage(prev => {
+                    const safePrev = Array.isArray(prev) ? prev : []
+                    const updatedPublicId = [...safePrev, publicId]
+                    localStorage.setItem('idImg', JSON.stringify(updatedPublicId))
+                    return updatedPublicId 
+                })
+            }  
         }
     }
     
@@ -147,15 +164,13 @@ const ProductPage = (props:any) => {
         }
         try {
             const res = await axios.post("/api/deleteImageCloudinary", {publicId: publicIdThumb})
-            if(res.data){
+            if(res.data?.success){
                 alert('Delete thumb successfully!')
+                localStorage.removeItem('imgThumbUrl')
+                setImgThumb("")
+                setPublicIdThumb("")
+                setProduct((prev):Product => ({...prev,product_thumb: ''}))
             }
-            console.log(res.data.message);
-            localStorage.removeItem('imgThumbUrl')
-            setImgThumb("")
-            setPublicIdThumb("")
-            setProduct((prev):Product => ({...prev,product_thumb: ''}))
-
         } catch (error) {
             console.log(error);
             
@@ -194,7 +209,7 @@ const ProductPage = (props:any) => {
 
     const handleCreateProduct = async() => {
         
-        const {product_name,product_images,product_attributes,product_description,product_price,product_quantity,product_thumb,product_type, product_prevPrice} = product
+        const {product_name,product_images,product_description,product_price,product_quantity,product_thumb,product_type, product_prevPrice} = product
         if(product_name === "" || product_price === 1 || product_description === "" || product_quantity === 1 || product_type === "" || product_thumb === "" || product_images.length === 0)
         {
             alert("Pls fill fully properties")
@@ -217,7 +232,7 @@ const ProductPage = (props:any) => {
         }
         
     }
-
+    
     useEffect(() => {
         const loadData = () => {
             const thumbUrl = localStorage.getItem("imgThumbUrl");
@@ -229,7 +244,7 @@ const ProductPage = (props:any) => {
             setImgThumb(thumbUrl ?? "");
             setImgs(JSON.parse(imgsUrl || "[]"));
             
-            console.log(thumbUrl)
+        
         };
     
         loadData();
@@ -239,8 +254,8 @@ const ProductPage = (props:any) => {
     
 
 return(
-    <>
-        
+    <div>
+
             <div className="createProduct px-5 mb-20">
                 <h1 className="text-xl font-bold p-2">Create a New Product</h1>
                 <div className="createProduct-container grid grid-cols-6 gap-5">
@@ -264,7 +279,7 @@ return(
                                                             </button>
                                                         )
                                                     }}
-                                                </CldUploadWidget>
+                                            </CldUploadWidget>
                                         </p>
                                 </div>
 
@@ -418,10 +433,10 @@ return(
             <CartTab />
 
             </div>
-    </>
+    </div>
     
-)
-   
+    )
+
 }
 
 export default ProductPage;

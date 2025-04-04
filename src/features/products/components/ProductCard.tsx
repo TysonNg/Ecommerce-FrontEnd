@@ -10,35 +10,35 @@ import { addToCart } from "@/features/cart/actions/addToCart";
 interface ProductCardProps {
     _id: string;
     product_name: string;
-    product_price:number;
-    product_thumb: string;
     product_prevPrice: string;
-    product_slug: string;
+    product_price:number;
     product_shop: string;
-    cartRem: Number;
+    product_slug: string;
+    product_thumb: string;
+    cartRem: number;
     
 }
 
 interface Products {
     products: ProductCardProps[],
-    cartRem: Number,
-    numOfProduct: Number;
+    cartRem: number,
+    numOfProduct: number;
 }
 
 interface CartResponse{
     message: string;
-    status: Number;
+    status: number;
     metadata:{
         _id: string;
         cart_state: string;
-        __v: Number;
+        __v: number;
         cart_count_product: string;
         cart_products: [
             {
                 productId: string;
                 shopId: string;
                 name: string;
-                price: Number;
+                price: number;
             }
         ]
     }
@@ -64,7 +64,7 @@ export  function ProductGrid(props : Products) {
 
 export  function ProductCard(props: ProductCardProps) {
     const {_id,product_name,product_price, product_thumb, product_prevPrice, product_slug, product_shop,cartRem} = props;
-    const [isHovered, setIsHovered] = useState<Boolean>(false)
+    const [isHovered, setIsHovered] = useState<boolean>(false)
     const guestId = Cookies.get('guestId')
     const tempId = Cookies.get('tempId')
     if (!tempId){
@@ -110,7 +110,7 @@ export  function ProductCard(props: ProductCardProps) {
                     <span className={`${styles.saleTag} absolute top-3 left-3 border border-[#dce3e5] bg-white rounded-2xl text-xs text-[#48515b] p-1.5`}>Sale!</span>
                     <Image src={product_thumb} alt={product_name} width= {300} height={300} />                           
                 </a>
-                <FontAwesomeIcon title="Add to cart" onClick={() => handleAddToCart()} className={`${isHovered?"opacity-100":"opacity-0"}  transition-opacity duration-300 hover:opacity-80 text-[#48515b] text-sm cursor-pointer absolute rounded rounded-full py-1.5 px-1.5 top-3 bg-[#f1e0e0]`} style={{right: `${cartRem}rem`}} icon={faCartShopping} />
+                <FontAwesomeIcon onClick={() => handleAddToCart()} className={`${isHovered?"opacity-100":"opacity-0"}  transition-opacity duration-300 hover:opacity-80 text-[#48515b] text-sm cursor-pointer absolute rounded rounded-full py-1.5 px-1.5 top-3 bg-[#f1e0e0]`} style={{right: `${cartRem}rem`}} icon={faCartShopping} />
             
             </div>
             <div>
@@ -130,7 +130,7 @@ export  function ProductCard(props: ProductCardProps) {
                 <a href={`/products/${_id}/${product_slug}`}>
                 <Image src={product_thumb} alt={product_name} width= {300} height={300} />
                 </a>
-                <FontAwesomeIcon title="Add to cart" onClick={() => handleAddToCart()} className={`${isHovered?"opacity-100":"opacity-0"}  transition-opacity duration-300 hover:opacity-80 text-[#48515b] text-sm cursor-pointer absolute rounded rounded-full py-1.5 px-1.5 top-3 bg-[#f1e0e0]`} style={{right: `${cartRem}rem`}} icon={faCartShopping} />
+                <FontAwesomeIcon  onClick={() => handleAddToCart()} className={`${isHovered?"opacity-100":"opacity-0"}  transition-opacity duration-300 hover:opacity-80 text-[#48515b] text-sm cursor-pointer absolute rounded rounded-full py-1.5 px-1.5 top-3 bg-[#f1e0e0]`} style={{right: `${cartRem}rem`}} icon={faCartShopping} />
             </div>
             
             <a href={`/products/${_id}/`} className={`${styles.productName} text-sm font-semibold`}>{product_name}</a>

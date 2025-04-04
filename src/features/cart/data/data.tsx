@@ -11,7 +11,6 @@ export async function getCartById(){
     const tempId = Cookies.get('tempId')
 
     const cartUserId = Cookies.get(`cartId_${userId}`)
-    console.log('cartUserId', cartUserId);
     
     
     try {

@@ -1,17 +1,16 @@
 'use client'
 import { getAllProducts } from '@/features/products/data/data';
 import { ProductGrid } from '@/features/products/components/ProductCard';
-import { useSearchParams,useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import dotenv from "dotenv";
 import { useEffect, useState } from 'react';
 import NotFoundProducts from '@/features/cart/components/not-found';
 dotenv.config();
 
-const productsPage = () => {
+const ProductsPage = () => {
     const apiKey: string = `${process.env.NEXT_PUBLIC_API_KEY}`;
     const pageSize = 12
     const searchParams = useSearchParams();
-    const router = useRouter()
     
     const [products, setProducts] = useState([])
     const [allResults, setAllResults] = useState([])
@@ -84,4 +83,4 @@ const productsPage = () => {
     
 }
 
-export default productsPage;
+export default ProductsPage;

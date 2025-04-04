@@ -17,11 +17,8 @@ interface Product{
 }
 
 export async function createProduct(payload:Product) {
-    try {
-        console.log('payload', payload);
-        
+    try { 
         const res = await api.post('/product',payload)
-        console.log('create product', res.data);
         
         return res.data
     } catch (error) {

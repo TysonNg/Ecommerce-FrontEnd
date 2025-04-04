@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { getProductDetail, getRelatedProductByCategory } from "@/features/products/data/data";
 import styles from "./detail.module.scss";
 import { BtnToSlideImagesProduct } from "@/features/products/components/buttons/BtnToSlideImageProduct";
@@ -6,6 +5,7 @@ import HandleCart from "@/features/products/components/buttons/HandleCart";
 import { ChangeStateAtDetailPage } from "@/features/products/components/buttons/ChangeStateAtBottomDetailPage";
 import { ProductGrid } from "@/features/products/components/ProductCard";
 import { CartTab } from "@/features/cart/components/cartTab";
+import Link from "next/link";
 
 interface ProductInfo {
   _id: string;
@@ -13,23 +13,33 @@ interface ProductInfo {
   product_price: number;
   product_description: string;
   product_images: [];
+  product_quantity: number;
   product_prevPrice: string;
-  product_attributes: object;
+  product_attributes: {
+    brand: string;
+    material: string;
+    model: string;
+  };
   product_type: string;
   product_shop: string;
   product_thumb: string;
   product_slug: string;
+  cartRem: number;
 }
 
-const ProductDetail = async ({ params }: { params: { productId: string } }) => {
-  const { productId,slug } = await params;
-  const {props: {data: productDetails}} : {props: {data: ProductInfo}} = await getProductDetail(productId);
- 
 
-  console.log('detail', productDetails);
+
+const ProductDetail = async ({ params }: { params: { productId: string } }) => {
+  const { productId } = await params
+
+  const productDetails : ProductInfo = await getProductDetail(productId)
+  console.log(productDetails);
+  
+
+  
   
   const productsByCategory: ProductInfo[] = await getRelatedProductByCategory(productDetails.product_type,productDetails._id)
-
+  
   return (
     <section className={`${styles.body}`}>
       <section className={`${styles.top_body}`}>
@@ -45,12 +55,13 @@ const ProductDetail = async ({ params }: { params: { productId: string } }) => {
             >
               <div className={`${styles.navLink} text-[#48515b] text-sm`}>
                 <span>
-                  <a href="/">Home</a> /{" "}
-                  <a href="">{productDetails.product_type}</a> /{" "}
+                  <Link href="/">Home</Link> /
+                  <Link href={`/products?category=${productDetails.product_type}&&page=1`}>{productDetails.product_type}</Link> /
                   {productDetails.product_name}
                 </span>
               </div>
               <div className={`${styles.infoList} `}>
+
                 <ul>
                   <li className={`${styles.name} font-semibold text-xl`}>
                     {productDetails.product_name}
@@ -67,6 +78,14 @@ const ProductDetail = async ({ params }: { params: { productId: string } }) => {
                       </span>
                     </p>
                   </li>
+
+                  <li className="pt-5 flex flex-row gap-2 text-sm">
+                        <p className="text-[#6b6969] font-bold">
+                          Quantity:
+                        </p>
+                        <span>{productDetails.product_quantity}</span>
+                  </li>
+
                   <li className={`${styles.detail} pt-5 `}>
                     <p className="font-semibold text-sm">Detail:</p>
                 <ul className={`${styles.detail_container} pl-10 pt-3 list-disc`}>
@@ -76,9 +95,18 @@ const ProductDetail = async ({ params }: { params: { productId: string } }) => {
                 </ul> 
                   </li>
                   <li className={`${styles.cart}`}>
-                          <HandleCart  name={productDetails.product_name} productId = {productDetails._id} shopId= {productDetails.product_shop} price={productDetails.product_price} imgThumb={productDetails.product_thumb} slug={productDetails.product_slug}/>
+                      <HandleCart name={productDetails.product_name} productId = {productDetails._id} shopId= {productDetails.product_shop} price={productDetails.product_price} imgThumb={productDetails.product_thumb} slug={productDetails.product_slug}/>
+                  </li>
+                 
+                  
+                  <li className="flex flex-row gap-2 text-sm pt-5">
+                        <p className="text-[#6b6969] font-bold">Category: </p>
+                        <span className="text-[#48515b]">
+                          <Link className="cursor-pointer" href={`/products?category=${productDetails.product_type}&&page=1`}>{productDetails.product_type}</Link>
+                        </span>
                   </li>       
                 </ul>
+
               </div>    
             </div>
           </div>
@@ -86,13 +114,13 @@ const ProductDetail = async ({ params }: { params: { productId: string } }) => {
       </section>
 
       <section className={`${styles.bottom_body} mt-20`}>
-        <ChangeStateAtDetailPage product_name={productDetails.product_name} product_description={productDetails.product_description} product_thumb={productDetails.product_thumb} product_images={productDetails.product_images} styles={styles} />
+        <ChangeStateAtDetailPage product_name={productDetails.product_name} product_description={productDetails.product_description} product_thumb={productDetails.product_thumb} product_images={productDetails.product_images} />
       </section>
 
       <section className={`${styles.relate_product} mt-15`}>
         <div className={`${styles.relate_product_container}`}>
           <p className="font-bold text-2xl pb-5">Related products</p>
-          <ProductGrid products={productsByCategory} cartRem={5}/>               
+          <ProductGrid products={productsByCategory} cartRem={5} numOfProduct={6}/>               
         </div>
       </section>
       <section className={`${styles.cartTab} `}>

@@ -15,7 +15,6 @@ import { getAllDiscountOfProduct } from "@/features/discount/data/data";
 import ListDiscountsOfProduct from "@/features/discount/components/ListDiscountsOfProduct";
 import { amountDiscount } from "@/features/discount/actions/amountDiscount";
 import { cancelDiscount } from "@/features/discount/actions/cancelDiscount";
-import { useModal } from "@/app/context/ModalContext";
 
 interface ProductsCart{
     name: string;
@@ -39,7 +38,7 @@ interface Checkout {
         shop_discount: [];
         item_products:[
             {
-                price: number;
+                price: number; 
                 quantity: number;
                 productId: string
             }
@@ -65,7 +64,7 @@ interface CheckoutRequest{
     cartId: string;
     shop_order_ids:{
             shopId: string;
-            shop_discount: string[];
+            shop_discount: CodeDiscount[];
             item_products:{
                     price: number;
                     quantity: number;
@@ -76,7 +75,7 @@ interface CheckoutRequest{
 
 interface ShopOrder{
     shopId: string;
-    shop_discount: string[];
+    shop_discount: CodeDiscount[];
     item_products:
         {
             price: number;
@@ -89,7 +88,8 @@ interface ShopOrder{
 interface Product{
     price: number;
     quantity: number;
-    productId: string; 
+    productId: string;
+    
 }
 
 interface DiscountsShop{
@@ -105,7 +105,15 @@ interface DiscountsShop{
 
 interface CodeDiscount{
     codeId: string;
-    shopId: string
+    shopId: string;
+    userId: string
+}
+
+interface RemoveDiscountParams {
+    productId: string; 
+    codeId: string;    
+    userId: string;    
+    shopId: string;   
 }
 
 export default function CartPage() {
@@ -116,11 +124,10 @@ export default function CartPage() {
     const cartUserId : string|undefined = Cookies.get(`cartId_${id}`)
     const tempId : string|undefined = Cookies.get('tempId')
 
-    const {noCartTab} = useModal()
     const [cart, setCart] = useState<Array<ProductsCart>>([])
     const [checkoutData, setCheckoutData] = useState<Checkout>()
     const [discounts,setDiscounts] = useState<DiscountsShop[]>()
-    const [activeItem, setActiveItem] = useState<string>()
+    const [activeItem, setActiveItem] = useState<string>('')
     const [toggleDown, setTogleDown] = useState<boolean>(false)
     const [checkout, setCheckout] = useState<CheckoutRequest>({
         userId: id??guestId??"",
@@ -132,10 +139,11 @@ export default function CartPage() {
     
     //get Cart
     useEffect(() => {
-        noCartTab()
         const fetchCart = async() => {
             try {
                 const res = await getCartById()
+                console.log('cart', res);
+                
                 setCart(res.metadata.cart_products)
                 return res
             } catch (err) {
@@ -149,35 +157,37 @@ export default function CartPage() {
     //get checkoutReview after updated cart
     useEffect(() => {
      
-        if(cart.length > 0){
-            console.log('vaoday');
-            
-            const updatedCheckout = {
-                userId: id??guestId??"",
+        if (cart.length > 0) {
+            setCheckout(prev => {
+              const updatedShopOrders = cart.map(item => {
+                const prevShop = prev.shop_order_ids.find(shop => shop.shopId === item.shopId)
+        
+                return {
+                  shopId: item.shopId ?? "",
+                  shop_discount: prevShop?.shop_discount ?? [],
+                  item_products: [
+                    {
+                      price: item.price ?? 0,
+                      quantity: item.quantity ?? 0,
+                      productId: item.productId ?? ""
+                    }
+                  ]
+                };
+              });
+        
+              return {
+                userId: id??guestId?? "",
                 cartId: cartUserId??tempId??"",
-                shop_order_ids: cart?.map(item => (
-                {
-                    shopId: item?.shopId??"",
-                    shop_discount:[],
-                    item_products:[
-                        {
-                            price: item?.price??0,
-                            quantity: item?.quantity??0,
-                            productId: item?.productId??""
-                        }
-                    ]
-                }
-            ))
-            }
-            setCheckout(updatedCheckout)         
-        }        
-
+                shop_order_ids: updatedShopOrders
+              };
+            });
+          }
     },[cart])
     
     useEffect(() => {
         const fetchCheckout = async () => {
-            
             try {
+            if(cart.length>0){
                 if(checkout.shop_order_ids.length > 0) {
                     const res = await checkoutReview(checkout?.shop_order_ids.length > 0? checkout : {
                         userId: id ?? `${guestId}`,
@@ -198,12 +208,14 @@ export default function CartPage() {
                     if (res.metadata) {
                         sessionStorage.setItem(`reviewCheckout_${cartUserId}`, JSON.stringify(res.metadata));
                     }
-                    console.log('checkout', checkout);
+                    console.log('checkoutData', checkout);
                     
                     setCheckoutData(res.metadata)                
                     return res.metadata
 
                 }
+            }
+               
                 
             } catch (error) {
                 console.log('checkoutErr', error);
@@ -214,6 +226,7 @@ export default function CartPage() {
 
     //when changing price => update quantity
     const handleChangePrice = (newQuantity:number, productId: string) =>{
+
         setCart((prevCart) : ProductsCart[] => {
         
         
@@ -224,13 +237,16 @@ export default function CartPage() {
 
 
         setCheckout((prevCheckout : CheckoutRequest)  => {
+            console.log('prevCheck',prevCheckout);
+            
             const updateCheckout = {
                 ...prevCheckout,
                 shop_order_ids: prevCheckout.shop_order_ids.map((order : ShopOrder) => ({
                     ...order,
                     item_products: order.item_products.map((product ) : Product => (
                         product.productId === productId? {...product, quantity: newQuantity} : product
-                    ))                    
+                    )),
+                    shop_discount: order.shop_discount                    
                 }))
             }
             console.log('updatecheckout', updateCheckout);
@@ -256,7 +272,7 @@ export default function CartPage() {
     }
 
     const getDiscountsOfProduct = async(productId: string) => {
-        console.log('id', id);
+        console.log('idProduct', productId);
         
         if(!id && !refreshToken){
             alert("Pls Login to use Discount!!!")
@@ -291,12 +307,13 @@ export default function CartPage() {
         })
 
         if(codeId !== codeIdState?.codeId){
-            await cancelDiscount({codeId: codeIdState?.codeId??"", userId: id??"", shopId: codeIdState?.shopId??""})
+            await cancelDiscount({codeId: (codeIdState?.codeId??""), userId: ((id??"")), shopId: (codeIdState?.shopId??"")})
         }
 
         setCodeIdState({
             codeId,
-            shopId
+            shopId,
+            userId: newDiscount.userId
         })
 
         if(!checkout?.shop_order_ids[0])
@@ -322,27 +339,15 @@ export default function CartPage() {
                 return updateCheckout
             })
         
-    }       
+        }       
 
         setCheckout((prevCheckout : CheckoutRequest) => {
             const updateCheckout: CheckoutRequest = {
                 ...prevCheckout,
-                shop_order_ids: prevCheckout.shop_order_ids.map((order : ShopOrder) => {
-                    const updatedItemProducts = order.item_products.map((product) => {
-                        if (product.productId === productId) {
-                            return {
-                                ...product,
-                                shop_discount: [newDiscount]
-                            };
-                        }
-                        return product;
-                    });
-        
-                    return {
-                        ...order,
-                        item_products: updatedItemProducts
-                    };
-                })
+                shop_order_ids: prevCheckout.shop_order_ids.map((order : ShopOrder) => (
+                    order.item_products[0].productId === productId?{...order, shop_discount: [newDiscount]} : {...order}
+
+                ))
             };
 
             //save into sesstionStotage
@@ -351,9 +356,10 @@ export default function CartPage() {
         })
     }
 
-    const removeDiscountFromProduct = async(productId: string) => {
+    const removeDiscountFromProduct = async({productId, codeId, userId, shopId} : RemoveDiscountParams) => {
+        await cancelDiscount({codeId, userId: id??"" , shopId })
+        
         setCheckout((prevCheckout: CheckoutRequest) => {
-
             const updateCheckout = {
                 ...prevCheckout,
                 shop_order_ids: prevCheckout.shop_order_ids.map((order:ShopOrder) =>
@@ -391,8 +397,8 @@ export default function CartPage() {
                                             <a href={`http://localhost:3000/products/${product?.productId}/${product?.slug}`} className="col-span-4 w-[300px] text-sm text-[#0573f0]">{product?.name}</a>
                                             <p className="col-span-2 text-[#696969]">${product?.price}.00</p>
                                             <div className="col-span-2 ml-5">
-                                                <HandleCart cartTab={true}  productQuantityCartTab={product?.quantity} productIdCartTab = {product?.productId} shopIdCartTab = {product?.shopId} onHandleChangePrice={(newQuantity:number) => {
-                                                                handleChangePrice(newQuantity, product?.productId??"")
+                                                <HandleCart cartTab={true}  productQuantityCartTab={product?.quantity??1} productIdCartTab = {product?.productId} shopIdCartTab = {product?.shopId} onHandleChangePrice={(newQuantity:number) => {
+                                                            handleChangePrice(newQuantity, product?.productId??"")
                                                 }}/>
                                             </div>
                                             <div className="col-span-2 ml-12 text-[#696969]">
@@ -404,15 +410,15 @@ export default function CartPage() {
                                          border-t border-[#9b9b9b] bg-[#d15454] hover:bg-[#b34747] transition-colors duration-500 " onClick={() => getDiscountsOfProduct(product?.productId??"")}>
                                             <div>
                                                 <FontAwesomeIcon className="text-white pr-5" icon={faTicket} />
-                                                <span className="font-bold">Voucher's product</span>
+                                                <span className="font-bold">Voucher of product</span>
                                             </div>
                                             
                                             <span><FontAwesomeIcon icon={faCaretDown} /></span>
                                             
                                         </div>
                                         <div className={` relative `}>
-                                            <ListDiscountsOfProduct discounts={discounts} productId={product?.productId} activeItem={activeItem} toggleDown={toggleDown} addDiscountToProduct={addDiscountToProduct}
-                                             removeDiscountFromProduct={removeDiscountFromProduct} userId ={id} quantity={product?.quantity} price={product?.price}/>
+                                            <ListDiscountsOfProduct discounts={discounts??[]} productId={product?.productId} activeItem={activeItem} toggleDown={toggleDown} addDiscountToProduct={addDiscountToProduct}
+                                             removeDiscountFromProduct={removeDiscountFromProduct} userId ={id??""} quantity={product?.quantity??1} price={product?.price??1}/>
                                         </div>
                                     </div>
                                                                    

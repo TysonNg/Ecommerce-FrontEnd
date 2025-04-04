@@ -2,12 +2,47 @@
 
 import { useState } from "react"
 
-const ListDiscountsOfProduct = (props:any) => {
+interface DiscountsShop{
+    discount_name: string;
+    discount_description: string;
+    discount_code: string;
+    discount_start_date: Date ;
+    discount_end_date: Date;
+    discount_shopId: string;
+    discount_product_ids:[];
+
+}
+
+interface RemoveDiscountParams {
+    productId: string; 
+    codeId: string;    
+    userId: string;    
+    shopId: string;   
+}
+
+interface ListDiscountsOfProductProps {
+    discounts: DiscountsShop[]; 
+    productId: string;
+    activeItem: string;
+    toggleDown: boolean;
+    addDiscountToProduct: (productId:string,price: number,quantity: number, codeId: string, shopId: string, 
+        newDiscount : {
+        codeId: string,
+        userId: string,
+        shopId: string
+    }) => Promise<void>;
+    removeDiscountFromProduct: ({codeId,productId,shopId,userId} : RemoveDiscountParams) => void;
+    quantity: number;
+    price: number;
+    userId: string
+}
+
+const ListDiscountsOfProduct = (props:ListDiscountsOfProductProps) => {
     const {discounts,productId,activeItem,toggleDown, addDiscountToProduct, 
         removeDiscountFromProduct, userId, quantity, price } = props
     
         
-    const [selectedIndex, setSelectedIntext] = useState<number | null>()
+    const [selectedIndex, setSelectedIndex] = useState<number | null>()
     
     if(activeItem === productId){
         if(discounts.length === 0){
@@ -23,19 +58,20 @@ const ListDiscountsOfProduct = (props:any) => {
 
         return (
             <div className={`absolute w-full overflow-hidden`}>
-            {discounts?.map((discount:any,i:number) => {
+            {discounts?.map((discount:DiscountsShop,i:number) => {
                 return(
                     <div title={discount.discount_name} key={i} onClick={()=>{
                         if(selectedIndex !== i){
-                            setSelectedIntext(i)
+                            setSelectedIndex(i)
                             addDiscountToProduct(productId, price, quantity,discount.discount_code, discount.discount_shopId,{
                                 codeId: `${discount.discount_code}`,
                                 userId: `${userId}`,
                                 shopId: `${discount.discount_shopId}`
                             })
+                            
                         }else{
-                            setSelectedIntext(null);
-                            removeDiscountFromProduct(productId)
+                            removeDiscountFromProduct({productId,codeId: discount.discount_code, shopId: discount.discount_shopId, userId: discount.discount_name})
+                            setSelectedIndex(null);
                         }
                         }} className={`${toggleDown?'translate-y-0':"-translate-y-100"}  ${selectedIndex === i?'bg-[#0573f0] text-white' : 'bg-white'} transition-transform duration-300 flex flex-row p-3
                      border-x-1 border-b cursor-pointer  justify-between hover:bg-[#264653] hover:text-white transition-color duration-300`}>

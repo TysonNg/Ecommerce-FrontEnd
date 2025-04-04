@@ -4,6 +4,7 @@ import NotFoundProducts from "@/features/cart/components/not-found";
 import { getAllDraft, publishProduct } from "@/features/products/actions/draft"
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 
 interface DraftProduct {
@@ -29,16 +30,22 @@ interface DraftProduct {
 }
 
 const DraftPage = () => {
+    const id = Cookies.get('_id')
+    
     const [draftDatas, setDraftDatas] = useState<DraftProduct[]>([])
-    useEffect(() => {
-        const fetchDrafts = async() => {
-            const res = await getAllDraft()
-            setDraftDatas(res)
-            console.log(res);
-            return res
-        }
 
-        fetchDrafts()
+    useEffect(() => {
+        if(id) {
+            const fetchDrafts = async() => {
+                const res = await getAllDraft()
+                setDraftDatas(res)
+                console.log(res);
+                return res
+            }
+    
+            fetchDrafts()
+        }
+       
     },[])
 
     const handlePublish = async(i: number) => {

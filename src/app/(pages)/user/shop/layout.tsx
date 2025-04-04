@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, ReactElement, useEffect  } from "react";
+import { useState, useEffect  } from "react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { getAllDraft } from "@/features/products/actions/draft";
@@ -12,6 +12,8 @@ import NotFound from "@/app/not-found";
 
 
 export default function Layout({children}: {children: React.ReactNode}) {
+    const id = Cookies.get('_id')
+
     const [activeItem, setActiveItem] = useState<string>('')
     const [draftItems, setDraftItems] = useState<number>()
     const [publishItems, setPublishItems] = useState<number>()
@@ -27,28 +29,31 @@ export default function Layout({children}: {children: React.ReactNode}) {
     }
   
     useEffect(() => {
-        const fetchDraftItems = async() => {
-            const res = await getAllDraft()
-            return setDraftItems(res.length)
+        if(id) {
+            const fetchDraftItems = async() => {
+                const res = await getAllDraft()
+                return setDraftItems(res.length)
+            }
+            const fetchPublishItems = async() => {
+                const res = await getAllPublish()
+                return setPublishItems(res.length)
+            }
+    
+            fetchDraftItems()
+            fetchPublishItems()
+            
+            const handleEvent = () => {
+                fetchDraftItems();
+                fetchPublishItems();
+            }
+            
+            window.addEventListener('ChangeQuantityDraftAndPublish',handleEvent)
+            return () => window.removeEventListener('ChangeQuantityDraftAndPublish', handleEvent)
         }
-        const fetchPublishItems = async() => {
-            const res = await getAllPublish()
-            return setPublishItems(res.length)
-        }
-
-        fetchDraftItems()
-        fetchPublishItems()
         
-        const handleEvent = () => {
-            fetchDraftItems();
-            fetchPublishItems();
-        }
-        
-        window.addEventListener('ChangeQuantityDraftAndPublish',handleEvent)
-        return () => window.removeEventListener('ChangeQuantityDraftAndPublish', handleEvent)
     },[])
    
-    if(!Cookies.get('_id')){
+    if(!id){
         return(
             <NotFound />
         )

@@ -15,7 +15,10 @@ interface AmountDiscount {
     ]
  }
 export async function amountDiscount(payload:AmountDiscount) {
-    try {        
+    try {
+        
+        console.log('payload AmountDiscount', payload);
+        
         const res = await api.post('/discount/amount',payload)
         if(!res.data) throw new Error('Fail to fetch amountDiscount')
         console.log('amountDiscount', res.data);

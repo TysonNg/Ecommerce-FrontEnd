@@ -1,6 +1,8 @@
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTruckFast, faCommentDots, faRotateLeft, faCreditCard,faCartShopping} from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from "@fortawesome/fontawesome-svg-core";
 
+config.autoAddCss = false;
 
-library.add(faTruckFast, faCommentDots,faRotateLeft,faCreditCard, faGithub, faCartShopping);
+export default function FontAwesomeConfig() {
+    return null;
+}

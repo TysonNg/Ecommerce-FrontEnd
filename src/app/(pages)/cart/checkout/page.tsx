@@ -7,7 +7,6 @@ import Image from "next/image";
 import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { useModal } from "@/app/context/ModalContext";
 import { OrderByUser } from "@/features/order/actions/orderByUser";
 
 interface ProductsCart {
@@ -83,7 +82,6 @@ const CheckOutPage = () => {
     phone: 123,
   };
 
-  const { noCartTab } = useModal();
   const [cart, setCart] = useState<Array<ProductsCart | undefined>>([]);
   const [checkout] = useState<Checkout>(payloadCheckout ??
      {
@@ -103,7 +101,6 @@ const CheckOutPage = () => {
   const [isOrdered, setIsOrdered] = useState<boolean>(false);
 
   useEffect(() => {
-    noCartTab();
     const fetchCart = async () => {
       try {
         const res = await getCartById();
@@ -222,7 +219,7 @@ const CheckOutPage = () => {
               id="payments"
               className="p-1.5 rounded-md border-1 border-[#a9a9a9] w-full"
               onChange={(e) =>
-                setPayment((prev) => ({ method: e.target.value }))
+                setPayment(() => ({ method: e.target.value }))
               }
             >
               <option value="cash" className="text-sm">

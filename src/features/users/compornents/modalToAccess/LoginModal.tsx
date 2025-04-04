@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useModal } from '@/app/context/ModalContext'
 import { logIn, signUp } from '@/features/users/actions/access'
 const LoginModal = ()=>{
@@ -94,7 +94,7 @@ const LoginModal = ()=>{
                             </div>
                         </form>
                         <div className='mt-5'>
-                            <p>Don't have an account? <span className='text-[#4b7af7] cursor-pointer hover:opacity-80' onClick={registerForm}>Register here</span> </p>
+                            <p>Don&apos;t have an account? <span className='text-[#4b7af7] cursor-pointer hover:opacity-80' onClick={registerForm}>Register here</span> </p>
                         </div>
 
                     </div>

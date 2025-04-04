@@ -1,5 +1,5 @@
 import {v2 as cloudinary} from 'cloudinary'
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
 
 cloudinary.config({
@@ -8,7 +8,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
-export async function POST(req : any){
+export async function POST(req : NextRequest){
     try {
         const {publicId} = await req.json();
         console.log("Public ID:", publicId);

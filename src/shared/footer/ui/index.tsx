@@ -1,5 +1,6 @@
 import styles from "./footer.module.scss";
 import Image from "next/image";
+import Link from "next/link";
 export const Footer = () => {
   return (
     <section className={`${styles.footer}`}>
@@ -15,22 +16,22 @@ export const Footer = () => {
               <h6 className={`${styles.header_title}`}>Shop</h6>
               <ul className={`${styles.list_menu} content-center` }>
                 <li className={`${styles.list_item}`}>
-                  <a href="">Hot deals</a>
+                  <Link href="#">Hot deals</Link>
                 </li>
                 <li className={`${styles.list_item}`}>
-                  <a href="">Categories</a>
-                </li>
-
-                <li className={`${styles.list_item}`}>
-                  <a href="">Brands</a>
+                  <Link href="#">Categories</Link>
                 </li>
 
                 <li className={`${styles.list_item}`}>
-                  <a href="">Rebates</a>
+                  <Link href="#">Brands</Link>
                 </li>
 
                 <li className={`${styles.list_item}`}>
-                  <a href="">Weekly deals</a>
+                  <Link href="#">Rebates</Link>
+                </li>
+
+                <li className={`${styles.list_item}`}>
+                  <Link href="#">Weekly deals</Link>
                 </li>
               </ul>
             </div>
@@ -39,22 +40,22 @@ export const Footer = () => {
               <h6 className={`${styles.header_title}`}>Need help?</h6>
               <ul className={`${styles.list_menu} content-center`}>
                 <li className={`${styles.list_item}`}>
-                  <a href="">Contact</a>
+                  <Link href="#">Contact</Link>
                 </li>
                 <li className={`${styles.list_item}`}>
-                  <a href="">Order tracking</a>
-                </li>
-
-                <li className={`${styles.list_item}`}>
-                  <a href="">FAQs</a>
+                  <Link href="#">Order tracking</Link>
                 </li>
 
                 <li className={`${styles.list_item}`}>
-                  <a href="">Return policy</a>
+                  <Link href="#">FAQs</Link>
                 </li>
 
                 <li className={`${styles.list_item}`}>
-                  <a href="">Privacy policy</a>
+                  <Link href="#">Return policy</Link>
+                </li>
+
+                <li className={`${styles.list_item}`}>
+                  <Link href="#">Privacy policy</Link>
                 </li>
               </ul>
             </div>
@@ -63,14 +64,14 @@ export const Footer = () => {
               <h6 className={`${styles.header_title}`}>Contact</h6>
               <ul className={`${styles.list_menu}  content-center`}>
                 <li className={`${styles.list_item}`}>
-                  <a href="">356 Cach Mang Thang 8, HCM city</a>
+                  <Link href="#">356 Cach Mang Thang 8, HCM city</Link>
                 </li>
                 <li className={`${styles.list_item}`}>
-                  <a href="">tysonNg@gmail.com</a>
+                  <Link href="#">tysonNg@gmail.com</Link>
                 </li>
 
                 <li className={`${styles.list_item}`}>
-                  <a href="">929-242-6868</a>
+                  <Link href="#">929-242-6868</Link>
                 </li>
               </ul>
             </div>

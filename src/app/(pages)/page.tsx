@@ -10,12 +10,14 @@ import {
   faCommentDots,
   faRotateLeft,
   faCreditCard,
+  IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 
-//get Data
+
 import { getProductByCategory, getProductsHotDeals } from "@/features/products/data/data";
 import { CartTab } from "@/features/cart/components/cartTab";
 import Image from "next/image";
+import Link from "next/link";
 
 
 
@@ -38,7 +40,7 @@ export default async function Home() {
   };
 
   type Services = {
-    icon: any;
+    icon: IconDefinition;
     name: string;
     text: string;
   };
@@ -219,13 +221,13 @@ export default async function Home() {
                         key={categoriesProduct.indexOf(product)}
                         className={`${styles.elementor_elenment} col-span-3 text-center bg-white py-10`}
                       >
-                        <a href={product.link}>
+                        <Link href={product.link}>
                           <img src={product.url} alt={product.name} />
                           <div className="flex flex-col">
                             <p className="font-bold text-lg">{product.name}</p>
                             <span>see more</span>
                           </div>
-                        </a>
+                        </Link>
                       </li>
                     );
                   })}
@@ -240,9 +242,9 @@ export default async function Home() {
             {bodyBanner.map((banner) => {
               return (
                 <div key={bodyBanner.indexOf(banner)} className="col-span-6">
-                  <a href="#">
+                  <Link href="#">
                     <img src={banner.url} alt={banner.name} />
-                  </a>
+                  </Link>
                 </div>
               );
             })}
@@ -254,9 +256,9 @@ export default async function Home() {
             className={`${styles.hotdeal_products_container} shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
           >
             <div className={`${styles.hotdeal_title}`}>
-              Today's best deal
+              Today&apos;s best deal
               <span className={`${styles.seemore} `}>
-                <a href="#" >see more</a>
+                <Link href="#" >see more</Link>
               </span>
             </div>
             <ProductGrid products={productsHotDeal} numOfProduct={6}  cartRem = {5}/>
@@ -276,7 +278,7 @@ export default async function Home() {
                     <div className={`${styles.element_image}`}>
                       <Image className={`${styles.image}`} alt={element.name} src={element.image} width={200} height={200} />
                     </div>
-                    <a className="text-[#1a5bd5] font-bold text-sm" href="/" >Shop now</a>
+                    <Link className="text-[#1a5bd5] font-bold text-sm" href="#" >Shop now</Link>
                   </li>
                 );
               })}
@@ -291,7 +293,7 @@ export default async function Home() {
             <div className={`${styles.electronics_title} text-[1.2rem] font-bold p-[1rem] `}>
               Electronics
               <span className={`${styles.seemore} `}>
-                <a href="/products?category=electronics&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</a>
+                <Link href="/products?category=electronics&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</Link>
               </span>
             </div>
             <ProductGrid products={productsElectronics} numOfProduct={4} cartRem = {1}/>
@@ -304,8 +306,8 @@ export default async function Home() {
           >
             <div className={`text-[1.2rem] font-bold p-[1rem] `}>
               PC&Laptop
-              <span className={``}>
-                <a href="/products?category=laptop&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</a>
+              <span >
+                <Link href="/products?category=laptop&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</Link>
               </span>
             </div>
             <ProductGrid products={productsLaptop} numOfProduct={4} cartRem = {1}/>
@@ -324,8 +326,8 @@ export default async function Home() {
           >
             <div className={`text-[1.2rem] font-bold p-[1rem] `}>
               Gadgets
-              <span className={``}>
-                <a href="/products?category=gadget&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</a>
+              <span >
+                <Link href="/products?category=gadget&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</Link>
               </span>
             </div>
             <ProductGrid products={productsGadget} numOfProduct={4} cartRem = {1}/>
@@ -338,8 +340,8 @@ export default async function Home() {
           >
             <div className={`text-[1.2rem] font-bold p-[1rem] `}>
               Kitchen appliances
-              <span className={``}>
-                <a href="/products?category=kitchenAppliances&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</a>
+              <span >
+                <Link href="/products?category=kitchenAppliances&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</Link>
               </span>
             </div>
             <ProductGrid products={productsKitchenAppliances} numOfProduct={4} cartRem = {1}/>
@@ -350,10 +352,10 @@ export default async function Home() {
           <div className="w-[1200px] mx-auto mt-[40px] grid grid-cols-6">
               <div className="col-span-3 bg-white">
                 <div className="flex flex-col h-full w-3/4 item-center gap-5 mt-10 ml-10">
-                  <h1 className="text-sm text-[#9ca7ab]">Brand's deal</h1>
+                  <h1 className="text-sm text-[#9ca7ab]">Brand&apos;s deal</h1>
                   <p className="text-2xl font-bold">Save up to $200 on select Samsung washing machine</p>
                   <p className="text-sm">Tortor purus et quis aenean tempus tellus fames.</p>
-                  <a href="#" className="text-[#0573f0] font-bold text-sm">Shop now</a>
+                  <Link href="#" className="text-[#0573f0] font-bold text-sm">Shop now</Link>
                 </div>
               </div>
               <div className="col-span-3"> 

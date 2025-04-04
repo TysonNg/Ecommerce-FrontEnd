@@ -1,12 +1,19 @@
  'server-only'
 import dotenv from "dotenv";
-import { GetStaticProps, GetServerSideProps } from "next";
-import { notFound } from "next/navigation";
 dotenv.config();
 
 const apiKey: string = `${process.env.API_KEY}`;
 const rootUrl: string = 'http://localhost:3056/v1/api/product'
 
+
+interface ItemRelateCategory{
+  _id: string;
+  product_name: string;
+  product_prevPrice: string;
+  product_shop: string;
+  product_slug: string;
+  product_thumb: string;
+}
 
 //get Product Hotdeals
 export const  getProductsHotDeals = async() => {
@@ -25,8 +32,9 @@ export const  getProductsHotDeals = async() => {
 }
 
 
-//get Product Detail
-export const getProductDetail : GetStaticProps = async(productId) => {
+// get Product Detail
+export const getProductDetail=  async(productId : string) => {
+  
   const res = await fetch(`${rootUrl}/${productId}`,{
     method: "GET",
     headers:{
@@ -35,12 +43,9 @@ export const getProductDetail : GetStaticProps = async(productId) => {
     next:{revalidate:600,tags: ['detailProduct']}
   })
   if (!res.ok) throw new Error("Fail to fetch Data getProductDetail");
-  const {metadata} = await res.json()
-  return {
-    props: {data: metadata},
-    revalidate: 10
-  }  
-  // return data.metadata
+  const {metadata}  = await res.json()
+  return metadata
+
 }
 
 
@@ -55,7 +60,8 @@ export async function getRelatedProductByCategory(category: string, productId: s
   })
   if (!res) throw new Error("Fail to fetch Data getProductByCategory");
   const response = await res.json()
-  const data = response.metadata.filter((item:any) => item._id !== productId)
+  
+  const data = response.metadata.filter((item:ItemRelateCategory) => item._id !== productId)
   return data
 }
 
@@ -75,7 +81,7 @@ export const getProductByCategory = async(category: string,limit: number) => {
 
 
 //get All Products
-export async function getAllProducts(limit:Number,category: any, apiKey: string, page: string) {
+export async function getAllProducts(limit:number,category: string, apiKey: string, page: string) {
   
   const res = await fetch(`${rootUrl}${category?`/categories?category=${category}&&`:"?"}limit=${limit}&&page=${page}`,{
     method: "GET",

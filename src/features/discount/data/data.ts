@@ -1,5 +1,4 @@
 import api from "@/app/protected/protected";
-import Cookies from "js-cookie";
 
 
 

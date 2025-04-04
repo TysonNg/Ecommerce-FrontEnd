@@ -58,7 +58,7 @@ api.interceptors.response.use((res) => {
             Cookies.remove('accessToken')
             Cookies.remove('refreshToken')
 
-            return Promise.reject(err)
+            return Promise.reject(error)
         }
     }
     

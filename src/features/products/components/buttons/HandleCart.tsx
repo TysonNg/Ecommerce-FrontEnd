@@ -6,8 +6,27 @@ import Cookies from "js-cookie";
 import { updateQuantityCart } from "@/features/cart/actions/updateQuantityCart";
 import { getCartById } from "@/features/cart/data/data";
 
-const HandleCart = (props: any) => {
+interface HandleCartProps {
+    name: string;
+    productId: string;
+    shopId: string;
+    price: number;
+    imgThumb: string;
+    cartTab: boolean;
+    productQuantityCartTab: number;
+    productIdCartTab: string;
+    shopIdCartTab: string;
+    slug: string;
+    onHandleChangePrice: (newQuantity: number) => void
+
+}
+type PartialProps = Partial<HandleCartProps>
+
+
+const HandleCart = (props: PartialProps) => {
     const {name,productId, shopId,price,imgThumb,cartTab, productQuantityCartTab, productIdCartTab, shopIdCartTab, onHandleChangePrice, slug} = props
+
+
     const [quantity, setQuantity] = useState(1);
     const [quantityCartTab, setQuantityCartTab] = useState(productQuantityCartTab)
     
@@ -34,13 +53,13 @@ const HandleCart = (props: any) => {
         const res = await addToCart({
             userId: cartUserId? cartUserId:tempId??"",
             product:{
-            name,
-            price,
-            productId,
-            quantity,
-            shopId,
-            imgThumb,
-            slug
+            name: name??"",
+            price: price?? 1,
+            productId: productId?? "",
+            quantity: quantity??1,
+            shopId: shopId??"",
+            imgThumb: imgThumb??"",
+            slug: slug??""
 
         }})
         localStorage.setItem('cartQuantity',res.metadata.cart_products.length)
@@ -71,7 +90,7 @@ const HandleCart = (props: any) => {
                 item_products:[{
                     quantity: cartTab? newQuantity: quantity,
                     old_quantity: product[0].quantity,
-                    productId: cartTab? productIdCartTab : productId
+                    productId: cartTab? productIdCartTab??"" : productId??""
                 }] 
             }]
         })
@@ -82,13 +101,15 @@ const HandleCart = (props: any) => {
             decreaseQuantity()
         }
         
-        if(quantityCartTab > 1)
+        if( (quantityCartTab??0) > 1)
         {
             setQuantityCartTab((prev:any) =>prev - 1)
-            const newQuantity = quantityCartTab - 1
+            const newQuantity = (quantityCartTab??1) - 1
             if(cartTab){
-                onHandleChangePrice(newQuantity)
+                onHandleChangePrice?.(newQuantity)
             }
+            console.log(newQuantity);
+            
             await handleUpdateCart(newQuantity)
         }
         
@@ -99,9 +120,11 @@ const HandleCart = (props: any) => {
             inscreaseQuantity()
         }
         setQuantityCartTab((prev:any) => prev + 1)
-        const newQuantity = quantityCartTab + 1
+        const newQuantity = (quantityCartTab??1) + 1
+        console.log(newQuantity);
+        
         if(cartTab){
-            onHandleChangePrice(newQuantity)
+            onHandleChangePrice?.(newQuantity)
         }
         await handleUpdateCart(newQuantity)
     }

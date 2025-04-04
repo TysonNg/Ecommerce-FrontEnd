@@ -3,12 +3,10 @@ import "./globals.scss";
 import { Header } from "../shared/header";
 import { Footer } from "@/shared/footer";
 import "../lib/fontawersome";
-import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import { InitGuestId } from "@/features/users/actions/initGuestId";
 import { GlobalProvider } from "./context/GloBalProvider";
 import LoginModal from "@/features/users/compornents/modalToAccess/LoginModal";
-config.autoAddCss = false;
+import FontAwesomeConfig from "../lib/fontawersome";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +30,7 @@ export default function RootLayout({
       <GlobalProvider>
         <div className="site">
           <InitGuestId />
+          <FontAwesomeConfig />
           <Header />
           {children}
           <LoginModal />

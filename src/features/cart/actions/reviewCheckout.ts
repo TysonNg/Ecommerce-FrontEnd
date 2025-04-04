@@ -7,7 +7,7 @@ interface Checkout {
     cartId: string;
     shop_order_ids:{
             shopId: string;
-            shop_discount: string[];
+            shop_discount: CodeDiscount[];
             item_products:
                 {
                     price: number;
@@ -15,6 +15,12 @@ interface Checkout {
                     productId: string
                 }[]
             }[]
+}
+
+interface CodeDiscount{
+    codeId: string;
+    shopId: string;
+    userId: string
 }
 export async function checkoutReview(payload:Checkout) {
     try {

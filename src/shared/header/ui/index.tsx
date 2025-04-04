@@ -6,18 +6,18 @@ import { RightTopHeader } from "./RightTopHeader";
 import { Supports } from "./support";
 import styles from "./ui.module.scss";
 import { useEffect, useState } from "react";
-export const Header = () => {
-  const [quantity, setQuantity] = useState<number>(()  => {
-    if(typeof window !== 'undefined'){
-      const value = localStorage.getItem("cartQuantity");
-      return value? Number(localStorage.getItem("cartQuantity")) : 0;
 
-    }
-    return 0
-  });
+
+export const Header = () => {
+  const [quantity, setQuantity] = useState<number>(0);
  
   useEffect(() =>{
 
+    if (typeof window !== 'undefined') {
+      const value = localStorage.getItem("cartQuantity");
+      setQuantity(value ? Number(value) : 0);
+    }
+    
     const handleStorageChange = () => {
       
       const updatedQuantity = Number(localStorage.getItem('cartQuantity') || 0)

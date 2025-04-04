@@ -52,8 +52,8 @@ const OrderUserPage = () => {
         const getOrders = async() => {
             const res = await getAllOrders()
             setOrder(res)
-
-            setInfor(res.map((item :any) => ({
+            
+            setInfor(res.map((item :GetOrder) => ({
                 name: item.order_shipping.name,
                 street: item.order_shipping.street,
                 city: item.order_shipping.city,
@@ -68,9 +68,6 @@ const OrderUserPage = () => {
     },[])
 
    
-    console.log(order);
-    
-    console.log('infor',infor);
     
 
     return (
