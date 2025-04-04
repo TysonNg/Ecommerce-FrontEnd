@@ -34,7 +34,7 @@ interface ProductOfCart {
 
 const HandleCart = (props: PartialProps) => {
     const {name,productId, shopId,price,imgThumb,cartTab, productQuantityCartTab, productIdCartTab, shopIdCartTab, onHandleChangePrice, slug} = props
-
+    const tempId = Cookies.get('tempId')
 
     const [quantity, setQuantity] = useState(1);
     const [quantityCartTab, setQuantityCartTab] = useState<number|undefined>(productQuantityCartTab)
@@ -49,7 +49,6 @@ const HandleCart = (props: PartialProps) => {
 
     const getProductOfCart = async() => {
         const res = await getCartById()
-        console.log('get', res);
          
         const result = res.metadata.cart_products.filter((item : ProductOfCart) => item.productId === `${cartTab? productIdCartTab : productId}`)
         return result

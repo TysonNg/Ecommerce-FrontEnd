@@ -17,7 +17,7 @@ interface ItemRelateCategory{
 
 //get Product Hotdeals
 export const  getProductsHotDeals = async() => {
-    const res = await fetch(`${rootUrl}/hotDeals`,{
+    const res = await fetch(`${rootUrl}/product/hotDeals`,{
         method: "GET",
         headers:{
           "x-api-key": apiKey 
@@ -35,7 +35,7 @@ export const  getProductsHotDeals = async() => {
 // get Product Detail
 export const getProductDetail=  async(productId : string) => {
   
-  const res = await fetch(`${rootUrl}/${productId}`,{
+  const res = await fetch(`${rootUrl}/product/${productId}`,{
     method: "GET",
     headers:{
       "x-api-key": apiKey 
@@ -51,7 +51,7 @@ export const getProductDetail=  async(productId : string) => {
 
 //get RelatedProduct
 export async function getRelatedProductByCategory(category: string, productId: string, limit = 6 ) {
-  const res = await fetch(`${rootUrl}/categories?category=${category}&&limit=${limit}`,{
+  const res = await fetch(`${rootUrl}/product/categories?category=${category}&&limit=${limit}`,{
     method: "GET",
     headers:{
       "x-api-key": apiKey 
@@ -68,7 +68,7 @@ export async function getRelatedProductByCategory(category: string, productId: s
 
 //get Product By Category
 export const getProductByCategory = async(category: string,limit: number) => {
-  const res = await fetch(`${rootUrl}/categories?category=${category}&&limit=${limit}`,{
+  const res = await fetch(`${rootUrl}/product/categories?category=${category}&&limit=${limit}`,{
     method: "GET",
     headers:{
       "x-api-key": apiKey 
@@ -83,7 +83,7 @@ export const getProductByCategory = async(category: string,limit: number) => {
 //get All Products
 export async function getAllProducts(limit:number,category: string, apiKey: string, page: string) {
   
-  const res = await fetch(`${rootUrl}${category?`/categories?category=${category}&&`:"?"}limit=${limit}&&page=${page}`,{
+  const res = await fetch(`${rootUrl}/product${category?`/categories?category=${category}&&`:"?"}limit=${limit}&&page=${page}`,{
     method: "GET",
     headers:{
       "x-api-key": apiKey
@@ -98,7 +98,7 @@ export async function getAllProducts(limit:number,category: string, apiKey: stri
 
 //search product
 export async function searchProducts(params: string, apiKey: string){
-  const res = await fetch(`${rootUrl}/search/${params}`,{
+  const res = await fetch(`${rootUrl}/product/search/${params}`,{
     method: "GET",
     headers:{
       "x-api-key": apiKey 
