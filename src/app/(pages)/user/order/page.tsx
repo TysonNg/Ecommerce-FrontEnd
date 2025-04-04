@@ -107,10 +107,18 @@ const OrderUserPage = () => {
                                 <tbody className="space-y-4 relative">
                                     {order?.map((item,i) => {
                                         return(
-                                            <tr key={i} className="">
+                                            <tr key={item._id} className="">
                                                 <td className="p-2 font-bold text-center cursor-pointer hover:underline hover:underline-offset-2 hover:text-[#0573f0] transition-color duration-300">{item.order_trackingNumber}</td>
                                                 <td className="p-2 text-center">{new Date(item.createdAt).toLocaleString()}</td>
-                                                <td className="p-2 relative text-center">{item.order_shipping.name} <span className="cursor-pointer ml-1"><FontAwesomeIcon icon={faCircleInfo} onMouseEnter={() => {setIsHovered(true), setHoverIndex(i)}} onMouseLeave={() => {setIsHovered(false),setHoverIndex(-1)}} /></span>
+                                                <td className="p-2 relative text-center">{item.order_shipping.name} <span className="cursor-pointer ml-1"><FontAwesomeIcon icon={faCircleInfo} onMouseEnter={() => {
+                                                    setIsHovered(true); 
+                                                    setHoverIndex(i);}}
+
+                                                    onMouseLeave={() => {
+                                                    setIsHovered(false);
+                                                    setHoverIndex(-1);
+                                                    }
+                                                } /></span>
                                                 <span className={`${isHovered && (hoverIndex===i) ? '': 'hidden'} absolute top-[-130px] -right-30 rounded-lg bg-white border-1 p-2`}>
                                                    <p className="font-bold text-xl text-left text-black">Information</p> 
                                                     <div className="information-container text-left">

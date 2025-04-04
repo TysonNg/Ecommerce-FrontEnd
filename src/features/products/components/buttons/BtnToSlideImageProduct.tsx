@@ -23,7 +23,7 @@ interface ProductInfo {
 
 
 export function BtnToSlideImagesProduct ( {productDetails} : {productDetails : ProductInfo}) {
-    const showcaseRef: React.RefObject<any> = useRef<any>(null)
+    const showcaseRef: React.RefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null)
     const [imgId, setImgId] = useState(1)
   
     const handleImageClick = (id: number) => {
@@ -32,8 +32,12 @@ export function BtnToSlideImagesProduct ( {productDetails} : {productDetails : P
 
     const slideImage = () => {
         if(showcaseRef.current){
-            const displayWidth = showcaseRef.current.querySelector('img').clientWidth
-            showcaseRef.current.style.transform = `translateX(${ - (imgId - 1) * displayWidth}px)`
+            const imageElement = showcaseRef.current.querySelector('img')
+            if(imageElement){
+              const displayWidth = imageElement.clientWidth
+              showcaseRef.current.style.transform = `translateX(${ - (imgId - 1) * displayWidth}px)`
+            }
+           
         }     
     }
     

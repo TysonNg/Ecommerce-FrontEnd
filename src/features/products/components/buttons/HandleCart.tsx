@@ -22,13 +22,22 @@ interface HandleCartProps {
 }
 type PartialProps = Partial<HandleCartProps>
 
+interface ProductOfCart {
+    productId: string,
+    shopId: string,
+    quantity: number,
+    imgThumb: string,
+    name: string,
+    price: number,
+    slug: string
+}
 
 const HandleCart = (props: PartialProps) => {
     const {name,productId, shopId,price,imgThumb,cartTab, productQuantityCartTab, productIdCartTab, shopIdCartTab, onHandleChangePrice, slug} = props
 
 
     const [quantity, setQuantity] = useState(1);
-    const [quantityCartTab, setQuantityCartTab] = useState(productQuantityCartTab)
+    const [quantityCartTab, setQuantityCartTab] = useState<number|undefined>(productQuantityCartTab)
     
     const inscreaseQuantity = () => {
         setQuantity((prev) => prev + 1 )
@@ -39,8 +48,10 @@ const HandleCart = (props: PartialProps) => {
     }
 
     const getProductOfCart = async() => {
-        const res = await getCartById()        
-        const result = res.metadata.cart_products.filter((item : any) => item.productId === `${cartTab? productIdCartTab : productId}`)
+        const res = await getCartById()
+        console.log('get', res);
+         
+        const result = res.metadata.cart_products.filter((item : ProductOfCart) => item.productId === `${cartTab? productIdCartTab : productId}`)
         return result
     }
 
@@ -103,7 +114,7 @@ const HandleCart = (props: PartialProps) => {
         
         if( (quantityCartTab??0) > 1)
         {
-            setQuantityCartTab((prev:any) =>prev - 1)
+            setQuantityCartTab((prev:number|undefined) => (prev??1) - 1)
             const newQuantity = (quantityCartTab??1) - 1
             if(cartTab){
                 onHandleChangePrice?.(newQuantity)
@@ -119,7 +130,7 @@ const HandleCart = (props: PartialProps) => {
         if(!cartTab){
             inscreaseQuantity()
         }
-        setQuantityCartTab((prev:any) => prev + 1)
+        setQuantityCartTab((prev: number|undefined) => (prev??1) + 1)
         const newQuantity = (quantityCartTab??1) + 1
         console.log(newQuantity);
         

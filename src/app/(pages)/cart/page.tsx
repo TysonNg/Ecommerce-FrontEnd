@@ -356,7 +356,7 @@ export default function CartPage() {
         })
     }
 
-    const removeDiscountFromProduct = async({productId, codeId, userId, shopId} : RemoveDiscountParams) => {
+    const removeDiscountFromProduct = async({productId, codeId, shopId} : RemoveDiscountParams) => {
         await cancelDiscount({codeId, userId: id??"" , shopId })
         
         setCheckout((prevCheckout: CheckoutRequest) => {

@@ -3,7 +3,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt, faCircleXmark, faGem, faHeadphones, faHouse, faImage, faKitchenSet, faLaptop, faShapes, faShirt, faTabletScreenButton } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import { CldUploadWidget, CloudinaryUploadWidgetInfo, CloudinaryUploadWidgetResults} from 'next-cloudinary';
+import { CldUploadWidget, CloudinaryUploadWidgetResults} from 'next-cloudinary';
 import { useEffect, useState } from "react";
 import {v4 as uuidv4} from 'uuid'
 import Cookies from "js-cookie";
@@ -100,9 +100,9 @@ const ProductPage = () => {
 
     const [product, setProduct] = useState<Product>(defaultProduct)
     const [imgThumb, setImgThumb] = useState<string>()
-    const [imgs, setImgs] = useState<Array<string>>([])
+    const [imgs, setImgs] = useState<string[]>([])
     const [publicIdThumb, setPublicIdThumb] = useState<string>("")
-    const [publicIdImage, setPublicIdImage] = useState<Array<string>>([])
+    const [publicIdImage, setPublicIdImage] = useState<string[]>([])
     const [selectItem, setSelectItem] = useState<number>(0)
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
     
@@ -190,12 +190,12 @@ const ProductPage = () => {
                 
             }
             
-            setPublicIdImage((prev) : any => {
+            setPublicIdImage((prev) : string[] => {
                 const updatedPublicIdImage = prev.filter(id => id !== publicIdImage[i])
                 localStorage.setItem('idImg', JSON.stringify(updatedPublicIdImage))
                 return updatedPublicIdImage
             })
-            setImgs((prev) :any => {
+            setImgs((prev) :string[] => {
                 const updatedImgs = prev.filter(url => url !== imgUrl)
                 localStorage.setItem('imgsUrl',JSON.stringify(updatedImgs))
                 setProduct((prev): Product => ({...prev,product_images: updatedImgs}))

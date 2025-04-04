@@ -50,7 +50,7 @@ const ListDiscountsOfProduct = (props:ListDiscountsOfProductProps) => {
                 <div className="absolute w-full overflow-hidden">
                     <div className={`${toggleDown?'translate-y-0':"-translate-y-100"} transition-transform duration-300 flex flex-row p-3
                      border-x-1 border-b text-center cursor-pointer bg-white justify-between hover:bg-[#264653] hover:text-white transition-color duration-300`}>
-                        Don't have discounts!!
+                        Don&apos;t have discounts!!
                     </div>
                 </div>
             )

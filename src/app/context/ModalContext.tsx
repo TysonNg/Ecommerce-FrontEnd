@@ -27,7 +27,6 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
     const openCartModal = () => setIsCartModalOpen(true)
     const closeCartModal = () => setIsCartModalOpen(false)
 
-    const noCartTab = () => setIsPageHaveCartTab(false)
 
     const openModal = () => {
       setIsModalOpen(true)
