@@ -73,6 +73,7 @@ export async function logIn(formLogin:LoginType){
         }
     } catch (error) {
         console.log('err Login',error)
+        throw error
     }
     
 }
