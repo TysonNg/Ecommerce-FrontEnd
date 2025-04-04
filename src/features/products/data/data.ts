@@ -5,8 +5,6 @@ dotenv.config();
 const apiKey: string = `${process.env.NEXT_PUBLIC_API_KEY}`;
 const rootUrl: string = `${process.env.NEXT_PUBLIC_ROOT_URL}`
 
-console.log('url', rootUrl);
-console.log('key', apiKey);
 
 interface ItemRelateCategory{
   _id: string;
