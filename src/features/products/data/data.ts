@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const apiKey: string = `${process.env.API_KEY}`;
-const rootUrl: string = 'http://localhost:3056/v1/api/product'
+const rootUrl: string = `${process.env.ROOT_URL}`
 
 
 interface ItemRelateCategory{
