@@ -27,13 +27,13 @@ interface ProductInfo {
   cartRem: number;
 }
 
-interface Params{
+type Params = Promise<{
   productId: string;
   slug: string;
-}
+}>
 
 const ProductDetail = async ({ params }: { params: Params }) => {
-  const { productId,slug } =  params 
+  const { productId, slug } =  await params 
 
   const productDetails : ProductInfo = await getProductDetail(productId)
   
@@ -98,7 +98,7 @@ const ProductDetail = async ({ params }: { params: Params }) => {
                 </ul> 
                   </li>
                   <li className={`${styles.cart}`}>
-                      <HandleCart name={productDetails.product_name} productId = {productDetails._id} shopId= {productDetails.product_shop} price={productDetails.product_price} imgThumb={productDetails.product_thumb} slug={productDetails.product_slug}/>
+                      <HandleCart name={productDetails.product_name} productId = {productDetails._id} shopId= {productDetails.product_shop} price={productDetails.product_price} imgThumb={productDetails.product_thumb} slug={slug}/>
                   </li>
                  
                   

@@ -65,14 +65,10 @@ interface Payment {
 }
 
 const CheckOutPage = () => {
+  
   const id: string | undefined = Cookies.get("_id");
   const cartUserId: string | undefined = Cookies.get(`cartId_${id}`);
-  const checkoutSession = sessionStorage.getItem(
-    `reviewCheckout_${cartUserId}`
-  );
-  const payloadCheckout: Checkout = checkoutSession
-    ? JSON.parse(checkoutSession)
-    : null;
+  
 
   const defaulUserAddress = {
     name: "name",
@@ -82,25 +78,43 @@ const CheckOutPage = () => {
     phone: 123,
   };
 
+  
+ 
+
   const [cart, setCart] = useState<Array<ProductsCart | undefined>>([]);
-  const [checkout] = useState<Checkout>(payloadCheckout ??
-     {
-      checkout_order: {
-        totalPrice: 0,
-        feeShip: 0,
-        totalDiscount: 0,
-        totalCheckout: 0,
-      },
-      shop_order_ids: [],
-      shop_order_ids_new: [],
-    }
-  );
+  const [checkout, setCheckout] = useState<Checkout|null>(null);
+
   const [userAddress, setUserAddress] =
     useState<UserAddress>(defaulUserAddress);
   const [payment, setPayment] = useState<Payment>({ method: "cash" });
   const [isOrdered, setIsOrdered] = useState<boolean>(false);
 
   useEffect(() => {
+
+    if(typeof window !== 'undefined'){
+      const checkoutSession = sessionStorage.getItem(
+        `reviewCheckout_${cartUserId}`
+      );
+      if(checkoutSession) {
+        const payloadCheckout: Checkout = checkoutSession
+        ? JSON.parse(checkoutSession)
+        : null;
+        setCheckout(payloadCheckout)
+      }else{
+        setCheckout({
+          checkout_order: {
+            totalPrice: 0,
+            feeShip: 0,
+            totalDiscount: 0,
+            totalCheckout: 0,
+          },
+          shop_order_ids: [],
+          shop_order_ids_new: [],
+        })
+      }
+    }
+    
+   
     const fetchCart = async () => {
       try {
         const res = await getCartById();
@@ -121,7 +135,7 @@ const CheckOutPage = () => {
       return;
     }
     console.log(checkout);
-    if (!checkout.shop_order_ids[0]) {
+    if (!checkout?.shop_order_ids[0]) {
       alert(`You don't have any product. Continue to shopping!`);
       return;
     }
@@ -137,7 +151,9 @@ const CheckOutPage = () => {
     });
     if(res) {
         setIsOrdered(true);
-        sessionStorage.removeItem(`reviewCheckout_${cartUserId}`);
+        if(typeof window !== 'undefined'){
+          sessionStorage.removeItem(`reviewCheckout_${cartUserId}`);
+        }
         localStorage.removeItem(`cartQuantity`)
     }
   
@@ -237,7 +253,7 @@ const CheckOutPage = () => {
               <span className="pr-2">
                 <FontAwesomeIcon icon={faLock} />
               </span>
-              Place Order ${checkout.checkout_order.totalCheckout}.00
+              Place Order ${checkout?.checkout_order.totalCheckout}.00
             </button>
           </div>
 
