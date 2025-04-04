@@ -27,13 +27,16 @@ interface ProductInfo {
   cartRem: number;
 }
 
+interface Params{
+  productId: string;
+  slug: string;
+}
 
-
-const ProductDetail = async ({ params }: { params: { productId: string } }) => {
-  const { productId } = await params
+const ProductDetail = async ({ params }: { params: Params }) => {
+  const { productId,slug } =  params 
 
   const productDetails : ProductInfo = await getProductDetail(productId)
-  console.log(productDetails);
+  
   
 
   
