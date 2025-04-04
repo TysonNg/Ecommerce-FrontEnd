@@ -9,7 +9,7 @@ dotenv.config()
 const id = Cookies.get('_id')
 
 const api = axios.create({
-    baseURL: `${process.env.ROOT_API}`,
+    baseURL: `${process.env.ROOT_URL}`,
     timeout: 10000,
     headers: {
         'Content-Type' : 'application/json',
