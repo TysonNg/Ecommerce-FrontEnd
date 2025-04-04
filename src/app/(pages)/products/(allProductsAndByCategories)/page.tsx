@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import dotenv from "dotenv";
 import { useEffect, useState } from 'react';
 import NotFoundProducts from '@/features/cart/components/not-found';
+import Link from 'next/link';
 dotenv.config();
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
@@ -63,11 +64,11 @@ const ProductsPage = () => {
             <div className='pagination-item flex flex-row justify-center'>
                 {paginations.map((page,i) => {
                     return(
-                        <a key={i} href={`/products${categoryParams? `?category=${categoryParams}&&page=${page}`:`?page=${page}`} `}>
+                        <Link key={i} href={`/products${categoryParams ? `?category=${categoryParams}&&page=${page}`:`?page=${page}`} `}>
                             <div  className='mx-2 border-1 p-2 text-sm cursor-pointer hover:text-white hover:bg-[#0573f0] transition-color duration-300'>
                                     {page} 
                             </div>
-                        </a>
+                        </Link>
                     )
                 })}
             </div>
