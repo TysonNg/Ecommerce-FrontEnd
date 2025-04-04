@@ -63,7 +63,7 @@ const ProductsPage = () => {
             <div className='pagination-item flex flex-row justify-center'>
                 {paginations.map((page,i) => {
                     return(
-                        <a key={i} href={`http://localhost:3000/products${categoryParams? `?category=${categoryParams}&&page=${page}`:`?page=${page}`} `}>
+                        <a key={i} href={`${process.env.NEXT_PUBLIC_ROOT_URL}/products${categoryParams? `?category=${categoryParams}&&page=${page}`:`?page=${page}`} `}>
                             <div  className='mx-2 border-1 p-2 text-sm cursor-pointer hover:text-white hover:bg-[#0573f0] transition-color duration-300'>
                                     {page} 
                             </div>
