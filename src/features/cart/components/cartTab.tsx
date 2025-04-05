@@ -56,6 +56,7 @@ export function CartTab() {
 
   useEffect(() => {
     const fetchCart = async () => {
+      
       try {
         const res = await getCartById();
         setCart(res.metadata.cart_products);
@@ -65,10 +66,13 @@ export function CartTab() {
         console.log("err: getCart ", error);
       }
     };
-
-    fetchCart();
-    window.addEventListener("cartQuantityStorage", fetchCart);
-    return () => window.removeEventListener("cartQuantityStorage", fetchCart);
+      if(isCartModalOpen){
+        fetchCart();
+        window.addEventListener("cartQuantityStorage", fetchCart);
+        return () => window.removeEventListener("cartQuantityStorage", fetchCart);
+      }
+     
+    
   }, []);
 
   useEffect(() => {
@@ -140,7 +144,10 @@ export function CartTab() {
         console.log("checkout", error);
       }
     };
-    fetchCheckout();
+
+    if(cart.length > 0){
+      fetchCheckout();
+    }
   }, [cart, isCartModalOpen]);
 
   const handleChangePrice = (newQuantity: number, productId: string) => {

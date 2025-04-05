@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { useEffect, useState } from 'react';
 import NotFoundProducts from '@/features/cart/components/not-found';
 import Link from 'next/link';
+import Loading from '@/app/loading';
 dotenv.config();
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
@@ -19,7 +20,7 @@ const ProductsPage = () => {
     const [allResults, setAllResults] = useState([])
     const [paginations, setPaginations] = useState<number[]>([])
     const [categoryParams, setCategoryParams] = useState<string>("")
-
+    const [isLoading, setIsLoading] = useState<boolean>(true)
     useEffect(() => {
        
             const category :string = searchParams.get('category')??""
@@ -32,7 +33,8 @@ const ProductsPage = () => {
                     const allResultsData = await getAllProducts(0,category,apiKey,page)
                     if(!res) throw new Error("Error fetchAllProducts")
                     setProducts(res)
-                    setAllResults(allResultsData)                
+                    setAllResults(allResultsData)               
+                    setIsLoading(false) 
                     const pages = Math.ceil(allResultsData.length / pageSize)
                     const arrayPages = []
 
@@ -51,8 +53,12 @@ const ProductsPage = () => {
 
     },[searchParams.get('category'),searchParams.get('page')])
     
-    
-    if(allResults.length){
+    if (isLoading) {
+        return(
+            <Loading />
+        )
+    }
+    if(allResults.length && !isLoading){
         return(
         <div className="products_container">
                 <div className='text-sm flex flex-row justify-between text-[#48515b] mb-10'>

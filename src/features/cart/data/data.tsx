@@ -12,7 +12,6 @@ export async function getCartById(){
 
     const cartUserId = Cookies.get(`cartId_${userId}`)
     
-    
     try {
         const res = await api.get(`/cart/?userId=${cartUserId??`${tempId}`}`)   
            
