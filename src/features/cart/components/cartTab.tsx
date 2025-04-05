@@ -68,12 +68,14 @@ export function CartTab() {
     };
       if(isCartModalOpen){
         fetchCart();
+        
         window.addEventListener("cartQuantityStorage", fetchCart);
         return () => window.removeEventListener("cartQuantityStorage", fetchCart);
+        
       }
-     
+      
     
-  }, []);
+  }, [isCartModalOpen]);
 
   useEffect(() => {
     if (cart.length > 0) {

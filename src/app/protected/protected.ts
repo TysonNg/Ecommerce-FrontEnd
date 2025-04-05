@@ -31,7 +31,6 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use((res) => {
     return res   
 }, async(err) => {
-    alert(err.response.data.message)
     console.log(err.response.data.message);
     const originalRequest = err.config
     
