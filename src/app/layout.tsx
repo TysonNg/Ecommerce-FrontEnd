@@ -6,7 +6,6 @@ import "../lib/fontawersome";
 import { InitGuestId } from "@/features/users/actions/initGuestId";
 import { GlobalProvider } from "./context/GloBalProvider";
 import LoginModal from "@/features/users/compornents/modalToAccess/LoginModal";
-import FontAwesomeConfig from "../lib/fontawersome";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +29,6 @@ export default function RootLayout({
       <GlobalProvider>
         <div className="site">
           <InitGuestId />
-          <FontAwesomeConfig />
           <Header />
           {children}
           <LoginModal />
