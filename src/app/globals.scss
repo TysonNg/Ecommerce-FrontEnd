@@ -6,7 +6,6 @@
 :root {
   --background: #f8fbfc;
   --foreground: #171717;
-  font-size: 16px;
 }
 
 @theme inline {
@@ -16,12 +15,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-// @media (prefers-color-scheme: dark) {
-//   :root {
-//     --background: #0a0a0a;
-//     --foreground: #ededed;
-//   }
-// }
+
 
 body {
   background: var(--background);

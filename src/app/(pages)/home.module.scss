@@ -30,12 +30,9 @@
 
 .body_top {
     margin-top: 20px;
-    padding: 0px 40px 0px 40px;
 
     .body__top_container {
-        width: 1200px;
-        margin: 0 auto;
-        position: relative;
+       
 
         .services__section {
             border-style: solid;
@@ -66,22 +63,13 @@
 
 .banner {
     margin-top: 40px;
-    padding: 0px 40px 0px 40px;
-
-    .banner_container {
-        width: 1200px;
-        margin: 0 auto;
-    }
 }
 
 .hotdeal_products {
     margin-top: 40px;
-    padding: 0px 40px 0px 40px;
     background-color: #f8fbfc;
 
     .hotdeal_products_container {
-        width: 1200px;
-        margin: 0 auto;
         border-style: solid;
         border-width: 1px 1px 1px 1px;
         border-color: #dce3e5;
@@ -101,11 +89,8 @@
 
 .elements{
     margin-top: 40px;
-    padding: 0px 40px 0px 40px;
     background-color: #f8fbfc;
     .elements_container{
-        width: 1200px;
-        margin: 0 auto;
         .headphone{
             margin-right: 16px;
             background-color: #f2f2f6;
@@ -127,17 +112,31 @@
             
             .element_image{
                 position: absolute;
-                width: auto;
-                height: 256px;
+                width: auto;    
                 top: 25px;
                 left: 215px;
-                .image{
+                img{
                     width: 100%;
-                    height: 100%;
+                    height: auto;
                 }
             }
             
 
         }
     }
+}
+
+@media(max-width: 1000px){
+    .elements{
+        .elements_container{
+            li{
+                .element_image{
+                    img{
+                        height: 100px;
+                    }
+                }
+            }
+        }
+    }
+    
 }

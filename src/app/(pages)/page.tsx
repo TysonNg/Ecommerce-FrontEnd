@@ -188,18 +188,18 @@ export default async function Home() {
    
   return (
     <>
-      <div className="container-fluid bg-[#f8fbfc]">
+      <div className="bg-[#f8fbfc]">
         <section className="banner">
-          <div className="w-full h-[650px] mx-auto my-0 relative">
-            <Image className=" object-cover" src="/banner.jpg" fill alt="banner"/>
+          <div className="xl:w-full lg:w-[1024px] md:w-[768px] sm:w-[640px] h-[650px] mx-auto my-0 relative">
+            <Image className="object-cover " src="/banner.jpg" fill alt="banner"/>
           </div>
         </section>
 
         <section className={`${styles.body_top}`}>
-          <div className={`${styles.body__top_container}`}>
+          <div className={`${styles.body__top_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px]  mx-auto my-0 relative`}>
             <section className={`${styles.services__section} bg-white`}>
               <div
-                className={`${styles.services__section_container} flex flex-row gap-15 `}
+                className={`${styles.services__section_container} flex xl:flex-row flex-col gap-15 `}
               >
                 {services.map((service) => {
                   return (
@@ -226,7 +226,7 @@ export default async function Home() {
             </section>
             <section className={`${styles.categoriesProduct__section}`}>
               <div className={`categoriesProduct__section_container bg-white`}>
-                <ul className={`elementor_col grid grid-cols-12 `}>
+                <ul className={`elementor_col grid xl:grid-cols-12 xl:mt-0 grid-cols-9 mt-[200px]`}>
                   {categoriesProduct.map((product) => {
                     return (
                       <li
@@ -236,7 +236,7 @@ export default async function Home() {
                         <Link href={product.link}>
                           <Image src={product.url} width={300} height={200} alt={product.name} />
                           <div className="flex flex-col">
-                            <p className="font-bold text-lg">{product.name}</p>
+                            <p className="text-lg font-bold">{product.name}</p>
                             <span>see more</span>
                           </div>
                         </Link>
@@ -250,10 +250,10 @@ export default async function Home() {
         </section>
 
         <section className={`${styles.banner}`}>
-          <div className={`${styles.banner_container} grid grid-cols-12 gap-10 `}>
+          <div className={`${styles.banner_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto my-0 grid grid-cols-12 gap-10 `}>
             {bodyBanner.map((banner) => {
               return (
-                <div key={bodyBanner.indexOf(banner)} className="col-span-6  w-full h-auto">
+                <div key={bodyBanner.indexOf(banner)} className="w-full h-auto col-span-6">
                   <Link href="#">
                     <Image src={banner.url} width={580} height={200} alt={banner.name} />
                   </Link>
@@ -265,7 +265,7 @@ export default async function Home() {
 
         <section className={`${styles.hotdeal_products}`}>
           <div
-            className={`${styles.hotdeal_products_container} shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
+            className={`${styles.hotdeal_products_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto my-0  shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
           >
             <div className={`${styles.hotdeal_title}`}>
               Today&apos;s best deal
@@ -273,13 +273,13 @@ export default async function Home() {
                 <Link href="#" >see more</Link>
               </span>
             </div>
-            <ProductGrid products={productsHotDeal} numOfProduct={6}  cartRem = {5}/>
+            <ProductGrid products={productsHotDeal} numOfProduct={6}  cartRem = {1}/>
           </div>
         </section>
 
         <section className={`${styles.elements} `}>
-          <div className={`${styles.elements_container}`}>
-            <ul className="grid grid-cols-12 min-h-[304px]">
+          <div className={`${styles.elements_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto my-0`}>
+            <ul className="grid xl:grid-cols-12 lg:grid-cols-8 sm: grid-cols-4 min-h-[304px]">
               {elements.map((element) => {
                 return (
                   <li key={elements.indexOf(element)} className={`${styles[element.name]} flex flex-col gap-2 col-span-4`}>
@@ -288,7 +288,7 @@ export default async function Home() {
                       {element.decriptions}
                     </p>
                     <div className={`${styles.element_image}`}>
-                      <Image className={`${styles.image}`} alt={element.name} src={element.image} width={200} height={200} />
+                      <img className={`${styles.image} `} alt={element.name} src={element.image} />
                     </div>
                     <Link className="text-[#1a5bd5] font-bold text-sm" href="#" >Shop now</Link>
                   </li>
@@ -300,7 +300,7 @@ export default async function Home() {
 
         <section className={`${styles.electronics}  mt-[40px] px-[40px] py-0 bg-[#f8fbfc]`}>
           <div
-            className={`${styles.electronics_container} w-[1200px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
+            className={`${styles.electronics_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
           >
             <div className={`${styles.electronics_title} text-[1.2rem] font-bold p-[1rem] `}>
               Electronics
@@ -314,7 +314,7 @@ export default async function Home() {
 
         <section className={`  mt-[40px] px-[40px] py-0 bg-[#f8fbfc]`}>
           <div
-            className={` w-[1200px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
+            className={`  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
           >
             <div className={`text-[1.2rem] font-bold p-[1rem] `}>
               PC&Laptop
@@ -327,14 +327,14 @@ export default async function Home() {
         </section>
 
         <section >
-              <div className="w-[1200px] mx-auto mt-[40px] ">
-                  <Image className="cursor-pointer" src='/bannerLaptop.jpg' width={1200} height={120} alt="banner"/>
+              <div className="xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto mt-[40px] ">
+                  <Image className="cursor-pointer" src='https://websitedemos.net/electronic-store-04/wp-content/uploads/sites/1055/2022/03/electronic-store-promotional-banner-fwidth-1.jpg' width={1200} height={120} alt="banner"/>
               </div>
         </section>
 
         <section className={`mt-[40px] px-[40px] py-0 bg-[#f8fbfc]`}>
           <div
-            className={` w-[1200px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
+            className={`  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
           >
             <div className={`text-[1.2rem] font-bold p-[1rem] `}>
               Gadgets
@@ -348,7 +348,7 @@ export default async function Home() {
 
         <section className={`mt-[40px] px-[40px] py-0 bg-[#f8fbfc]`}>
           <div
-            className={` w-[1200px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
+            className={`  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
           >
             <div className={`text-[1.2rem] font-bold p-[1rem] `}>
               Kitchen appliances
@@ -361,9 +361,9 @@ export default async function Home() {
         </section>
 
         <section>
-          <div className="w-[1200px] mx-auto mt-[40px] grid grid-cols-6">
+          <div className=" xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto mt-[40px] grid grid-cols-6">
               <div className="col-span-3 bg-white">
-                <div className="flex flex-col h-full w-3/4 item-center gap-5 mt-10 ml-10">
+                <div className="flex flex-col w-3/4 h-full gap-5 mt-10 ml-10 item-center">
                   <h1 className="text-sm text-[#9ca7ab]">Brand&apos;s deal</h1>
                   <p className="text-2xl font-bold">Save up to $200 on select Samsung washing machine</p>
                   <p className="text-sm">Tortor purus et quis aenean tempus tellus fames.</p>
@@ -377,8 +377,8 @@ export default async function Home() {
         </section>
         
         <section className="mb-[40px]">
-              <div className="w-[1200px] mx-auto mt-[40px]">
-                  <h1 className="font-bold text-xl">Top brands</h1>
+              <div className=" xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto mt-[40px]">
+                  <h1 className="text-xl font-bold">Top brands</h1>
                   <ul className="grid grid-cols-12 mt-5">
                     {
                       topBrands.map((img,i) => {

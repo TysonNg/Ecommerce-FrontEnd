@@ -8,7 +8,7 @@ export const Footer = () => {
         <div className={`${styles.top_footer} py-20 `}>
             
         
-          <div className={`${styles.top_footer_container} grid grid-cols-8 gap-30 text-nowrap`}>
+          <div className={`${styles.top_footer_container} w-full max-w-[1200px] mx-auto my-0 grid xl:grid-cols-8 sm:grid-cols-4 gap-30 text-nowrap`}>
             <div className={`${styles.logo} col-span-2`}>
               <Image src="/logo-footer.png" alt="e-shop" width={300} height={200} /> 
             </div>
@@ -80,8 +80,8 @@ export const Footer = () => {
       </section>
 
       <section className={`${styles.bottom_footer} `}>
-        <div className={`${styles.bottom_footer_container} flex justify-between`}>
-            <div className={`${styles.text} grid-start-1`}>
+        <div className={`${styles.bottom_footer_container} w-full max-w-[1200px] mx-auto my-0 flex justify-between`}>
+            <div className={`${styles.text} grid-start-1 PropTypes.bool.isRequired,`}>
                 <p>© 2025 Electronic Store. Powered by E-Shop Ecommerce</p>
             </div>
             <div className={`${styles.checkout} grid-end-13`}>

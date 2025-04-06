@@ -1,11 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-      './app/**/*.{js,ts,jsx,tsx,mdx}', // Dành cho App Router (Next.js 13+)
-      './shared/**/*.{js,ts,jsx,tsx,mdx}',
+      "./src/**/*.{js,ts,jsx,tsx}",
+      "./pages/**/*.{js,ts,jsx,tsx}",
+      "./components/**/*.{js,ts,jsx,tsx}",
+      "./test.jsx",
     ],
     theme: {
-      extend: {},
+      extend: {
+        screens: {
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+      },},
     },
     plugins: [],
   };
+  

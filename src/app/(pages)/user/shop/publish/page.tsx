@@ -96,10 +96,10 @@ const PublishPage = () => {
 
     if(publishDatas.length > 0){
         return(
-            <div className="ml-20 my-10 flex flex-col gap-5">
+            <div className="ml-20 my-10 flex flex-col gap-5 xl:w-full lg:w-[700px]">
                 <h1 className="text-xl font-bold">Published List</h1>
                 <div>
-                                <table className="border-1 rounded-lg border-separate border-spacing-y-5">
+                                <table className="border-separate rounded-lg border-1 border-spacing-y-5">
                                     <thead >
                                         <tr >
                                             <th>Thumb</th>
@@ -125,7 +125,7 @@ const PublishPage = () => {
                                             <td className={`${i === publishDatas.length - 1? "": "border-b"} px-5 pb-4`}>{item.product_quantity}</td>
                                             <td className={`${i === publishDatas.length - 1? "": "border-b "} px-5 pb-4 text-nowrap`}>{item.product_shop.name}</td>
                                             <td className={`${i === publishDatas.length - 1? "": "border-b "} px-5 pb-4 text-nowrap `}>
-                                                <div className="border rounded-lg px-2 py-1 cursor-pointer text-sm relative overflow-y-visible" onClick={() => {handleOpenDiscounts(i);getDiscountsProduct(i)}}>
+                                                <div className="relative px-2 py-1 overflow-y-visible text-sm border rounded-lg cursor-pointer" onClick={() => {handleOpenDiscounts(i);getDiscountsProduct(i)}}>
                                                         list ▼                                                                  
                                                 </div>
                                                 <div className="relative">

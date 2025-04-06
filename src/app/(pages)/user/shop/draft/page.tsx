@@ -66,11 +66,11 @@ const DraftPage = () => {
     
     if(draftDatas.length > 0) {
         return(
-            <div className="ml-20 mt-10 flex flex-col gap-5">
+            <div className="flex flex-col gap-5 mt-10 ml-20">
             <h1 className="text-xl font-bold">Draft List</h1>
             
             <div>
-                <table className="w-full border-1 rounded-lg border-separate border-spacing-y-5">
+                <table className=" xl:w-full lg:w-[1024px] md:[768px] sm:w-[640px] border-1 rounded-lg border-separate border-spacing-y-5">
                     <thead >
                         <tr >
                             <th>Thumb</th>

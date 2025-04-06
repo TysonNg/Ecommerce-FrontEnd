@@ -60,8 +60,8 @@ export default function Layout({children}: {children: React.ReactNode}) {
     }
     return (
         <section className="shopProduct-body">
-            <div className="shopProduct-container w-[1200px] h-full mx-auto grid grid-cols-12 ">
-                <div className="col-span-1 border-r-1 border-[#d3d3d3] h-full pt-10 flex flex-col gap-5 text-xl text-[#7f7d7d] ">
+            <div className="shopProduct-container xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] h-full mx-auto grid grid-cols-12 ">
+                <div className="col-span-1 border-r-1 border-[#d3d3d3] h-full pt-10 flex flex-col gap-5 xl:text-xl text-[#7f7d7d] sm:text-sm xl:w-full sm:w-[60px]">
                     <div onClick={() => handleItemClick("product")} className={`${getItemClass("product")} cursor-pointer pr-10 py-2`}>
                         Product
                     </div>
@@ -81,7 +81,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
                     </div>
                 </div>
 
-                <div className="col-span-11 w-full">
+                <div className="w-full col-span-11">
                     {children}
                 </div>
             </div>

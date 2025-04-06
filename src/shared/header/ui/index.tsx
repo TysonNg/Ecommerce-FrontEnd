@@ -1,11 +1,10 @@
 'use client'
-import { Logo } from "./logo";
 import { Navbar } from "./navbar";
 import { SearchBar } from "./search/ui";
 import { RightTopHeader } from "./RightTopHeader";
 import { Supports } from "./support";
-import styles from "./ui.module.scss";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 
 export const Header = () => {
@@ -30,34 +29,36 @@ export const Header = () => {
 
   return (
     <header>
-      <div className="container-fluid">
-        <div className=" bg-[#0769da]">
+      <div className="">
+        <div className="bg-[#0769da] w-full  ">
           <div
-            className={`${styles.top_header_container} grid grid-cols-5 text-white `}
+            className={` xl:w-[1200px] lg:w-[700px] mx-auto my-0  flex flex-row justify-between  text-white `}
           >
-            <div className=" col-start-1">
+            <div className="">
               <Supports />
             </div>
-            <div className="col-end-13">
+            <div className="">
               <RightTopHeader />
             </div>
           </div>
-        </div>
+        </div>  
 
-        <div className={`bg-[#0573f0] py-2 h-[150px]`}>
+        <div className={`bg-[#0573f0] w-full py-10 h-auto`}>
           <div
-            className={`${styles.header_container} grid grid-cols-12 gap-4  text-white w-[1200px] `}
+            className={`flex flex-row justify-between text-white xl:w-[1200px] lg:w-[700px] mx-auto`}
           >
-            <div className="col-span-2 col-start-1 ">
-              <Logo />
+            <div className="content-center">
+              <Link href={"/"}>
+                <p className="text-3xl font-bold cursor-pointer">E-Shop</p>
+              </Link>
             </div>
-            <div className="col-span-4 col-end-13 content-center ">
+            <div className="content-center ">
               <SearchBar />
             </div>
           </div>
         </div>
 
-        <div className="bg-[#0573f0] text-white border-t border-[#4068d3]">
+        <div className="text-white border-t border-[#4068d3] bg-[#0573f0] w-full">
           <Navbar cart={quantity}/>
         </div>
       </div>

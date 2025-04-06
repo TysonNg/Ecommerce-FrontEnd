@@ -22,6 +22,11 @@ export const Navbar = (props: NavBarProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isOpenMenuCategory, setIsOpenMenuCategory] = useState<boolean>(false)
   const {openCartModal, isPageHaveCartTab} = useModal()
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
+
+  const handleOpenSidebar= () => {
+    setSidebarOpen(!sidebarOpen)
+  }
   
   const handleOpenMenu = () => {
     setIsOpenMenuCategory(!isOpenMenuCategory)
@@ -57,12 +62,13 @@ export const Navbar = (props: NavBarProps) => {
   
 
   return (
-    <nav className={`${styles.navbar} w-1200 grid-cols-12 grid items-center py-4 text-center`}>
-      <ul className="col-span-11 gap-15 flex">
+    <nav className={`xl:w-[1200px] lg:w-[700px] mx-auto my-0 flex flex-row justify-between  items-center py-4 text-center relative`}>
+      <button className="text-lg toggle-btn xl:hidden sm:block sm:relative" onClick={handleOpenSidebar}>☰ Menu</button>
+      <ul className={`col-span-11 xl:flex xl:flex-row justify-items-start ${sidebarOpen?'absolute top-10 flex flex-col gap-2 p-2 items-start' : 'hidden'} xl:relative xl:top-0 z-1 bg-[#0573f0] xl:gap-15`}>
         <li> <Link href={'/'}>Home</Link>  </li>
         <li className='relative' onMouseEnter={handleOpenMenu} onMouseLeave={handleOpenMenu}>
           <Link href="/products?page=1" >All products <span className='ml-1'><FontAwesomeIcon icon={faAngleDown} /></span></Link>
-          <div className={`${isOpenMenuCategory? '' : 'hidden'} absolute w-[250px] z-1`} >
+          <div className={`${isOpenMenuCategory? '' : 'hidden'} absolute w-[250px] `} >
             <ul className='bg-[#0573f0] w-full p-5 items-start font-bold text-sm flex flex-col gap-3'>
               <li><Link href="/products?category=laptop&&page=1">PCs & laptop</Link></li>
               <li><Link href="/products?category=kitchenAppliances&&page=1">Kitchen Appliances</Link></li>
@@ -77,7 +83,7 @@ export const Navbar = (props: NavBarProps) => {
         <li><Link href="#">Today&apos;s deal</Link> </li>
         <li> <Link href="#">Gift cards</Link></li>
       </ul>
-      <ul className=" col-span-1 gap-10 pr-20 flex justify-center">
+      <ul className="flex justify-center col-span-1 gap-10 ">
         <li className='relative'>
           {!isPageHaveCartTab? (
           <Link href="/cart">
@@ -93,11 +99,11 @@ export const Navbar = (props: NavBarProps) => {
             Login
           </button>
           <div className={`${active === 'true'? "name": "hidden"} text-nowrap`}>
-          <p onClick={handleOpenDropDown} className='cursor-pointer font-bold hover:opacity-80'> {name} <FontAwesomeIcon icon={faChevronDown}/></p>
+          <p onClick={handleOpenDropDown} className='font-bold cursor-pointer hover:opacity-80'> {name} <FontAwesomeIcon icon={faChevronDown}/></p>
             {isOpen && (
                   <div className='absolute top-7 z-1 right-0 w-[200px] text-left rounded-xl border-1 boder-[#c3c3c3] shadow-lg shadow-blue-100'>
                     <a href="/user/shop/product">
-                      <div className=' top-0 bg-white text-black text-sm w-full pl-4 py-2 font-bold hover:bg-gray-100 transition-color duration-300 rounded-t-lg'>
+                      <div className='top-0 w-full py-2 pl-4 text-sm font-bold text-black duration-300 bg-white rounded-t-lg hover:bg-gray-100 transition-color'>
                         My shop
                       </div>
                     </a>  

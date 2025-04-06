@@ -257,10 +257,10 @@ const ProductPage = () => {
 return(
     <div>
 
-            <div className="createProduct px-5 mb-20">
-                <h1 className="text-xl font-bold p-2">Create a New Product</h1>
-                <div className="createProduct-container grid grid-cols-6 gap-5">
-                    <div className="p-2 col-span-2 flex flex-col gap-5">
+            <div className="px-5 mb-20 createProduct xl:w-full lg:w-[700px]">
+                <h1 className="p-2 text-xl font-bold">Create a New Product</h1>
+                <div className="grid grid-cols-6 gap-5 createProduct-container">
+                    <div className="flex flex-col col-span-2 gap-5 p-2">
                         <div className="productThumb bg-white rounded-lg shadow border-[#d3d3d3] border-1">
                             <h2 className="text-sm font-bold p-3 border-b border-[#d3d3d3]">
                                 Product Thumb
@@ -341,7 +341,7 @@ return(
                         <h2 className="text-sm font-bold p-3 border-b border-[#d3d3d3]">
                             Status
                         </h2>
-                        <div className="mt-5 px-3 pb-4 content-center ">
+                        <div className="content-center px-3 pb-4 mt-5 ">
                             <select className="w-full border-1 border-[#d3d3d3] py-2 px-3 rounded-lg">
                                 <option value="draft">Draft</option>
                             </select>
@@ -357,13 +357,13 @@ return(
                         <div className="productType bg-white rounded-lg shadow border-[#d3d3d3] border-1">
                             <h2 className="text-sm font-bold p-3 border-b border-[#d3d3d3]">Product Type</h2>
                             <div className="types">
-                                <ul className="listTypes flex flex-row gap-3 px-5 py-3 overflow-x-auto">
+                                <ul className="flex flex-row gap-3 px-5 py-3 overflow-x-auto listTypes">
                                     {categories.map((category,i) => {
                                         return (
                                             <div key={i} className={`${selectItem === i?'bg-[#4467df] text-white' :'bg-[#ededed]'} border-1 h-25 w-full p-3 rounded-lg  cursor-pointer`} onClick={() => select(category.value,i)}>
                                             
                                                     <FontAwesomeIcon icon={category.img} />
-                                                    <p className="font-bold text-sm mt-3 text-nowrap">{category.name}</p>
+                                                    <p className="mt-3 text-sm font-bold text-nowrap">{category.name}</p>
                                                 
                                             </div>
                                         )
@@ -374,8 +374,8 @@ return(
 
                         <div className="productDetail bg-white rounded-lg shadow border-[#d3d3d3] border-1 mt-5">
                                 <h2 className="text-sm font-bold border-b border-[#d3d3d3] p-3">Product Detail</h2>
-                                <div className="detail grid gap-5 p-3">
-                                    <div className="grid grid-cols-6 gap-3">
+                                <div className="grid gap-5 p-3 detail">
+                                    <div className="grid gap-3 xl:grid-cols-6 sm:grid-cols-3">
                                         <div className="col-span-3">
                                             <p className="text-sm font-bold">Product Name</p>
                                             <input className="border-1 border-[#d3d3d3] outline-none w-full p-1" type="text" onChange={(e) => setProduct((prev) :Product => ({...prev,product_name: e.target.value}))} />
@@ -387,7 +387,7 @@ return(
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-6 gap-3">
+                                    <div className="grid xl:grid-cols-6 sm:grid-cols-3gap-3">
                                         <div className="col-span-3">
                                             <p className="text-sm font-bold">Price</p>
                                             <input className="border-1 border-[#d3d3d3] outline-none w-full p-1" type="text" onChange={(e) => setProduct((prev) : Product => ({...prev,product_price: parseInt(e.target.value)}))} />
@@ -399,7 +399,7 @@ return(
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-6 gap-3">
+                                    <div className="grid gap-3 lg:grid-cols-4 xl:grid-cols-6 sm:grid-cols-2">
                                         <div className="col-span-2">
                                             <p className="text-sm font-bold">Brand</p>
                                             <input className="border-1 border-[#d3d3d3] outline-none p-1" type="text" onChange={(e) => setProduct((prev) : Product => ({...prev, product_attributes: {...prev.product_attributes,brand: e.target.value}}))} />
@@ -426,7 +426,7 @@ return(
                     </div>
                 </div>
                 
-                <div className="btnCreateProduct mt-5">
+                <div className="mt-5 btnCreateProduct">
                     <div>
                         <button className="w-full border-1 py-4 shadow bg-black text-white hover:bg-[#0573f0] transition-colors duration-300 cursor-pointer rounded-lg" onClick={handleCreateProduct}>Create Product</button>
                     </div>

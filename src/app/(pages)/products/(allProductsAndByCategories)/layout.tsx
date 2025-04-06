@@ -7,9 +7,9 @@ export default function Layout({children}: {children: React.ReactNode}) {
 
     return (
         <section className={`${styles.product_body} pb-30 bg-white`}>
-            <div className={`${styles.produuct_body_container} w-[1200px] mx-auto my-0 flex flex-row grid grid-cols-6 mt-10 items-start `}>
+            <div className={`${styles.produuct_body_container} xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto my-0 flex flex-row grid grid-cols-6 mt-10 items-start `}>
                 <div className={`${styles.categories} col-span-1 sticky top-0`}>
-                    <h2 className='font-bold  '>Categories</h2>
+                    <h2 className='font-bold '>Categories</h2>
                     <ul className='pl-5 mt-15 flex flex-col gap-2 text-sm text-[#5e6d73]'>
                         <li><Link href="/products?category=audioVideo&&page=1">Audio & video</Link></li>
                         <li><Link href="/products?category=homeAppliances&&page=1">Home appliances</Link></li>
