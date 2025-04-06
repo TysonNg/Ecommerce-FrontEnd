@@ -194,9 +194,9 @@ export default async function Home() {
             <Image className="object-cover " src="/banner.jpg" fill alt="banner"/>
           </div>
         </section>
-
+        
         <section className={`${styles.body_top}`}>
-          <div className={`${styles.body__top_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px]  mx-auto my-0 relative`}>
+          <div className={`${styles.body__top_container}  xl:w-[1200px] lg:w-[1024px]  md:[768px] sm:w-[640px]  mx-auto my-0 relative`}>
             <section className={`${styles.services__section} bg-white`}>
               <div
                 className={`${styles.services__section_container} flex xl:flex-row flex-col gap-15 `}

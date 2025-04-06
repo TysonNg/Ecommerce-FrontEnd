@@ -1,5 +1,4 @@
 'use client'
-import styles from './navbar.module.scss'
 import { useModal } from '@/app/context/ModalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faCartShopping, faChevronDown, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
