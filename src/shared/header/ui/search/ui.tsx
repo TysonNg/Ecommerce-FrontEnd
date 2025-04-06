@@ -39,14 +39,14 @@ export const SearchBar = () => {
                     </button>
                 </div>
                 <div className={`${styles.resultsList_container}`}>
-                    <div className={`${styles.box} z-1 absolute max-w-[390px] max-h-[220px] overflow-y-auto `}>
+                    <div className={`${styles.box} z-1 absolute max-w-[390px] sm:w-[190px] max-h-[220px] overflow-y-auto `}>
                     {data?.map((item,i) => {
                         return(
                             <div key={i} className={`${data?"":"hidden"} shadow-[0_2px_8px_0px_rgba(99,99,99,0.2)] px-3 py-5 bg-white text-black border-1 border-[#a9a9a9] hover:bg-[#E76F51] hover:text-[#98FF98] p-4 transition`}>
                                 <a  href={`/products/${item._id}/${item.product_slug}`}>
                                     <div className="flex flex-row items-center gap-1">
                                         <Image src={item.product_thumb} alt={item.product_name} width={50} height={50}/>  
-                                        <span className="truncate font-bold text-sm">{item.product_name}</span>
+                                        <span className="text-sm font-bold truncate">{item.product_name}</span>
                                     </div>
                                 </a>
                             </div>
