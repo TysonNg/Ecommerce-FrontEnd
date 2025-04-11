@@ -114,7 +114,7 @@ export  function ProductCard(props: ProductCardProps) {
             
             </div>
             <div>
-                <a href={`/products/${_id}`} className={`${styles.productName} text-sm font-semibold`}>{product_name}</a>
+                <a href={`/products/${_id}/${product_slug}`} className={`${styles.productName} text-sm font-semibold`}>{product_name}</a>
                 <p>
                     <span className="text-xs line-through text-[#48515b]">${product_prevPrice}.00</span>
                     <span className="pl-2 text-xs font-semibold">${product_price}.00</span> 
@@ -133,7 +133,7 @@ export  function ProductCard(props: ProductCardProps) {
                 <FontAwesomeIcon  onClick={() => handleAddToCart()} className={`${isHovered?"opacity-100":"opacity-0"}  transition-opacity duration-300 hover:opacity-80 text-[#48515b] text-sm cursor-pointer absolute rounded rounded-full py-1.5 px-1.5 top-3 bg-[#f1e0e0]`} style={{right: `${cartRem}rem`}} icon={faCartShopping} />
             </div>
             
-            <a href={`/products/${_id}/`} className={`${styles.productName} text-sm font-semibold`}>{product_name}</a>
+            <a href={`/products/${_id}/${product_slug}`} className={`${styles.productName} text-sm font-semibold`}>{product_name}</a>
             <p className="text-xs font-semibold">${product_price}.00</p>
         </li>
     )
