@@ -46,8 +46,8 @@ const ProductDetail = async ({ params }: { params: Params }) => {
   const productsByCategory: ProductInfo[] = await getRelatedProductByCategory(productDetails.product_type,productDetails._id)
   
   return (
-    <section className={`${styles.body}`}>
-      <section className={`${styles.top_body}`}>
+    <section className={`${styles.body} `}>
+      <section className={`${styles.top_body} w-full max-w-[500px] sm:max-w-[800px] lg:max-w-[1200px] mx-auto mt-[2rem]`}>
         <div className={`${styles.top_body_container} flex flex-row`}>
           {/* cardLeft */}
 
@@ -78,13 +78,13 @@ const ProductDetail = async ({ params }: { params: Params }) => {
                           ? `$${productDetails.product_prevPrice}.00`
                           : ""}
                       </span>
-                      <span className="text-xl font-semibold pl-4">
+                      <span className="pl-4 text-xl font-semibold">
                         ${productDetails.product_price}.00
                       </span>
                     </p>
                   </li>
 
-                  <li className="pt-5 flex flex-row gap-2 text-sm">
+                  <li className="flex flex-row gap-2 pt-5 text-sm">
                         <p className="text-[#6b6969] font-bold">
                           Quantity:
                         </p>
@@ -92,7 +92,7 @@ const ProductDetail = async ({ params }: { params: Params }) => {
                   </li>
 
                   <li className={`${styles.detail} pt-5 `}>
-                    <p className="font-semibold text-sm">Detail:</p>
+                    <p className="text-sm font-semibold">Detail:</p>
                 <ul className={`${styles.detail_container} pl-10 pt-3 list-disc`}>
                     <li><span className="font-semibold">Brand: </span> {productDetails.product_attributes.brand}</li> 
                     <li><span className="font-semibold">Model: </span> {productDetails.product_attributes.model}</li> 
@@ -104,7 +104,7 @@ const ProductDetail = async ({ params }: { params: Params }) => {
                   </li>
                  
                   
-                  <li className="flex flex-row gap-2 text-sm pt-5">
+                  <li className="flex flex-row gap-2 pt-5 text-sm">
                         <p className="text-[#6b6969] font-bold">Category: </p>
                         <span className="text-[#48515b]">
                           <Link className="cursor-pointer" href={`/products?category=${productDetails.product_type}&&page=1`}>{productDetails.product_type}</Link>
@@ -118,16 +118,17 @@ const ProductDetail = async ({ params }: { params: Params }) => {
         </div>
       </section>
 
-      <section className={`${styles.bottom_body} mt-20`}>
+      <section className={`w-full max-w-[500px] lg:max-w-[1280px] xl:max-w-[1536px] mx-auto mt-20`}>
         <ChangeStateAtDetailPage product_name={productDetails.product_name} product_description={productDetails.product_description} product_thumb={productDetails.product_thumb} product_images={productDetails.product_images} />
       </section>
 
-      <section className={`${styles.relate_product} mt-15`}>
+      <section className={`${styles.relate_product} overflow-hidden-auto mt-15`}>
         <div className={`${styles.relate_product_container}`}>
-          <p className="font-bold text-2xl pb-5">Related products</p>
+          <p className="pb-5 text-2xl font-bold">Related products</p>
           <ProductGrid products={productsByCategory} cartRem={5} numOfProduct={6}/>               
         </div>
       </section>
+      
       <section className={`${styles.cartTab} `}>
             <CartTab />
         </section>

@@ -144,7 +144,7 @@ const HandleCart = (props: PartialProps) => {
             <span className="border border-[#dce3e5] py-1 px-2 text-[#696969]">{cartTab? quantityCartTab: quantity}</span>
             <button onClick={handleClickIncrease} className="border-2 border-[#dce3e5] bg-[#f8fbfc] py-1 px-3 cursor-pointer">+</button>
             {/* addToCartBtn */}
-            <button onClick={handleAddToCart} className={`${cartTab?"hidden":""} text-white bg-[#2b323e] px-4 py-1 ml-4 cursor-pointer hover:bg-[#0573f0] transition-colors duration-500 `}>
+            <button onClick={handleAddToCart} className={`${cartTab?"hidden":""} text-white bg-[#2b323e] text-xs xs:text-base px-4 py-1 ml-4 cursor-pointer hover:bg-[#0573f0] transition-colors duration-500 `}>
             <svg className="motion-reduce:hidden animate-spin ..." viewBox="0 0 24 24"> Processing...</svg>
             Add to cart
             </button>

@@ -1,14 +1,15 @@
 .body {
-
     .top_body {
-        width: 1200px;
-        margin: 0 auto;
-        margin-top: 2rem;
+        padding: 0 1rem;
+
         .top_body_container {
 
             .detail_image {
                 .product_images_container {
-                    width: 600px;
+                    width: 100%;
+                    max-width: 600px;
+                    margin: 0 auto;
+
                     img {
                         width: 100%;
                         display: block;
@@ -48,19 +49,12 @@
             }
         }
     }
-
-    .bottom_body{
-        .bottom_body_container{
-            width: 1200px;
+    .relate_product {
+        .relate_product_container {
+            width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
-        }
-    }
-
-    .relate_product{
-        overflow: hidden;
-        .relate_product_container{
-            width: 1200px;
-            margin: 0 auto;  
+            padding: 0 1rem;
         }
     }
 }

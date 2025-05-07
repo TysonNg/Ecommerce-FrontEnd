@@ -8,9 +8,9 @@ export const Footer = () => {
         <div className={`${styles.top_footer} py-20 `}>
             
         
-          <div className={`${styles.top_footer_container} w-full max-w-[1200px] mx-auto my-0 grid xl:grid-cols-8 sm:grid-cols-4 gap-30 text-nowrap`}>
-            <div className={`${styles.logo} col-span-2`}>
-              <Image src="/logo-footer.png" alt="e-shop" width={300} height={200} /> 
+          <div className={`${styles.top_footer_container} w-full max-w-[1200px] mx-auto my-0 grid xl:grid-cols-8 sm:place-items-center sm:grid-cols-4 gap-30 text-nowrap`}>
+            <div className={`${styles.logo} col-span-2 relative w-[150px] h-[100px] sm:w-[300px] sm:h-[100px]`}>
+              <Image src="/logo-footer.png" alt="e-shop" fill /> 
             </div>
             <div className={`${styles.shop} col-span-2  `}>
               <h6 className={`${styles.header_title}`}>Shop</h6>

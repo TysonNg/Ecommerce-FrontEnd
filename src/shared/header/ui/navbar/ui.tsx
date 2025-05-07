@@ -7,6 +7,7 @@ import { logOut } from '@/features/users/actions/access';
 import Cookies from "js-cookie";
 import Link from 'next/link';
 import { getCartById } from '@/features/cart/data/data';
+import { useRouter } from 'next/navigation';
 
 
 interface NavBarProps {
@@ -22,7 +23,14 @@ export const Navbar = (props: NavBarProps) => {
   const [isOpenMenuCategory, setIsOpenMenuCategory] = useState<boolean>(false)
   const {openCartModal, isPageHaveCartTab} = useModal()
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
-
+  const router = useRouter();
+  const {closeCartModal} = useModal()
+  const handleGoToCartPage = () => {
+    if (typeof window !== 'undefined' && window.innerWidth < 465) {
+      router.push('/cart');
+      closeCartModal()
+    } 
+  }
   const handleOpenSidebar= () => {
     setSidebarOpen(!sidebarOpen)
   }
@@ -61,7 +69,7 @@ export const Navbar = (props: NavBarProps) => {
   
 
   return (
-    <nav className={`xl:w-[1200px] lg:w-[700px] mx-auto my-0 flex flex-row justify-between  items-center py-4 text-center relative`}>
+    <nav className={`max-w-[350px] xl:max-w-[1200px] lg:max-w-[700px] sm:max-w-[500px] mx-auto my-0 flex flex-row justify-between  items-center px-2 xs:px-0 py-4 text-center relative`}>
       <button className="text-lg toggle-btn xl:hidden sm:block sm:relative" onClick={handleOpenSidebar}>☰ Menu</button>
       <ul className={`col-span-11 xl:flex xl:flex-row justify-items-start ${sidebarOpen?'absolute top-10 flex flex-col gap-2 p-2 items-start' : 'hidden'} xl:relative xl:top-0 z-1 bg-[#0573f0] xl:gap-15`}>
         <li> <Link href={'/'}>Home</Link>  </li>
@@ -89,7 +97,7 @@ export const Navbar = (props: NavBarProps) => {
             <FontAwesomeIcon className="text-white cursor-pointer" icon={faCartShopping} />
           </Link> 
           ) : (
-            <FontAwesomeIcon  onClick={openCartModal} className="text-white cursor-pointer" icon={faCartShopping} />
+            <FontAwesomeIcon  onClick={() => {openCartModal();handleGoToCartPage();}} className="text-white cursor-pointer" icon={faCartShopping} />
           )}
           <span className='absolute font-bold text-xs text-[#0573f0] -right-4 -top-2 rounded rounded-full bg-white px-1 '>{cart}</span>
         </li>

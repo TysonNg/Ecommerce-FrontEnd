@@ -81,19 +81,19 @@ const LoginModal = ()=>{
 
     return(
         <div className='fixed inset-0 flex items-center justify-center bg-opacity-25 z-2 backdrop-blur-sm' onClick={handleOverlayClick}>
-            <div className='w-[600px] flex flex-col relative'>
-                <button onClick={closeModal} className='absolute px-2 pt-1 text-xl text-white bg-red-700 border rounded-full cursor-pointer place-self-end top-5 right-5 hover:opacity-80'>X</button>
+            <div className='w-full max-w-[300px] max-h-[250px] sm:max-w-[500px] sm:max-h-[400px] md:max-w-[600px] md:max-h-[500px] flex flex-col relative'>
+                <button onClick={closeModal} className='absolute px-2 text-sm text-xl text-white bg-red-700 border rounded-full cursor-pointer -1 place-self-end top-5 right-5 hover:opacity-80'>X</button>
                 
-                <div className={` bg-[#f3f3f3] h-[500px] p-2 content-center`}>
+                <div className={` bg-[#f3f3f3]  h-screen  max-h-[350px] sm:max-h-[400px]  md:max-h-[500px] p-2 content-center`}>
                     {/* login form */}
                     <div className={`${isLogin? "": 'hidden'} login-container justify-items-center`}>
                         <form onSubmit={(e) => handleSubmitLogin(e)}>
-                            <h2 className='pb-10 text-4xl font-bold'>LOGIN</h2>
+                            <h2 className='pb-10 text-base font-bold text-center sm:text-xl xl:text-2xl 2xl:text-4xl'>LOGIN</h2>
                             <div className='flex flex-col gap-5 login-input w-100'>
-                                <input className='p-3 border outline-none' type="text" placeholder='Email' onChange={(e) =>setEmail(e.target.value)}/>
-                                <input className='p-3 border outline-none' type="password" placeholder='Password' onChange={(e) =>setPassword(e.target.value)} />
+                                <input className='p-3 mx-3 text-sm border outline-none sm:mx-0' type="text" placeholder='Email' onChange={(e) =>setEmail(e.target.value)}/>
+                                <input className='p-3 mx-3 text-sm border outline-none sm:mx-0' type="password" placeholder='Password' onChange={(e) =>setPassword(e.target.value)} />
                             </div>
-                            <div className='w-100'>
+                            <div className='w-full justify-self-center max-w-60 sm:max-w-100'>
                                 <button className='mt-10 border w-full py-5 cursor-pointer text-white bg-[#4b7af7] hover:opacity-80' type='submit'>Login</button>
                             </div>
                         </form>
@@ -106,13 +106,13 @@ const LoginModal = ()=>{
                         {/* register form */}
                     <div className={`${isLogin?"hidden":""} register-container justify-items-center`}>
                         <form onSubmit={handleSubmitSignUp}>
-                            <h2 className='pb-10 text-4xl font-bold'>Sign Up</h2>
+                            <h2 className='pb-10 font-bold text-center sm:text-xl xl:text-2xl 2xl:text-4xl'>Sign Up</h2>
                             <div className='flex flex-col gap-5 login-input w-100'>
-                                <input className='p-3 border outline-none' type="text" placeholder='Name' onChange={(e) =>setName(e.target.value)}/>
-                                <input className='p-3 border outline-none' type="text" placeholder='Email' onChange={(e) =>setEmail(e.target.value)}/>
-                                <input className='p-3 border outline-none' type="password" placeholder='Password' onChange={(e) =>setPassword(e.target.value)}/>
+                                <input className='p-3 mx-3 text-sm border outline-none sm:mx-0' type="text" placeholder='Name' onChange={(e) =>setName(e.target.value)}/>
+                                <input className='p-3 mx-3 text-sm border outline-none sm:mx-0' type="text" placeholder='Email' onChange={(e) =>setEmail(e.target.value)}/>
+                                <input className='p-3 mx-3 text-sm border outline-none sm:mx-0' type="password" placeholder='Password' onChange={(e) =>setPassword(e.target.value)}/>
                             </div>
-                            <div className='w-100'>
+                            <div className='w-full justify-self-center max-w-60 sm:max-w-100'>
                                 <button className='mt-10 border w-full py-5 cursor-pointer text-white bg-[#4b7af7] hover:opacity-80' type='submit'>Register</button>
                             </div>
                         </form>

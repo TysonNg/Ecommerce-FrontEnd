@@ -190,8 +190,8 @@ export default async function Home() {
     <>
       <div className="bg-[#f8fbfc]">
         <section className="banner">
-          <div className="xl:w-full lg:w-[1024px] md:w-[700px] sm:w-[640px] h-[650px] mx-auto my-0 relative">
-            <Image className="object-cover " src="/banner.jpg" fill alt="banner"/>
+          <div className="w-full max-w-[465px] lg:max-w-[1536px] lg:max-w-[1280px] md:max-w-[1024px] sm:max-w-[768px] xs:max-w-[600px]  h-[650px] 2xl:max-w-full mx-auto my-0 relative">
+            <Image className="object-cover" src="/banner.jpg" fill alt="banner"/>
           </div>
         </section>
         

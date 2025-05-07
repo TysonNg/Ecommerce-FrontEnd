@@ -38,8 +38,9 @@ export const SearchBar = () => {
                     <FontAwesomeIcon className="text-[#0573f0]" icon={faMagnifyingGlass} />
                     </button>
                 </div>
+                
                 <div className={`${styles.resultsList_container}`}>
-                    <div className={`${styles.box} z-1 absolute max-w-[390px] sm:w-[190px] max-h-[220px] overflow-y-auto `}>
+                    <div className={`${styles.box} z-1 absolute w-full max-w-[190px] max-h-[150px] sm:max-h-[220px] overflow-y-auto `}>
                     {data?.map((item,i) => {
                         return(
                             <div key={i} className={`${data?"":"hidden"} shadow-[0_2px_8px_0px_rgba(99,99,99,0.2)] px-3 py-5 bg-white text-black border-1 border-[#a9a9a9] hover:bg-[#E76F51] hover:text-[#98FF98] p-4 transition`}>

@@ -9,7 +9,6 @@ import NotFoundProducts from "./not-found";
 import { deleteItemOfCart } from "../actions/deleteItemOfCart";
 import Cookies from "js-cookie";
 import { checkoutReview } from "../actions/reviewCheckout";
-
 interface ProductsCart {
   name: string;
   price: number | undefined;
@@ -34,10 +33,10 @@ interface CheckoutRequest {
   }[];
 }
 
-interface CodeDiscount{
-    codeId: string;
-    shopId: string;
-    userId: string
+interface CodeDiscount {
+  codeId: string;
+  shopId: string;
+  userId: string;
 }
 export function CartTab() {
   const id: string | undefined = Cookies.get("_id");
@@ -53,10 +52,9 @@ export function CartTab() {
     cartId: cartUserId ?? tempId ?? "",
     shop_order_ids: [],
   });
-
+ 
   useEffect(() => {
     const fetchCart = async () => {
-      
       try {
         const res = await getCartById();
         setCart(res.metadata.cart_products);
@@ -66,15 +64,12 @@ export function CartTab() {
         console.log("err: getCart ", error);
       }
     };
-      if(isCartModalOpen){
-        fetchCart();
-        
-        window.addEventListener("cartQuantityStorage", fetchCart);
-        return () => window.removeEventListener("cartQuantityStorage", fetchCart);
-        
-      }
-      
-    
+    if (isCartModalOpen) {
+      fetchCart();
+
+      window.addEventListener("cartQuantityStorage", fetchCart);
+      return () => window.removeEventListener("cartQuantityStorage", fetchCart);
+    }
   }, [isCartModalOpen]);
 
   useEffect(() => {
@@ -147,7 +142,7 @@ export function CartTab() {
       }
     };
 
-    if(cart.length > 0){
+    if (cart.length > 0) {
       fetchCheckout();
     }
   }, [cart, isCartModalOpen]);
@@ -183,22 +178,23 @@ export function CartTab() {
   };
 
   return (
-    
     <div>
-        {isCartModalOpen && (
-        <div className="fixed inset-0 w-full h-full backdrop-blur-sm bg-opacity-25 z-0 cursor-pointer" onClick={closeCartModal}>
-        </div>
-        )}
-        
+      {isCartModalOpen && (
+        <div
+          className="fixed inset-0 hidden w-full h-full bg-opacity-25 cursor-pointer xs:block z-2 backdrop-blur-sm"
+          onClick={closeCartModal}
+        ></div>
+      )}
+
       <div
         className={`${
-          isCartModalOpen ? "z-1" : "w-[0px]"
+          isCartModalOpen ? "z-3" : "w-[0px]"
         } absolute top-0 right-0 overflow-hidden`}
       >
         <div
           className={`${
-              isCartModalOpen ? `translate-x-0 ` : `translate-x-200`
-          } cartTab_conatiner relative  bg-white w-[600px] h-[1300px] flex flex-col justify-between transition-transform duration-700 overflow-hidden`}
+            isCartModalOpen ? `translate-x-0 ` : `translate-x-200`
+          } cartTab_conatiner hidden relative bg-white w-full xs:max-w-[250px] lg:max-w-[300px] 2xl:max-w-[600px] h-screen xs:flex flex-col justify-between transition-transform duration-700 overflow-hidden`}
         >
           <div>
             <div className="mt-5 border-b border-[#dce3e5] text-[#737272] py-2 px-3 font-bold flex flex-row justify-between">
@@ -213,7 +209,7 @@ export function CartTab() {
             <div className={`${cart ? "" : "hidden"} text-black px-3 pt-3`}>
               {cart?.map((product, i) => {
                 return (
-                  <div key={i} className="flex flex-row relative my-5">
+                  <div key={i} className="relative flex flex-row my-5">
                     <Image
                       src={`${product?.imgThumb}`}
                       alt="cartImg"
