@@ -1,10 +1,6 @@
 import api from "@/app/protected/protected";
 import Cookies from "js-cookie";
 
-
-
-
-
 export async function getCartById(){
     const userId = Cookies.get(`_id`)
     

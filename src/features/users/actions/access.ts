@@ -43,18 +43,21 @@ export async function logIn(formLogin:LoginType){
             Cookies.set('accessToken', `${res.data.metadata.tokens.accessToken}`,{expires: 1})
             Cookies.set('refreshToken', `${res.data.metadata.tokens.refreshToken}`,{expires: 7})
 
+
             if(!cartUserId){  
                 const oldCart  = await getCartById()
-                const productsOldCart = oldCart.metadata.cart_products
-                console.log('oldCart', productsOldCart);
-                Cookies.set(`cartId_${res.data.metadata.user._id}`,`${guestId? `${guestId}cart` :""}`,{expires:365 * 100})
+                if(oldCart.metadata){
+                    const productsOldCart = oldCart.metadata.cart_products
+                    Cookies.set(`cartId_${res.data.metadata.user._id}`,`${guestId? `${guestId}cart` :""}`,{expires:365 * 100})
+                    
+                    const getCartUserId = Cookies.get(`cartId_${res.data.metadata.user._id}`)
+    
+                    //add from guestCart to userCart
+                    await productsOldCart.map((item : Product) => {
+                         addToCart({product: item,userId: `${getCartUserId}`})
+                    })
+                }
                 
-                const getCartUserId = Cookies.get(`cartId_${res.data.metadata.user._id}`)
-
-                //add from guestCart to userCart
-                await productsOldCart.map((item : Product) => {
-                     addToCart({product: item,userId: `${getCartUserId}`})
-                })
             }
 
             if(cartUserId){

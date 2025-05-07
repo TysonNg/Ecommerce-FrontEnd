@@ -211,7 +211,8 @@ const ProductPage = () => {
     const handleCreateProduct = async() => {
         
         const {product_name,product_images,product_description,product_price,product_quantity,product_thumb,product_type, product_prevPrice} = product
-        if(product_name === "" || product_price === 1 || product_description === "" || product_quantity === 1 || product_type === "" || product_thumb === "" || product_images.length === 0)
+        
+        if(product_name === "" || product_price === 1 || product_description === "" || product_quantity !== 0  || product_type === "" || product_thumb === "" || product_images.length === 0)
         {
             alert("Pls fill fully properties")
             return;
@@ -229,7 +230,7 @@ const ProductPage = () => {
             setIsSuccess(true)
             setProduct(defaultProduct)
             window.dispatchEvent(new Event('ChangeQuantityDraftAndPublish'))
-            return res
+        return res
         }
         
     }
@@ -247,12 +248,14 @@ const ProductPage = () => {
             
         
         };
-    
+        console.log('logggg');
+        
         loadData();
         
     },[])
 
     
+    console.log('product',product);
 
 return(
     <div>

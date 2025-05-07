@@ -31,7 +31,6 @@ const LoginModal = ()=>{
         e.preventDefault()
         try {
         const fetchLogin = await logIn({email,password})
-        console.log('fetchLogin', fetchLogin);
         
         if(!fetchLogin){
             alert("pls check email or password")
