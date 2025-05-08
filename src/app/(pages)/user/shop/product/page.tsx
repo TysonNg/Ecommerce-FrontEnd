@@ -212,7 +212,7 @@ const ProductPage = () => {
         
         const {product_name,product_images,product_description,product_price,product_quantity,product_thumb,product_type, product_prevPrice} = product
         
-        if(product_name === "" || product_price === 1 || product_description === "" || product_quantity !== 0  || product_type === "" || product_thumb === "" || product_images.length === 0)
+        if(product_name === "" || product_price === 1 || product_description === "" || product_quantity === 0  || product_type === "" || product_thumb === "" || product_images.length === 0)
         {
             alert("Pls fill fully properties")
             return;
