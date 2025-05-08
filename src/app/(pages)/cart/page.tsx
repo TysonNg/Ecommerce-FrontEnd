@@ -136,7 +136,6 @@ export default function CartPage() {
     const fetchCart = async () => {
       try {
         const res = await getCartById();
-        console.log("cart", res);
 
         setCart(res.metadata.cart_products);
         return res;
@@ -220,6 +219,12 @@ export default function CartPage() {
       }
     };
     fetchCheckout();
+    document.addEventListener('deleteItem', fetchCheckout)
+
+    return(() => {
+    document.removeEventListener('deleteItem', fetchCheckout)
+      
+    })
   }, [checkout, cart]);
 
   //when changing price => update quantity
@@ -250,7 +255,6 @@ export default function CartPage() {
           shop_discount: order.shop_discount,
         })),
       };
-      console.log("updatecheckout", updateCheckout);
 
       return updateCheckout;
     });
@@ -268,12 +272,12 @@ export default function CartPage() {
     if (res) {
       localStorage.setItem("cartQuantity", `${cart.length - 1}`);
       window.dispatchEvent(new Event("cartQuantityStorage"));
+      document.dispatchEvent(new Event("deleteItem"))
     }
     return res;
   };
 
   const getDiscountsOfProduct = async (productId: string) => {
-    console.log("idProduct", productId);
 
     if (!id && !refreshToken) {
       alert("Pls Login to use Discount!!!");
