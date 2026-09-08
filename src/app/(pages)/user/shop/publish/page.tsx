@@ -94,84 +94,150 @@ const PublishPage = () => {
         return res
     }
 
-    if(publishDatas.length > 0){
-        return(
-            <div className="ml-20 my-10 flex flex-col gap-5 xl:w-full lg:w-[700px]">
-                <h1 className="text-xl font-bold">Published List</h1>
-                <div>
-                                <table className="border-separate rounded-lg border-1 border-spacing-y-5">
-                                    <thead >
-                                        <tr >
-                                            <th>Thumb</th>
-                                            <th>Name</th>
-                                            <th>Type</th>
-                                            <th>Quantity</th>
-                                            <th>Shop</th>
-                                            <th>Discounts</th>
-                                        </tr>
-                                    </thead>
-                    
-                                    <tbody className="relative">
-                                    {publishDatas.map((item,i) => {
-                                        return (
-                                           <tr key={i} className="text-center">
-                                            <td className={`${i === publishDatas.length - 1? "": "border-b"} px-5 pb-4`}> <Image className="rounded-md" src={`${item.product_thumb}`} width={100} height={100} alt="img" /></td>
-                                            <td className={`${i === publishDatas.length - 1? "": "border-b"} px-5 pb-4 `}>
-                                                <p className="truncate w-75">
-                                                    {item.product_name}
-                                                </p>
-                                            </td>
-                                            <td className={`${i === publishDatas.length - 1? "": "border-b"} px-5 pb-4`}>{item.product_type}</td>
-                                            <td className={`${i === publishDatas.length - 1? "": "border-b"} px-5 pb-4`}>{item.product_quantity}</td>
-                                            <td className={`${i === publishDatas.length - 1? "": "border-b "} px-5 pb-4 text-nowrap`}>{item.product_shop.name}</td>
-                                            <td className={`${i === publishDatas.length - 1? "": "border-b "} px-5 pb-4 text-nowrap `}>
-                                                <div className="relative px-2 py-1 overflow-y-visible text-sm border rounded-lg cursor-pointer" onClick={() => {handleOpenDiscounts(i);getDiscountsProduct(i)}}>
-                                                        list ▼                                                                  
-                                                </div>
-                                                <div className="relative">
-                                                        <ul className={`${activeItem === i?"opacity-100 translate-y-0" : "-translate-y-5 opacity-0 pointer-events-none"} absolute overflow-hidden ease-out top-0 right-0 bg-white transition-all duration-500`}>
-                                                            {discounts.map((item,i) => {
-                                                                return(
-                                                                    <li key={i} className="mt-1 p-2 rounded-lg border border-[#adaaaa] shadow cursor-pointer hover:bg-blue-600 hover:font-bold hover:text-white transition-color duration-300 text-sm">
-                                                                        <p>
-                                                                        {item.discount_code}
-                                                                        </p> 
-                                                                    </li>
-                                                                )
-                                                            })}
-                                                            {discounts.length === 0 && (
-                                                                <li className="mt-1 p-2 rounded-lg border border-[#adaaaa] shadow cursor-pointer hover:bg-black hover:text-white transition-color duration-300 text-sm">No discounts</li>
-                                                            )}
-                                                        </ul>
-                                                </div>
-                                               
-                                               
-                                               
-                                            </td>
-                                            <td className={`${i === publishDatas.length - 1? "": "border-b"} px-5 pb-4 `} >
-                                                <button className="cursor-pointer border-1 px-3 py-1 rounded-lg bg-[#bd2d2dc9] text-white hover:bg-[#f44336] transition-color duration-300 text-nowrap" onClick={() => handleUnpublish(i)}> Undo</button>
-                                            </td>
-                                           
-                                           </tr>
-                                        )
-                                    })}
-                                    </tbody>
-                    
-                                </table>
+    if (publishDatas.length > 0) {
+        return (
+            <div className="w-full my-4 sm:my-6 flex flex-col gap-5">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Published Products</h1>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Manage and track your live products ({publishDatas.length})</p>
                     </div>
-                    <CartTab />
+                </div>
 
-            </div>
-        )
-    }
-    
-    if(publishDatas.length === 0) {
-        return(
-            <div className="mt-10">
-                <NotFoundProducts />
+                {/* Mobile Card List (< 640px) */}
+                <div className="sm:hidden flex flex-col gap-3">
+                    {publishDatas.map((item, i) => (
+                        <div key={i} className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs flex flex-col gap-3">
+                            <div className="flex gap-3">
+                                <div className="relative w-16 h-16 rounded-lg bg-slate-50 border border-slate-100 overflow-hidden shrink-0">
+                                    <Image src={item.product_thumb} alt={item.product_name} fill className="object-contain p-1" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="text-sm font-semibold text-slate-900 line-clamp-1">{item.product_name}</h3>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-xs px-2 py-0.5 bg-blue-50 text-[#0573f0] rounded-md font-medium capitalize">
+                                            {item.product_type}
+                                        </span>
+                                        <span className="text-xs text-slate-500 font-medium">Qty: {item.product_quantity}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                                <div className="relative">
+                                    <button
+                                        type="button"
+                                        onClick={() => { handleOpenDiscounts(i); getDiscountsProduct(i); }}
+                                        className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium flex items-center gap-1 cursor-pointer"
+                                    >
+                                        <span>Discounts ▼</span>
+                                    </button>
+                                    {activeItem === i && (
+                                        <div className="absolute left-0 mt-1 z-30 w-48 bg-white border border-slate-200 rounded-lg shadow-lg p-2">
+                                            {discounts.length > 0 ? (
+                                                discounts.map((d, dIdx) => (
+                                                    <div key={dIdx} className="p-1.5 text-xs text-slate-700 bg-slate-50 rounded mb-1 font-mono">
+                                                        {d.discount_code}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p className="text-xs text-slate-400 p-1">No discounts</p>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onClick={() => handleUnpublish(i)}
+                                    className="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 rounded-lg font-semibold transition-colors cursor-pointer"
+                                >
+                                    Unpublish
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Tablet & Desktop Table (>= 640px) */}
+                <div className="hidden sm:block overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-2xs">
+                    <table className="w-full text-left border-collapse text-sm">
+                        <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs uppercase font-semibold">
+                            <tr>
+                                <th className="px-4 py-3">Thumb</th>
+                                <th className="px-4 py-3">Name</th>
+                                <th className="px-4 py-3">Type</th>
+                                <th className="px-4 py-3">Quantity</th>
+                                <th className="px-4 py-3">Shop</th>
+                                <th className="px-4 py-3">Discounts</th>
+                                <th className="px-4 py-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-slate-700">
+                            {publishDatas.map((item, i) => (
+                                <tr key={i} className="hover:bg-slate-50/70 transition-colors">
+                                    <td className="px-4 py-3">
+                                        <div className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 overflow-hidden">
+                                            <Image src={item.product_thumb} alt={item.product_name} fill className="object-contain p-1" />
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-3 font-medium text-slate-900 max-w-xs truncate">{item.product_name}</td>
+                                    <td className="px-4 py-3 capitalize">{item.product_type}</td>
+                                    <td className="px-4 py-3 font-semibold">{item.product_quantity}</td>
+                                    <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{item.product_shop.name}</td>
+                                    <td className="px-4 py-3 whitespace-nowrap relative">
+                                        <button
+                                            type="button"
+                                            onClick={() => { handleOpenDiscounts(i); getDiscountsProduct(i); }}
+                                            className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md text-xs font-medium cursor-pointer"
+                                        >
+                                            Discounts ▼
+                                        </button>
+                                        {activeItem === i && (
+                                            <div className="absolute left-4 mt-1 z-30 w-48 bg-white border border-slate-200 rounded-lg shadow-lg p-2">
+                                                {discounts.length > 0 ? (
+                                                    discounts.map((d, dIdx) => (
+                                                        <div key={dIdx} className="p-1.5 text-xs text-slate-700 bg-slate-50 rounded mb-1 font-mono">
+                                                            {d.discount_code}
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p className="text-xs text-slate-400 p-1">No discounts</p>
+                                                )}
+                                            </div>
+                                        )}
+                                    </td>
+                                    <td className="px-4 py-3 text-right">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleUnpublish(i)}
+                                            className="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+                                        >
+                                            Unpublish
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
                 <CartTab />
             </div>
-        )
+        );
+    }
+    
+    if (publishDatas.length === 0) {
+        return (
+            <div className="w-full py-8">
+                <NotFoundProducts
+                    title="No Published Products"
+                    description="You haven't published any products yet. Create and publish products to make them visible in your store."
+                    actionText="+ Create Product"
+                    actionHref="/user/shop/product"
+                />
+                <CartTab />
+            </div>
+        );
     }
 }
 

@@ -64,58 +64,105 @@ const DraftPage = () => {
     }
 
     
-    if(draftDatas.length > 0) {
-        return(
-            <div className="flex flex-col gap-5 mt-10 ml-20">
-            <h1 className="text-xl font-bold">Draft List</h1>
-            
-            <div>
-                <table className=" xl:w-full lg:w-[1024px] md:[768px] sm:w-[640px] border-1 rounded-lg border-separate border-spacing-y-5">
-                    <thead >
-                        <tr >
-                            <th>Thumb</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Quantity</th>
-                            <th>Shop</th>
-                        </tr>
-                    </thead>
-    
-                    <tbody className="relative">
-                    {draftDatas.map((item,i) => {
-                        return (
-                           <tr key={i} className="text-center">
-                            <td className={`${i === draftDatas.length - 1? "": "border-b"} px-5 pb-4`}> <Image className="rounded-md" src={`${item.product_thumb}`} width={100} height={100} alt="img" /></td>
-                            <td className={`${i === draftDatas.length - 1? "": "border-b"} px-5 pb-4`}>{item.product_name}</td>
-                            <td className={`${i === draftDatas.length - 1? "": "border-b"} px-5 pb-4`}>{item.product_type}</td>
-                            <td className={`${i === draftDatas.length - 1? "": "border-b"} px-5 pb-4`}>{item.product_quantity}</td>
-                            <td className={`${i === draftDatas.length - 1? "": "border-b "} px-5 pb-4 text-nowrap`}>{item.product_shop.name}</td>
-                            <td className={`${i === draftDatas.length - 1? "": "border-b"} px-5 pb-4 `} >
-                                <button className="cursor-pointer border-1 px-3 py-1 rounded-lg bg-black text-white hover:bg-[#0573f0] transition-color duration-300" onClick={() => handlePublish(i)}>Publish</button>
-                            </td>
-                           
-                           </tr>
-                        )
-                    })}
-                    </tbody>
-    
-                </table>
-            </div>
-            <CartTab />
+    if (draftDatas.length > 0) {
+        return (
+            <div className="w-full my-4 sm:my-6 flex flex-col gap-5">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Draft Products</h1>
+                        <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Manage and publish your unpublished drafts ({draftDatas.length})</p>
+                    </div>
+                </div>
 
-        </div>
-        )
+                {/* Mobile Card List (< 640px) */}
+                <div className="sm:hidden flex flex-col gap-3">
+                    {draftDatas.map((item, i) => (
+                        <div key={i} className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs flex flex-col gap-3">
+                            <div className="flex gap-3">
+                                <div className="relative w-16 h-16 rounded-lg bg-slate-50 border border-slate-100 overflow-hidden shrink-0">
+                                    <Image src={item.product_thumb} alt={item.product_name} fill className="object-contain p-1" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="text-sm font-semibold text-slate-900 line-clamp-1">{item.product_name}</h3>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-xs px-2 py-0.5 bg-blue-50 text-[#0573f0] rounded-md font-medium capitalize">
+                                            {item.product_type}
+                                        </span>
+                                        <span className="text-xs text-slate-500 font-medium">Qty: {item.product_quantity}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                                <span className="text-slate-500 font-medium">{item.product_shop.name}</span>
+                                <button
+                                    type="button"
+                                    onClick={() => handlePublish(i)}
+                                    className="px-4 py-1.5 bg-[#0573f0] hover:bg-[#0769da] text-white rounded-lg font-semibold transition-colors cursor-pointer shadow-xs"
+                                >
+                                    Publish
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Tablet & Desktop Table (>= 640px) */}
+                <div className="hidden sm:block overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-2xs">
+                    <table className="w-full text-left border-collapse text-sm">
+                        <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs uppercase font-semibold">
+                            <tr>
+                                <th className="px-4 py-3">Thumb</th>
+                                <th className="px-4 py-3">Name</th>
+                                <th className="px-4 py-3">Type</th>
+                                <th className="px-4 py-3">Quantity</th>
+                                <th className="px-4 py-3">Shop</th>
+                                <th className="px-4 py-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-slate-700">
+                            {draftDatas.map((item, i) => (
+                                <tr key={i} className="hover:bg-slate-50/70 transition-colors">
+                                    <td className="px-4 py-3">
+                                        <div className="relative w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 overflow-hidden">
+                                            <Image src={item.product_thumb} alt={item.product_name} fill className="object-contain p-1" />
+                                        </div>
+                                    </td>
+                                    <td className="px-4 py-3 font-medium text-slate-900 max-w-xs truncate">{item.product_name}</td>
+                                    <td className="px-4 py-3 capitalize">{item.product_type}</td>
+                                    <td className="px-4 py-3 font-semibold">{item.product_quantity}</td>
+                                    <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{item.product_shop.name}</td>
+                                    <td className="px-4 py-3 text-right">
+                                        <button
+                                            type="button"
+                                            onClick={() => handlePublish(i)}
+                                            className="px-3.5 py-1.5 bg-[#0573f0] hover:bg-[#0769da] text-white rounded-lg text-xs font-semibold transition-colors cursor-pointer shadow-xs"
+                                        >
+                                            Publish
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <CartTab />
+            </div>
+        );
     } 
     
     if (draftDatas.length === 0) {
-    return(
-        <div className="m-10">
-            <NotFoundProducts />
-            <CartTab />
-
-        </div>
-
-        )
+        return (
+            <div className="w-full py-8">
+                <NotFoundProducts
+                    title="No Draft Products"
+                    description="You don't have any products in draft. Create a new draft product to work on before publishing."
+                    actionText="+ Create Draft"
+                    actionHref="/user/shop/product"
+                />
+                <CartTab />
+            </div>
+        );
     }
 
     

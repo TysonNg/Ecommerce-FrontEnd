@@ -98,14 +98,19 @@ export async function getAllProducts(limit:number,category: string, apiKey: stri
 
 //search product
 export async function searchProducts(params: string, apiKey: string){
-  const res = await fetch(`${rootApi}/product/search/${params}`,{
-    method: "GET",
-    headers:{
-      "x-api-key": apiKey 
-    }
-  })
-  if (!res) throw new Error("Fail to fetch Data getProductByCategory");
-  const data = await res.json()  
-  return data.metadata
+  try {
+    const res = await fetch(`${rootApi}/product/search/${encodeURIComponent(params.trim())}`,{
+      method: "GET",
+      headers:{
+        "x-api-key": apiKey 
+      }
+    })
+    if (!res.ok) return [];
+    const data = await res.json()  
+    return data?.metadata || []
+  } catch (error) {
+    console.error("searchProducts error:", error);
+    return [];
+  }
 }
 

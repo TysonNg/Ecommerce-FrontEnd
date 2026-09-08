@@ -33,15 +33,20 @@ interface Order {
         method: string
     }
  }
-export async function OrderByUser(payload:Order) {
-    try {        
-        const res = await api.post('/checkout/handleOrder',payload)
-        if(!res.data) throw new Error('Fail to fetch OrderByUser')
-        return res.data
-    } catch (error) {
-        console.log('Fail to fetch OrderByUser', error);
-        
-    }
+export async function OrderByUser(payload: Order) {
+  try {
+    const res = await api.post('/checkout/handleOrder', payload);
+    if (!res.data) throw new Error('No response data from server');
+    return { success: true, data: res.data };
+  } catch (error: any) {
+    console.error('Fail to fetch OrderByUser:', error);
+    const message =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      error?.message ||
+      'Failed to place order. Please try again.';
+    return { success: false, message };
+  }
 }
 
 

@@ -188,215 +188,227 @@ export default async function Home() {
    
   return (
     <>
-      <div className="bg-[#f8fbfc]">
-        <section className="banner">
-          <div className="w-full max-w-[465px] lg:max-w-[1536px] lg:max-w-[1280px] md:max-w-[1024px] sm:max-w-[768px] xs:max-w-[600px]  h-[650px] 2xl:max-w-full mx-auto my-0 relative">
-            <Image className="object-cover" src="/banner.jpg" fill alt="banner"/>
+      <div className="bg-[#f8fbfc] overflow-x-hidden w-full max-w-full">
+        {/* Hero Banner */}
+        <section className="banner w-full">
+          <div className="w-full h-[260px] sm:h-[400px] lg:h-[550px] relative overflow-hidden">
+            <Image className="object-cover" src="/banner.jpg" fill alt="banner" priority />
           </div>
         </section>
-        
-        <section className={`${styles.body_top}`}>
-          <div className={`${styles.body__top_container}  xl:w-[1200px] lg:w-[1024px]  md:[768px] sm:w-[640px]  mx-auto my-0 relative`}>
-            <section className={`${styles.services__section} bg-white`}>
-              <div
-                className={`${styles.services__section_container} flex xl:flex-row flex-col gap-15 `}
-              >
-                {services.map((service) => {
-                  return (
-                    <div
-                      key={services.indexOf(service)}
-                      className={`${styles.wrap_services} flex gap-4`}
-                    >
-                      <span className="content-center">
-                        <FontAwesomeIcon
-                          className="text-[#3e74ee] text-4xl"
-                          icon={service.icon}
-                        />
-                      </span>
-                      <div>
-                        <p className="text-base font-bold">{service.name}</p>
-                        <p className="text-sm text-nowrap text-[#6e97a5]">
-                          {service.text}
-                        </p>
-                      </div>
+
+        {/* Body Top: Services & Categories */}
+        <section className={`${styles.body_top} px-4`}>
+          <div className={`${styles.body__top_container}`}>
+            {/* Services bar */}
+            <section className={`${styles.services__section}`}>
+              <div className={`${styles.services__section_container} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6`}>
+                {services.map((service, index) => (
+                  <div key={index} className="flex items-center gap-4 p-2">
+                    <span className="shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 text-[#0573f0]">
+                      <FontAwesomeIcon className="text-xl" icon={service.icon} />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-sm sm:text-base font-bold text-slate-800">{service.name}</p>
+                      <p className="text-xs text-slate-500 leading-snug">{service.text}</p>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </section>
+
+            {/* Product categories grid */}
             <section className={`${styles.categoriesProduct__section}`}>
-              <div className={`categoriesProduct__section_container bg-white`}>
-                <ul className={`elementor_col grid xl:grid-cols-12 xl:mt-0 grid-cols-9 mt-[200px]`}>
-                  {categoriesProduct.map((product) => {
-                    return (
-                      <li
-                        key={categoriesProduct.indexOf(product)}
-                        className={`${styles.elementor_elenment} col-span-3 text-center bg-white py-10`}
-                      >
-                        <Link href={product.link}>
-                          <Image src={product.url} width={300} height={200} alt={product.name} />
-                          <div className="flex flex-col">
-                            <p className="text-lg font-bold">{product.name}</p>
-                            <span>see more</span>
-                          </div>
-                        </Link>
-                      </li>
-                    );
-                  })}
+              <div className="bg-white">
+                <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 sm:p-6">
+                  {categoriesProduct.map((product, index) => (
+                    <li key={index} className="text-center p-4 rounded-xl hover:bg-slate-50 transition-colors">
+                      <Link href={product.link} className="flex flex-col items-center group">
+                        <div className="relative w-full max-w-[160px] sm:max-w-[200px] h-[120px] sm:h-[150px] mb-3">
+                          <Image
+                            src={product.url}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 640px) 160px, 200px"
+                            className="object-contain group-hover:scale-105 transition-transform"
+                          />
+                        </div>
+                        <p className="text-sm sm:text-base font-bold text-slate-800 group-hover:text-[#0573f0] transition-colors">{product.name}</p>
+                        <span className="text-xs text-[#0573f0] font-medium mt-1">Shop now →</span>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </section>
           </div>
         </section>
 
-        <section className={`${styles.banner}`}>
-          <div className={`${styles.banner_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto my-0 grid grid-cols-12 gap-10 `}>
-            {bodyBanner.map((banner) => {
-              return (
-                <div key={bodyBanner.indexOf(banner)} className="w-full h-auto col-span-6">
-                  <Link href="#">
-                    <Image src={banner.url} width={580} height={200} alt={banner.name} />
-                  </Link>
-                </div>
-              );
-            })}
+        {/* Promo Banners */}
+        <section className={`${styles.banner} px-4`}>
+          <div className="w-full max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            {bodyBanner.map((banner, index) => (
+              <div key={index} className="w-full rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
+                <Link href="/products" className="block relative w-full h-[140px] sm:h-[200px]">
+                  <Image src={banner.url} alt={banner.name} fill sizes="(max-width: 640px) 100vw, 600px" className="object-cover" />
+                </Link>
+              </div>
+            ))}
           </div>
         </section>
 
-        <section className={`${styles.hotdeal_products}`}>
-          <div
-            className={`${styles.hotdeal_products_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto my-0  shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
-          >
+        {/* Hot Deals */}
+        <section className={`${styles.hotdeal_products} px-4`}>
+          <div className={`${styles.hotdeal_products_container} w-full max-w-[1200px] mx-auto shadow-sm bg-white`}>
             <div className={`${styles.hotdeal_title}`}>
               Today&apos;s best deal
-              <span className={`${styles.seemore} `}>
-                <Link href="#" >see more</Link>
+              <span className={`${styles.seemore}`}>
+                <Link href="/products?page=1">see more</Link>
               </span>
             </div>
-            <ProductGrid products={productsHotDeal} numOfProduct={6}  cartRem = {1}/>
+            <ProductGrid products={productsHotDeal} numOfProduct={6} cartRem={1} />
           </div>
         </section>
 
-        <section className={`${styles.elements} `}>
-          <div className={`${styles.elements_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto my-0`}>
-            <ul className="grid xl:grid-cols-12 lg:grid-cols-8 sm: grid-cols-4 min-h-[304px]">
-              {elements.map((element) => {
-                return (
-                  <li key={elements.indexOf(element)} className={`${styles[element.name]} flex flex-col gap-2 col-span-4`}>
-                    <p className={`${styles[element.title]} text-3xl font-semibold`}>{element.title}</p>
-                    <p className={`${styles[element.decriptions]} text-[#647075]`}>
-                      {element.decriptions}
-                    </p>
-                    <div className={`${styles.element_image}`}>
-                      <img className={`${styles.image} `} alt={element.name} src={element.image} />
-                    </div>
-                    <Link className="text-[#1a5bd5] font-bold text-sm" href="#" >Shop now</Link>
-                  </li>
-                );
-              })}
+        {/* Highlight Elements */}
+        <section className={`${styles.elements} px-4`}>
+          <div className={`${styles.elements_container} w-full max-w-[1200px] mx-auto`}>
+            <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {elements.map((element, index) => (
+                <li key={index} className={`${styles[element.name]} flex flex-col justify-between min-h-[170px]`}>
+                  <div>
+                    <p className="text-2xl font-bold text-slate-900">{element.title}</p>
+                    <p className="text-sm text-slate-600 mt-1">{element.decriptions}</p>
+                  </div>
+                  <div className="mt-4">
+                    <Link className="text-[#0573f0] font-bold text-sm hover:underline" href="/products">
+                      Shop now →
+                    </Link>
+                  </div>
+                  <div className={`${styles.element_image}`}>
+                    <img className="w-auto h-auto max-h-[110px]" alt={element.name} src={element.image} />
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
         </section>
 
-        <section className={`${styles.electronics}  mt-[40px] px-[40px] py-0 bg-[#f8fbfc]`}>
-          <div
-            className={`${styles.electronics_container}  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
-          >
-            <div className={`${styles.electronics_title} text-[1.2rem] font-bold p-[1rem] `}>
-              Electronics
-              <span className={`${styles.seemore} `}>
-                <Link href="/products?category=electronics&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</Link>
-              </span>
+        {/* Electronics Shelf */}
+        <section className="mt-10 px-4">
+          <div className="w-full max-w-[1200px] border border-[#dce3e5] mx-auto shadow-sm bg-white rounded-xl overflow-hidden">
+            <div className="text-lg font-bold p-4 flex items-center justify-between border-b border-slate-100">
+              <span>Electronics</span>
+              <Link href="/products?category=electronics&&page=1" className="text-sm text-[#0573f0] font-semibold hover:underline">
+                see more →
+              </Link>
             </div>
-            <ProductGrid products={productsElectronics} numOfProduct={4} cartRem = {1}/>
+            <ProductGrid products={productsElectronics} numOfProduct={4} cartRem={1} />
           </div>
         </section>
 
-        <section className={`  mt-[40px] px-[40px] py-0 bg-[#f8fbfc]`}>
-          <div
-            className={`  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
-          >
-            <div className={`text-[1.2rem] font-bold p-[1rem] `}>
-              PC&Laptop
-              <span >
-                <Link href="/products?category=laptop&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</Link>
-              </span>
+        {/* PC & Laptop Shelf */}
+        <section className="mt-10 px-4">
+          <div className="w-full max-w-[1200px] border border-[#dce3e5] mx-auto shadow-sm bg-white rounded-xl overflow-hidden">
+            <div className="text-lg font-bold p-4 flex items-center justify-between border-b border-slate-100">
+              <span>PC & Laptop</span>
+              <Link href="/products?category=laptop&&page=1" className="text-sm text-[#0573f0] font-semibold hover:underline">
+                see more →
+              </Link>
             </div>
-            <ProductGrid products={productsLaptop} numOfProduct={4} cartRem = {1}/>
+            <ProductGrid products={productsLaptop} numOfProduct={4} cartRem={1} />
           </div>
         </section>
 
-        <section >
-              <div className="xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto mt-[40px] ">
-                  <Image className="cursor-pointer" src='https://websitedemos.net/electronic-store-04/wp-content/uploads/sites/1055/2022/03/electronic-store-promotional-banner-fwidth-1.jpg' width={1200} height={120} alt="banner"/>
-              </div>
+        {/* Full-width Promotional Banner */}
+        <section className="mt-10 px-4">
+          <div className="w-full max-w-[1200px] mx-auto rounded-xl overflow-hidden shadow-xs">
+            <Link href="/products" className="block relative w-full h-[90px] sm:h-[130px] md:h-[150px]">
+              <Image
+                src="https://websitedemos.net/electronic-store-04/wp-content/uploads/sites/1055/2022/03/electronic-store-promotional-banner-fwidth-1.jpg"
+                fill
+                sizes="(max-width: 1200px) 100vw, 1200px"
+                alt="banner"
+                className="object-cover"
+              />
+            </Link>
+          </div>
         </section>
 
-        <section className={`mt-[40px] px-[40px] py-0 bg-[#f8fbfc]`}>
-          <div
-            className={`  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
-          >
-            <div className={`text-[1.2rem] font-bold p-[1rem] `}>
-              Gadgets
-              <span >
-                <Link href="/products?category=gadget&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</Link>
-              </span>
+        {/* Gadgets Shelf */}
+        <section className="mt-10 px-4">
+          <div className="w-full max-w-[1200px] border border-[#dce3e5] mx-auto shadow-sm bg-white rounded-xl overflow-hidden">
+            <div className="text-lg font-bold p-4 flex items-center justify-between border-b border-slate-100">
+              <span>Gadgets</span>
+              <Link href="/products?category=gadget&&page=1" className="text-sm text-[#0573f0] font-semibold hover:underline">
+                see more →
+              </Link>
             </div>
-            <ProductGrid products={productsGadget} numOfProduct={4} cartRem = {1}/>
+            <ProductGrid products={productsGadget} numOfProduct={4} cartRem={1} />
           </div>
         </section>
 
-        <section className={`mt-[40px] px-[40px] py-0 bg-[#f8fbfc]`}>
-          <div
-            className={`  xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] border border-[#dce3e5] mx-auto my-0 shadow-lg shadow-[0px_12px_0px_-6px_rgba(0, 0, 0, 0.04)] bg-white`}
-          >
-            <div className={`text-[1.2rem] font-bold p-[1rem] `}>
-              Kitchen appliances
-              <span >
-                <Link href="/products?category=kitchenAppliances&&page=1" className="text-[1rem] text-[#5774e9] text-sm pl-[0.7rem] font-bold">see more</Link>
-              </span>
+        {/* Kitchen Appliances Shelf */}
+        <section className="mt-10 px-4">
+          <div className="w-full max-w-[1200px] border border-[#dce3e5] mx-auto shadow-sm bg-white rounded-xl overflow-hidden">
+            <div className="text-lg font-bold p-4 flex items-center justify-between border-b border-slate-100">
+              <span>Kitchen appliances</span>
+              <Link href="/products?category=kitchenAppliances&&page=1" className="text-sm text-[#0573f0] font-semibold hover:underline">
+                see more →
+              </Link>
             </div>
-            <ProductGrid products={productsKitchenAppliances} numOfProduct={4} cartRem = {1}/>
+            <ProductGrid products={productsKitchenAppliances} numOfProduct={4} cartRem={1} />
           </div>
         </section>
 
-        <section>
-          <div className=" xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto mt-[40px] grid grid-cols-6">
-              <div className="col-span-3 bg-white">
-                <div className="flex flex-col w-3/4 h-full gap-5 mt-10 ml-10 item-center">
-                  <h1 className="text-sm text-[#9ca7ab]">Brand&apos;s deal</h1>
-                  <p className="text-2xl font-bold">Save up to $200 on select Samsung washing machine</p>
-                  <p className="text-sm">Tortor purus et quis aenean tempus tellus fames.</p>
-                  <Link href="#" className="text-[#0573f0] font-bold text-sm">Shop now</Link>
-                </div>
+        {/* Brand's Deal Banner */}
+        <section className="mt-10 px-4">
+          <div className="w-full max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 rounded-xl overflow-hidden border border-[#dce3e5] bg-white">
+            <div className="p-6 sm:p-10 flex flex-col justify-center">
+              <div className="flex flex-col gap-3">
+                <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Brand&apos;s deal</h2>
+                <p className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
+                  Save up to $200 on select Samsung washing machine
+                </p>
+                <p className="text-sm text-slate-500">Tortor purus et quis aenean tempus tellus fames.</p>
+                <Link href="/products" className="text-[#0573f0] font-bold text-sm hover:underline mt-2">
+                  Shop now →
+                </Link>
               </div>
-              <div className="col-span-3"> 
-                  <Image src={`https://websitedemos.net/electronic-store-04/wp-content/uploads/sites/1055/2022/03/electronic-store-promotional-banner-hwidth-1.jpg`} alt="banner" width={600} height={400} />
-              </div>
+            </div>
+            <div className="relative min-h-[220px] sm:min-h-[300px]">
+              <Image
+                src="https://websitedemos.net/electronic-store-04/wp-content/uploads/sites/1055/2022/03/electronic-store-promotional-banner-hwidth-1.jpg"
+                alt="banner"
+                fill
+                sizes="(max-width: 768px) 100vw, 600px"
+                className="object-cover"
+              />
+            </div>
           </div>
         </section>
-        
-        <section className="mb-[40px]">
-              <div className=" xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto mt-[40px]">
-                  <h1 className="text-xl font-bold">Top brands</h1>
-                  <ul className="grid grid-cols-12 mt-5">
-                    {
-                      topBrands.map((img,i) => {
-                        return(
-                          <li key={i} className="border border-[#dce3e5] col-span-2 px-10 py-5 bg-white content-center justify-items-center">
-                            <Image src={img.url} width={70} height={70} alt="imageTopBrand"/>
-                          </li>
-                        )
-                      })
-                    }
-                  </ul>
-                  
-              </div>
+
+        {/* Top Brands Grid */}
+        <section className="my-10 px-4">
+          <div className="w-full max-w-[1200px] mx-auto">
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Top brands</h2>
+            <ul className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+              {topBrands.map((img, i) => (
+                <li
+                  key={i}
+                  className="border border-[#dce3e5] p-3 sm:p-4 bg-white flex items-center justify-center rounded-xl hover:shadow-sm transition-shadow h-20"
+                >
+                  <div className="relative w-16 h-12">
+                    <Image src={img.url} alt="imageTopBrand" fill sizes="64px" className="object-contain" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
-        
-        
-        <section className={`${styles.cartTab} `}>
-            <CartTab />
+
+        {/* Slide-over Cart Tab */}
+        <section className={styles.cartTab}>
+          <CartTab />
         </section>
       </div>
     </>

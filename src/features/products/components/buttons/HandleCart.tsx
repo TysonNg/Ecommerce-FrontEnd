@@ -5,6 +5,10 @@ import { addToCart } from "@/features/cart/actions/addToCart";
 import Cookies from "js-cookie";
 import { updateQuantityCart } from "@/features/cart/actions/updateQuantityCart";
 import { getCartById } from "@/features/cart/data/data";
+import { useToast } from "@/app/context/ToastContext";
+import { useModal } from "@/app/context/ModalContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping, faSpinner, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 interface HandleCartProps {
     name: string;
@@ -18,7 +22,6 @@ interface HandleCartProps {
     shopIdCartTab: string;
     slug: string;
     onHandleChangePrice: (newQuantity: number) => void
-
 }
 type PartialProps = Partial<HandleCartProps>
 
@@ -33,123 +36,191 @@ interface ProductOfCart {
 }
 
 const HandleCart = (props: PartialProps) => {
-    const {name,productId, shopId,price,imgThumb,cartTab, productQuantityCartTab, productIdCartTab, shopIdCartTab, onHandleChangePrice, slug} = props
+    const {name, productId, shopId, price, imgThumb, cartTab, productQuantityCartTab, productIdCartTab, shopIdCartTab, onHandleChangePrice, slug} = props;
 
     const [quantity, setQuantity] = useState(1);
-    const [quantityCartTab, setQuantityCartTab] = useState<number|undefined>(productQuantityCartTab)
+    const [quantityCartTab, setQuantityCartTab] = useState<number|undefined>(productQuantityCartTab);
+    const [isAdding, setIsAdding] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+
+    const { toast } = useToast();
+    const { openCartModal } = useModal();
     
     const inscreaseQuantity = () => {
-        setQuantity((prev) => prev + 1 )
-    }
+        setQuantity((prev) => prev + 1 );
+    };
 
-    const decreaseQuantity= () => {
-        if(quantity > 1) setQuantity((prev) => prev - 1)
-    }
+    const decreaseQuantity = () => {
+        if(quantity > 1) setQuantity((prev) => prev - 1);
+    };
 
     const getProductOfCart = async() => {
-        const res = await getCartById()
-         
-        const result = res.metadata.cart_products.filter((item : ProductOfCart) => item.productId === `${cartTab? productIdCartTab : productId}`)
-        return result
-    }
+        const res = await getCartById();
+        const result = res.metadata.cart_products.filter((item : ProductOfCart) => item.productId === `${cartTab? productIdCartTab : productId}`);
+        return result;
+    };
 
     const handleAddToCart = async () => {
-        const tempId= Cookies.get(`tempId`)
+        if (isAdding) return;
+        setIsAdding(true);
+        const tempId = Cookies.get(`tempId`);
+        const id: string | undefined = Cookies.get('_id');
+        const cartUserId: string | undefined = Cookies.get(`cartId_${id}`);
         
-        const id : string | undefined = Cookies.get('_id')
-        const cartUserId : string | undefined = Cookies.get(`cartId_${id}`)
-        
-        const res = await addToCart({
-            userId: cartUserId? cartUserId:tempId??"",
-            product:{
-            name: name??"",
-            price: price?? 1,
-            productId: productId?? "",
-            quantity: quantity??1,
-            shopId: shopId??"",
-            imgThumb: imgThumb??"",
-            slug: slug??""
+        try {
+            const res = await addToCart({
+                userId: cartUserId ? cartUserId : tempId ?? "",
+                product: {
+                    name: name ?? "",
+                    price: price ?? 1,
+                    productId: productId ?? "",
+                    quantity: quantity ?? 1,
+                    shopId: shopId ?? "",
+                    imgThumb: imgThumb ?? "",
+                    slug: slug ?? ""
+                }
+            });
 
-        }})
-        localStorage.setItem('cartQuantity',res.metadata.cart_products.length)
-        window.dispatchEvent(new Event('cartQuantityStorage'))
-        alert(`Successfully add ${quantity} product to cart!`)
-        setTimeout(() => window.location.reload(),1000)
-        return res
-        
-    }
+            if (res?.metadata?.cart_products) {
+                localStorage.setItem('cartQuantity', res.metadata.cart_products.length);
+            }
+            window.dispatchEvent(new Event('cartQuantityStorage'));
+            
+            setIsAdding(false);
+            setIsSuccess(true);
+            setTimeout(() => setIsSuccess(false), 1600);
+
+            // Trigger modern Toast feedback
+            toast.success({
+                title: "Added to cart!",
+                message: `Successfully added ${quantity} item(s) to cart.`,
+                product: {
+                    name: name ?? "Product",
+                    price: price ?? 0,
+                    thumb: imgThumb ?? "",
+                    quantity: quantity
+                },
+                actionLabel: "View Cart",
+                onAction: () => openCartModal()
+            });
+
+            return res;
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+            setIsAdding(false);
+            toast.error({
+                title: "Could not add to cart",
+                message: "Please try again shortly!"
+            });
+        }
+    };
 
     const handleUpdateCart = async(newQuantity:number) => {
-        const guestId : string | undefined = Cookies.get(`guestId`)
+        const guestId: string | undefined = Cookies.get(`guestId`);
         if (!guestId){
-            throw new Error('guestId is undefined')
+            throw new Error('guestId is undefined');
         }
-        const id : string | undefined = Cookies.get('_id')
-        const cartUserId : string | undefined = Cookies.get(`cartId_${id}`)
-        
-        const tempId: string | undefined = Cookies.get('tempId')
+        const id: string | undefined = Cookies.get('_id');
+        const cartUserId: string | undefined = Cookies.get(`cartId_${id}`);
+        const tempId: string | undefined = Cookies.get('tempId');
 
-        const product = await getProductOfCart()
+        const product = await getProductOfCart();
        
-        
         await updateQuantityCart({
-            userId: cartUserId??tempId??'defaultId',
+            userId: cartUserId ?? tempId ?? 'defaultId',
             shop_order_ids:[{
-                shopId : shopIdCartTab?? "",
+                shopId: shopIdCartTab ?? "",
                 item_products:[{
-                    quantity: cartTab? newQuantity: quantity,
-                    old_quantity: product[0].quantity,
-                    productId: cartTab? productIdCartTab??"" : productId??""
+                    quantity: cartTab ? newQuantity : quantity,
+                    old_quantity: product[0]?.quantity ?? 1,
+                    productId: cartTab ? productIdCartTab ?? "" : productId ?? ""
                 }] 
             }]
-        })
-    }
+        });
+    };
 
     const handleClickDecrease = async() => {
         if(!cartTab){
-            decreaseQuantity()
+            decreaseQuantity();
         }
         
-        if( (quantityCartTab??0) > 1)
-        {
-            setQuantityCartTab((prev:number|undefined) => (prev??1) - 1)
-            const newQuantity = (quantityCartTab??1) - 1
+        if((quantityCartTab ?? 0) > 1) {
+            setQuantityCartTab((prev:number|undefined) => (prev ?? 1) - 1);
+            const newQuantity = (quantityCartTab ?? 1) - 1;
             if(cartTab){
-                onHandleChangePrice?.(newQuantity)
+                onHandleChangePrice?.(newQuantity);
             }
-            console.log(newQuantity);
-            
-            await handleUpdateCart(newQuantity)
+            await handleUpdateCart(newQuantity);
         }
-        
-    }
+    };
 
     const handleClickIncrease = async() => {
         if(!cartTab){
-            inscreaseQuantity()
+            inscreaseQuantity();
         }
-        setQuantityCartTab((prev: number|undefined) => (prev??1) + 1)
-        const newQuantity = (quantityCartTab??1) + 1
-        console.log(newQuantity);
-        
+        setQuantityCartTab((prev: number|undefined) => (prev ?? 1) + 1);
+        const newQuantity = (quantityCartTab ?? 1) + 1;
         if(cartTab){
-            onHandleChangePrice?.(newQuantity)
+            onHandleChangePrice?.(newQuantity);
         }
-        await handleUpdateCart(newQuantity)
-    }
+        await handleUpdateCart(newQuantity);
+    };
 
     return (
-       <div className="flex items-center">
-            <button onClick={handleClickDecrease} className="border-2 border-[#dce3e5]  bg-[#f8fbfc] py-1 px-3 cursor-pointer">-</button>
-            <span className="border border-[#dce3e5] py-1 px-2 text-[#696969]">{cartTab? quantityCartTab: quantity}</span>
-            <button onClick={handleClickIncrease} className="border-2 border-[#dce3e5] bg-[#f8fbfc] py-1 px-3 cursor-pointer">+</button>
+       <div className={`flex items-center gap-2.5 sm:gap-3 ${!cartTab ? "w-full sm:w-auto" : ""}`}>
+            <div className="inline-flex items-center border border-slate-200 rounded-xl overflow-hidden bg-slate-50 shadow-2xs shrink-0">
+                <button
+                    onClick={handleClickDecrease}
+                    aria-label="Decrease quantity"
+                    className="w-8 sm:w-9 h-10 flex items-center justify-center text-slate-600 hover:bg-slate-200/80 font-bold transition-colors cursor-pointer text-base"
+                >
+                    -
+                </button>
+                <span className="w-10 text-center font-bold text-sm text-slate-800 select-none">
+                    {cartTab ? quantityCartTab : quantity}
+                </span>
+                <button
+                    onClick={handleClickIncrease}
+                    aria-label="Increase quantity"
+                    className="w-8 sm:w-9 h-10 flex items-center justify-center text-slate-600 hover:bg-slate-200/80 font-bold transition-colors cursor-pointer text-base"
+                >
+                    +
+                </button>
+            </div>
+
             {/* addToCartBtn */}
-            <button onClick={handleAddToCart} className={`${cartTab?"hidden":""} text-white bg-[#2b323e] text-xs xs:text-base px-4 py-1 ml-4 cursor-pointer hover:bg-[#0573f0] transition-colors duration-500 `}>
-            <svg className="motion-reduce:hidden animate-spin ..." viewBox="0 0 24 24"> Processing...</svg>
-            Add to cart
-            </button>
+            {!cartTab && (
+                <button
+                    onClick={handleAddToCart}
+                    disabled={isAdding}
+                    className={`inline-flex items-center justify-center gap-2 flex-1 sm:flex-initial px-6 py-2.5 h-10 rounded-xl text-sm font-semibold cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 text-center ${
+                        isSuccess
+                            ? "bg-emerald-600 text-white"
+                            : isAdding
+                            ? "bg-blue-500 text-white"
+                            : "bg-[#0573f0] hover:bg-[#0769da] text-white"
+                    }`}
+                >
+                    {isAdding ? (
+                        <>
+                            <FontAwesomeIcon icon={faSpinner} spin className="text-xs" />
+                            <span>Adding...</span>
+                        </>
+                    ) : isSuccess ? (
+                        <>
+                            <FontAwesomeIcon icon={faCheck} className="text-xs" />
+                            <span>Added!</span>
+                        </>
+                    ) : (
+                        <>
+                            <FontAwesomeIcon icon={faCartShopping} className="text-xs" />
+                            <span>Add to cart</span>
+                        </>
+                    )}
+                </button>
+            )}
        </div>
     );
-}
+};
 
 export default HandleCart;

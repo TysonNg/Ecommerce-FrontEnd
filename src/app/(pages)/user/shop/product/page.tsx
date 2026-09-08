@@ -257,190 +257,197 @@ const ProductPage = () => {
     
     console.log('product',product);
 
-return(
-    <div>
+return (
+    <div className="w-full my-4 sm:my-6">
+        <div className="w-full">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6">Create a New Product</h1>
+            <div className="flex flex-col lg:grid lg:grid-cols-6 gap-6">
+                {/* Left Column: Thumb, Images, Status */}
+                <div className="lg:col-span-2 flex flex-col gap-5">
+                    {/* Product Thumb */}
+                    <div className="productThumb bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+                        <h2 className="text-sm font-bold p-3.5 border-b border-slate-200 text-slate-800 bg-slate-50/70">
+                            Product Thumbnail
+                        </h2>
 
-            <div className="px-5 mb-20 createProduct xl:w-full lg:w-[700px]">
-                <h1 className="p-2 text-xl font-bold">Create a New Product</h1>
-                <div className="grid grid-cols-6 gap-5 createProduct-container">
-                    <div className="flex flex-col col-span-2 gap-5 p-2">
-                        <div className="productThumb bg-white rounded-lg shadow border-[#d3d3d3] border-1">
-                            <h2 className="text-sm font-bold p-3 border-b border-[#d3d3d3]">
-                                Product Thumb
-                            </h2>
+                        <div className="p-4">
+                            <div className={`${imgThumb ? `hidden` : ''} imgThumb w-full max-w-[160px] h-36 mx-auto outline-dashed outline-2 outline-slate-300 outline-offset-2 rounded-xl flex flex-col items-center justify-center text-center p-3`}>
+                                <FontAwesomeIcon icon={faImage} className="text-slate-400 text-2xl mb-1" />
+                                <p className="text-xs text-slate-500">
+                                    Upload image 
+                                    <CldUploadWidget options={{sources: ['local','url','unsplash'], publicId: `${shopId}_productThumb_${uuidv4()}`}} uploadPreset="ecommerce_images" onSuccess={(result) => handleSuccessUploadThumb(result)}>
+                                        {({open}) => {
+                                            return(
+                                                <button className="text-[#0573f0] font-semibold cursor-pointer ml-1 underline" onClick={() => open()}>
+                                                    here
+                                                </button>
+                                            )
+                                        }}
+                                    </CldUploadWidget>
+                                </p>
+                            </div>
 
-                            <div className="">
-                                <div className={`${imgThumb? `hidden`: ''} imgThumb w-32 h-32 ml-5 outline-dashed outline-2 outline-[#777b84] outline-offset-2
-                                    rounded-lg content-center text-center my-5`}>
-                                        <FontAwesomeIcon icon={faImage} />
-                                        <p className="text-sm">
-                                            Please drop your image 
-                                            <CldUploadWidget options={{sources: ['local','url','unsplash'], publicId: `${shopId}_productThumb_${uuidv4()}`}} uploadPreset="ecommerce_images" onSuccess={(result) => handleSuccessUploadThumb(result)}>
-                                                    {({open}) => {
-                                                        return(
-                                                            <button className="text-[#1612c3] cursor-pointer ml-1" onClick={() => open()}>
-                                                                here
-                                                            </button>
-                                                        )
-                                                    }}
-                                            </CldUploadWidget>
-                                        </p>
-                                </div>
-
-                                <div className={`${imgThumb? "" : 'hidden' } imgThumb w-32 h-32 ml-5 outline-dashed outline-2 outline-[#777b84] outline-offset-2
-                                rounded-lg content-center text-center my-5 justify-self-center relative`}>
-                                    <Image width={200} height={32} src={imgThumb? imgThumb : "https://websitedemos.net/electronic-store-04/wp-content/uploads/sites/1055/2022/03/electronic-store-product-image-21.jpg"} alt="image"/>
-                                    <button className="cursor-pointer text-xl absolute top-[-15px] right-0  text-[#d95757] hover:text-[#ff6666]" onClick={handleDeleteImageThumb}><FontAwesomeIcon icon={faCircleXmark} /></button>
+                            <div className={`${imgThumb ? "" : 'hidden'} imgThumb w-full max-w-[160px] h-36 mx-auto outline-dashed outline-2 outline-slate-300 outline-offset-2 rounded-xl flex items-center justify-center relative bg-slate-50 overflow-hidden`}>
+                                <Image width={160} height={144} className="object-contain w-full h-full p-2" src={imgThumb ? imgThumb : "/banner.jpg"} alt="Thumbnail"/>
+                                <button className="cursor-pointer text-lg absolute top-1 right-1 text-red-500 hover:text-red-700 bg-white/80 rounded-full w-6 h-6 flex items-center justify-center" onClick={handleDeleteImageThumb}>
+                                    <FontAwesomeIcon icon={faCircleXmark} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Product Images */}
+                    <div className="productImage bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+                        <h2 className="text-sm font-bold p-3.5 border-b border-slate-200 text-slate-800 bg-slate-50/70">
+                            Product Images
+                        </h2>
+                        <div className="p-4 flex flex-row gap-3 overflow-x-auto no-scrollbar">
+                            <div className="shrink-0">
+                                <div className="imgProduct w-28 h-28 border-2 border-dashed border-slate-300 rounded-xl flex flex-col justify-center items-center text-center p-2">
+                                    <FontAwesomeIcon icon={faImage} className="text-slate-400 text-xl mb-1" />
+                                    <p className="text-xs text-slate-500">
+                                        Add images
+                                        <CldUploadWidget options={{sources: ['local','url','unsplash'], multiple: true}} uploadPreset="ecommerce_images" onSuccess={result => handleSuccessUploadImage(result)}>
+                                            {({open}) => {
+                                                return(
+                                                    <button className="text-[#0573f0] font-semibold cursor-pointer ml-1 underline" onClick={() => open()}>
+                                                        here
+                                                    </button>
+                                                )
+                                            }}
+                                        </CldUploadWidget>                                     
+                                    </p>  
                                 </div>
                             </div>
-                            
-
-                        </div>
-                        
-                        <div className="productImage bg-white rounded-lg shadow border-[#d3d3d3] border-1">
-                            <h2 className="text-sm font-bold p-3 border-b border-[#d3d3d3]">
-                                Product Images
-                            </h2>
-                            <div className="flex flex-row my-5 ml-5 overflow-x-auto">
-                                <div>
-                                    <div className="imgProduct w-32 h-32 border-2 border-dashed border-[#777b84] 
-                                    rounded-lg flex flex-col justify-center items-center text-center">
-                                        <FontAwesomeIcon icon={faImage} />
-                                        <p className="text-sm ">
-                                            Please drop your image  
-                                            <CldUploadWidget options={{sources: ['local','url','unsplash'],multiple: true}} uploadPreset="ecommerce_images" onSuccess={result => handleSuccessUploadImage(result)}>
-                                                    {({open}) => {
-                                                        return(
-                                                            <button className="text-[#1612c3] cursor-pointer ml-1 " onClick={() => open()}>
-                                                                here
-                                                            </button>
-                                                        )
-                                                    }}
-                                        </CldUploadWidget>                                     
-                                        </p>  
+                           
+                            {imgs?.map((img, i) => (
+                                <div key={i} className="shrink-0">
+                                    <div className="imgProduct w-28 h-28 border border-slate-200 rounded-xl overflow-hidden relative bg-slate-50">
+                                        <Image width={112} height={112} className="object-contain w-full h-full p-1" src={`${img}`} alt="Product Image"/>
+                                        <button className="cursor-pointer text-lg absolute top-1 right-1 text-red-500 hover:text-red-700 bg-white/80 rounded-full w-6 h-6 flex items-center justify-center" onClick={() => handleDeleteImage(img, i)}>
+                                            <FontAwesomeIcon icon={faCircleXmark} />
+                                        </button>
                                     </div>
                                 </div>
-                               
-                                {imgs?.map((img,i) => {
-                                    return (
-                                        <div key={i}>
-                                            <div className={` imgProduct w-32 h-32 ml-5 border-2 border-dashed border-[#777b84]
-                                            rounded-lg  overflow-hidden relative`} >
-                                                <Image width={128} height={128} src={`${img}`} alt="imageProduct"/>
-                                                <button className="cursor-pointer text-xl absolute top-[-5px] right-0  text-[#d95757] hover:text-[#ff6666]" onClick={() => handleDeleteImage(img,i)}><FontAwesomeIcon className="" icon={faCircleXmark} /></button>
-                                            </div>
-                                        </div>
-                                        
-                                    )
-                                })}
-
-                            
-                            </div>             
-                            
-                            
-                        </div>
-                        
-                    <div className="statusProduct bg-white rounded-lg shadow border-[#d3d3d3] border-1">
-                        <h2 className="text-sm font-bold p-3 border-b border-[#d3d3d3]">
+                            ))}
+                        </div>             
+                    </div>
+                    
+                    {/* Status */}
+                    <div className="statusProduct bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+                        <h2 className="text-sm font-bold p-3.5 border-b border-slate-200 text-slate-800 bg-slate-50/70">
                             Status
                         </h2>
-                        <div className="content-center px-3 pb-4 mt-5 ">
-                            <select className="w-full border-1 border-[#d3d3d3] py-2 px-3 rounded-lg">
+                        <div className="p-4">
+                            <select className="w-full border border-slate-200 py-2.5 px-3 rounded-lg text-sm bg-white text-slate-700 font-medium">
                                 <option value="draft">Draft</option>
                             </select>
                         </div>
                     </div>
-                    <div className={`${isSuccess? "": "hidden"} text-[#40c520] font-bold`}>
-                        Create Product Successfully ✅
-                    </div>
-                        
-                    </div>
-                    
-                    <div className="col-span-4 p-2">
-                        <div className="productType bg-white rounded-lg shadow border-[#d3d3d3] border-1">
-                            <h2 className="text-sm font-bold p-3 border-b border-[#d3d3d3]">Product Type</h2>
-                            <div className="types">
-                                <ul className="flex flex-row gap-3 px-5 py-3 overflow-x-auto listTypes">
-                                    {categories.map((category,i) => {
-                                        return (
-                                            <div key={i} className={`${selectItem === i?'bg-[#4467df] text-white' :'bg-[#ededed]'} border-1 h-25 w-full p-3 rounded-lg  cursor-pointer`} onClick={() => select(category.value,i)}>
-                                            
-                                                    <FontAwesomeIcon icon={category.img} />
-                                                    <p className="mt-3 text-sm font-bold text-nowrap">{category.name}</p>
-                                                
-                                            </div>
-                                        )
-                                    })}
-                                </ul>
-                            </div>
+
+                    {isSuccess && (
+                        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 font-semibold rounded-xl text-sm text-center">
+                            Create Product Successfully ✅
                         </div>
-
-                        <div className="productDetail bg-white rounded-lg shadow border-[#d3d3d3] border-1 mt-5">
-                                <h2 className="text-sm font-bold border-b border-[#d3d3d3] p-3">Product Detail</h2>
-                                <div className="grid gap-5 p-3 detail">
-                                    <div className="grid gap-3 xl:grid-cols-6 sm:grid-cols-3">
-                                        <div className="col-span-3">
-                                            <p className="text-sm font-bold">Product Name</p>
-                                            <input className="border-1 border-[#d3d3d3] outline-none w-full p-1" type="text" onChange={(e) => setProduct((prev) :Product => ({...prev,product_name: e.target.value}))} />
-                                        </div>
-
-                                        <div className="col-span-3">
-                                            <p className="text-sm font-bold">Quantity</p>
-                                            <input className="border-1 border-[#d3d3d3] outline-none w-full p-1 " type="number" onChange={(e) => setProduct((prev) : Product => ({...prev,product_quantity: parseInt(e.target.value) }))}/>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid xl:grid-cols-6 sm:grid-cols-3gap-3">
-                                        <div className="col-span-3">
-                                            <p className="text-sm font-bold">Price</p>
-                                            <input className="border-1 border-[#d3d3d3] outline-none w-full p-1" type="text" onChange={(e) => setProduct((prev) : Product => ({...prev,product_price: parseInt(e.target.value)}))} />
-                                        </div>
-
-                                        <div className="col-span-3">
-                                            <p className="text-sm font-bold">Previous Price (optional)</p>
-                                            <input className="border-1 border-[#d3d3d3] outline-none w-full p-1" type="text"  onChange={(e) => setProduct((prev) : Product => ({...prev,product_prevPrice: parseInt(e.target.value)}))}/>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid gap-3 lg:grid-cols-4 xl:grid-cols-6 sm:grid-cols-2">
-                                        <div className="col-span-2">
-                                            <p className="text-sm font-bold">Brand</p>
-                                            <input className="border-1 border-[#d3d3d3] outline-none p-1" type="text" onChange={(e) => setProduct((prev) : Product => ({...prev, product_attributes: {...prev.product_attributes,brand: e.target.value}}))} />
-                                        </div>
-                                        <div className="col-span-2">
-                                            <p className="text-sm font-bold">Model</p>
-                                            <input className="border-1 border-[#d3d3d3] outline-none p-1"  type="text" onChange={(e) => setProduct((prev) : Product => ({...prev, product_attributes: {...prev.product_attributes,model: e.target.value}}))} />
-                                        </div>
-                                        <div className="col-span-2">
-                                            <p className="text-sm font-bold">Material</p>
-                                            <input className="border-1 border-[#d3d3d3] outline-none p-1" type="text" onChange={(e) => setProduct((prev) : Product => ({...prev, product_attributes: {...prev.product_attributes,material: e.target.value}}))} />
-                                        </div>
-                                    </div>                              
-                                </div>
-                        </div>
-
-                        <div className="productDecription bg-white rounded-lg shadow border-[#d3d3d3] border-1 mt-5 h-[400px] w-full">
-                            <h2 className="text-sm font-bold border-b border-[#d3d3d3] p-3">Product Description</h2> 
-                            <div className="decription-container p-5 h-[350px]">
-                                <textarea  className="border-1 border-[#d3d3d3] rounded-lg outline-none p-3 w-full h-full resize-none" placeholder="Decriptions of Product..." onChange={(e) => setProduct((prev) : Product => ({...prev,product_description: e.target.value}))}/>
-                            </div>
-                        </div>
-                        
-                    </div>
+                    )}
                 </div>
                 
-                <div className="mt-5 btnCreateProduct">
-                    <div>
-                        <button className="w-full border-1 py-4 shadow bg-black text-white hover:bg-[#0573f0] transition-colors duration-300 cursor-pointer rounded-lg" onClick={handleCreateProduct}>Create Product</button>
+                {/* Right Column: Category, Details, Description */}
+                <div className="lg:col-span-4 flex flex-col gap-5">
+                    {/* Category Selection */}
+                    <div className="productType bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+                        <h2 className="text-sm font-bold p-3.5 border-b border-slate-200 text-slate-800 bg-slate-50/70">
+                            Select Category
+                        </h2>
+                        <div className="p-4">
+                            <ul className="flex flex-row gap-2.5 overflow-x-auto py-1 no-scrollbar">
+                                {categories.map((category, i) => (
+                                    <li
+                                        key={i}
+                                        className={`min-w-[120px] shrink-0 p-3 rounded-xl cursor-pointer border text-center transition-all ${
+                                            selectItem === i
+                                                ? 'bg-[#0573f0] text-white border-[#0573f0] shadow-xs'
+                                                : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                                        }`}
+                                        onClick={() => select(category.value, i)}
+                                    >
+                                        <FontAwesomeIcon icon={category.img} className="text-base" />
+                                        <p className="mt-2 text-xs font-semibold whitespace-nowrap">{category.name}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Product Details Inputs */}
+                    <div className="productDetail bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+                        <h2 className="text-sm font-bold p-3.5 border-b border-slate-200 text-slate-800 bg-slate-50/70">
+                            Product Details
+                        </h2>
+                        <div className="p-4 sm:p-5 flex flex-col gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Product Name *</label>
+                                    <input className="border border-slate-200 rounded-lg outline-none w-full p-2 text-sm focus:border-[#0573f0]" type="text" placeholder="e.g. Wireless Headphones" onChange={(e) => setProduct((prev) :Product => ({...prev, product_name: e.target.value}))} />
+                                </div>
+
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Quantity *</label>
+                                    <input className="border border-slate-200 rounded-lg outline-none w-full p-2 text-sm focus:border-[#0573f0]" type="number" min="1" placeholder="1" onChange={(e) => setProduct((prev) : Product => ({...prev, product_quantity: parseInt(e.target.value) || 1}))}/>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Price ($) *</label>
+                                    <input className="border border-slate-200 rounded-lg outline-none w-full p-2 text-sm focus:border-[#0573f0]" type="number" min="1" placeholder="99" onChange={(e) => setProduct((prev) : Product => ({...prev, product_price: parseInt(e.target.value) || 1}))} />
+                                </div>
+
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Previous Price ($) (Optional)</label>
+                                    <input className="border border-slate-200 rounded-lg outline-none w-full p-2 text-sm focus:border-[#0573f0]" type="number" min="1" placeholder="120" onChange={(e) => setProduct((prev) : Product => ({...prev, product_prevPrice: parseInt(e.target.value) || 0}))}/>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-100">
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Brand</label>
+                                    <input className="border border-slate-200 rounded-lg outline-none w-full p-2 text-sm focus:border-[#0573f0]" type="text" placeholder="Sony, Apple..." onChange={(e) => setProduct((prev) : Product => ({...prev, product_attributes: {...prev.product_attributes, brand: e.target.value}}))} />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Model</label>
+                                    <input className="border border-slate-200 rounded-lg outline-none w-full p-2 text-sm focus:border-[#0573f0]" type="text" placeholder="Pro 2026" onChange={(e) => setProduct((prev) : Product => ({...prev, product_attributes: {...prev.product_attributes, model: e.target.value}}))} />
+                                </div>
+                                <div>
+                                    <label className="text-xs font-bold text-slate-700 mb-1 block">Material</label>
+                                    <input className="border border-slate-200 rounded-lg outline-none w-full p-2 text-sm focus:border-[#0573f0]" type="text" placeholder="Aluminum..." onChange={(e) => setProduct((prev) : Product => ({...prev, product_attributes: {...prev.product_attributes, material: e.target.value}}))} />
+                                </div>
+                            </div>                              
+                        </div>
+                    </div>
+
+                    {/* Product Description */}
+                    <div className="productDescription bg-white rounded-xl shadow-2xs border border-slate-200 overflow-hidden">
+                        <h2 className="text-sm font-bold p-3.5 border-b border-slate-200 text-slate-800 bg-slate-50/70">
+                            Product Description
+                        </h2> 
+                        <div className="p-4">
+                            <textarea className="border border-slate-200 rounded-xl outline-none p-3 w-full h-36 sm:h-44 resize-none text-sm focus:border-[#0573f0]" placeholder="Describe your product in detail..." onChange={(e) => setProduct((prev) : Product => ({...prev, product_description: e.target.value}))}/>
+                        </div>
+                    </div>
+                    
+                    {/* Submit Button */}
+                    <div className="mt-2">
+                        <button className="w-full py-3.5 px-6 shadow-sm bg-[#0573f0] hover:bg-[#0769da] text-white font-bold transition-all duration-200 cursor-pointer rounded-xl active:scale-[0.99]" onClick={handleCreateProduct}>
+                            Create Product
+                        </button>
                     </div>
                 </div>
-            <CartTab />
-
             </div>
+            <CartTab />
+        </div>
     </div>
-    
-    )
-
+  );
 }
 
 export default ProductPage;

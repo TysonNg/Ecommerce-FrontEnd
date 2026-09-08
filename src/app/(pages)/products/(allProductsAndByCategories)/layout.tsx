@@ -1,40 +1,24 @@
 import { CartTab } from '@/features/cart/components/cartTab';
 import styles from './products.module.scss'
-import Link from 'next/link';
+import { ProductSidebar } from '@/features/products/components/ProductSidebar';
 
 
 export default function Layout({children}: {children: React.ReactNode}) {
 
     return (
-        <section className={`${styles.product_body} pb-30 bg-white`}>
-            <div className={`${styles.produuct_body_container} xl:w-[1200px] lg:w-[1024px] md:[768px] sm:w-[640px] mx-auto my-0 flex flex-row grid grid-cols-6 mt-10 items-start `}>
-                <div className={`${styles.categories} col-span-1 sticky top-0`}>
-                    <h2 className='font-bold '>Categories</h2>
-                    <ul className='pl-5 mt-15 flex flex-col gap-2 text-sm text-[#5e6d73]'>
-                        <li><Link href="/products?category=audioVideo&&page=1">Audio & video</Link></li>
-                        <li><Link href="/products?category=homeAppliances&&page=1">Home appliances</Link></li>
-                        <li><Link href="/products?category=kitchenAppliances&&page=1">Kitchen appliances</Link></li>
-                        <li><Link href="/products?category=laptop&&page=1">PC&laptop</Link></li>
-                        <li><Link href="/products?category=clothing&&page=1">Clothing</Link></li>
-                        <li><Link href="/products?category=electronics&&page=1">Electronics</Link></li>
-                        <li><Link href="/products?category=jewelrys&&page=1">Jewerlys</Link></li>
-                        <li><Link href="/products?category=gadget&&page=1">Gadget</Link></li>
-                        <li><Link href="/products?category=others&&page=1">Others</Link></li>
-                    </ul>
-
-                    <h2 className='mt-20 font-bold'>Filter by price</h2>
-                    <h2 className='mt-20 font-bold'>Average rating</h2>
+        <section className="min-h-screen bg-white pb-20">
+            <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 lg:grid lg:grid-cols-4 xl:grid-cols-5 lg:gap-8 items-start">
+                <div className="hidden lg:block lg:col-span-1 sticky top-[148px] self-start transition-all">
+                    <ProductSidebar />
                 </div>
-                <div className={`${styles.products} col-span-5 pl-10 border-l-2 border-[#c3c3c3]`}>
-                    <h1 className='text-5xl mb-15 mt-15 text-[#0573f0] font-bold'>SHOP</h1>
-                        {children}
+                <div className="w-full lg:col-span-3 xl:col-span-4 lg:pl-8 lg:border-l lg:border-slate-200">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl mb-4 sm:mb-6 text-[#0573f0] font-bold tracking-tight">SHOP</h1>
+                    {children}
                 </div>      
-                <div className={`${styles.cartTab} `}>
+                <div>
                     <CartTab />
-                 </div>
+                </div>
             </div>
-
         </section>
-       
     );
 }

@@ -46,92 +46,135 @@ const ProductDetail = async ({ params }: { params: Params }) => {
   const productsByCategory: ProductInfo[] = await getRelatedProductByCategory(productDetails.product_type,productDetails._id)
   
   return (
-    <section className={`${styles.body} `}>
-      <section className={`${styles.top_body} w-full max-w-[500px] sm:max-w-[800px] lg:max-w-[1200px] mx-auto mt-[2rem]`}>
-        <div className={`${styles.top_body_container} flex flex-row`}>
-          {/* cardLeft */}
+    <section className="min-h-screen bg-white pb-20">
+      <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
+          {/* cardLeft: Image Slider */}
+          <div className="w-full">
+            <BtnToSlideImagesProduct productDetails={productDetails} />
+          </div>
 
-          <BtnToSlideImagesProduct productDetails={productDetails} />
-
-          {/* card right */}
-          <div className={`${styles.infoDetail} pl-6`}>
-            <div
-              className={`${styles.infoDetail_container} flex flex-col gap-2`}
-            >
-              <div className={`${styles.navLink} text-[#48515b] text-sm`}>
-                <span>
-                  <Link href="/">Home</Link> /
-                  <Link href={`/products?category=${productDetails.product_type}&&page=1`}>{productDetails.product_type}</Link> /
+          {/* card right: Product Info */}
+          <div className="w-full">
+            <div className="flex flex-col gap-4">
+              {/* Breadcrumbs */}
+              <nav className="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm text-slate-500">
+                <Link href="/" className="hover:text-[#0573f0] transition-colors">Home</Link>
+                <span>/</span>
+                <Link
+                  href={`/products?category=${productDetails.product_type}&page=1`}
+                  className="hover:text-[#0573f0] transition-colors capitalize"
+                >
+                  {productDetails.product_type}
+                </Link>
+                <span>/</span>
+                <span className="text-slate-800 font-medium line-clamp-1 max-w-[200px] sm:max-w-xs">
                   {productDetails.product_name}
                 </span>
+              </nav>
+
+              {/* Product Title */}
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 leading-tight">
+                {productDetails.product_name}
+              </h1>
+
+              {/* Price */}
+              <div className="flex items-baseline gap-3 pt-1">
+                {productDetails.product_prevPrice && (
+                  <span className="text-base sm:text-lg line-through text-slate-400">
+                    ${productDetails.product_prevPrice}.00
+                  </span>
+                )}
+                <span className="text-2xl sm:text-3xl font-bold text-[#0573f0]">
+                  ${productDetails.product_price}.00
+                </span>
               </div>
-              <div className={`${styles.infoList} `}>
 
-                <ul>
-                  <li className={`${styles.name} font-semibold text-xl`}>
-                    {productDetails.product_name}
-                  </li>
-                  <li className={`${styles.prices} pt-2`}>
-                    <p>
-                      <span className="text-xl line-through text-[#48515b]">
-                        {productDetails.product_prevPrice
-                          ? `$${productDetails.product_prevPrice}.00`
-                          : ""}
-                      </span>
-                      <span className="pl-4 text-xl font-semibold">
-                        ${productDetails.product_price}.00
-                      </span>
-                    </p>
-                  </li>
+              {/* Stock status */}
+              <div className="flex items-center gap-2 text-xs sm:text-sm pt-1">
+                <span className="text-slate-500 font-medium">Availability:</span>
+                <span className="px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200/60 text-xs">
+                  In stock ({productDetails.product_quantity} available)
+                </span>
+              </div>
 
-                  <li className="flex flex-row gap-2 pt-5 text-sm">
-                        <p className="text-[#6b6969] font-bold">
-                          Quantity:
-                        </p>
-                        <span>{productDetails.product_quantity}</span>
-                  </li>
+              {/* Specifications */}
+              {productDetails.product_attributes && (
+                <div className="pt-3 pb-2 border-t border-b border-slate-100 my-1">
+                  <p className="text-xs sm:text-sm font-bold text-slate-900 mb-2">Specifications:</p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-slate-600">
+                    {productDetails.product_attributes.brand && (
+                      <li className="flex items-center gap-2">
+                        <span className="font-semibold text-slate-800">Brand:</span>
+                        <span>{productDetails.product_attributes.brand}</span>
+                      </li>
+                    )}
+                    {productDetails.product_attributes.model && (
+                      <li className="flex items-center gap-2">
+                        <span className="font-semibold text-slate-800">Model:</span>
+                        <span>{productDetails.product_attributes.model}</span>
+                      </li>
+                    )}
+                    {productDetails.product_attributes.material && (
+                      <li className="flex items-center gap-2">
+                        <span className="font-semibold text-slate-800">Material:</span>
+                        <span>{productDetails.product_attributes.material}</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              )}
 
-                  <li className={`${styles.detail} pt-5 `}>
-                    <p className="text-sm font-semibold">Detail:</p>
-                <ul className={`${styles.detail_container} pl-10 pt-3 list-disc`}>
-                    <li><span className="font-semibold">Brand: </span> {productDetails.product_attributes.brand}</li> 
-                    <li><span className="font-semibold">Model: </span> {productDetails.product_attributes.model}</li> 
-                    <li><span className="font-semibold">Material: </span>{productDetails.product_attributes.material}</li> 
-                </ul> 
-                  </li>
-                  <li className={`${styles.cart}`}>
-                      <HandleCart name={productDetails.product_name} productId = {productDetails._id} shopId= {productDetails.product_shop} price={productDetails.product_price} imgThumb={productDetails.product_thumb} slug={slug}/>
-                  </li>
-                 
-                  
-                  <li className="flex flex-row gap-2 pt-5 text-sm">
-                        <p className="text-[#6b6969] font-bold">Category: </p>
-                        <span className="text-[#48515b]">
-                          <Link className="cursor-pointer" href={`/products?category=${productDetails.product_type}&&page=1`}>{productDetails.product_type}</Link>
-                        </span>
-                  </li>       
-                </ul>
+              {/* Add to Cart Stepper & Button */}
+              <div className="pt-2">
+                <HandleCart
+                  name={productDetails.product_name}
+                  productId={productDetails._id}
+                  shopId={productDetails.product_shop}
+                  price={productDetails.product_price}
+                  imgThumb={productDetails.product_thumb}
+                  slug={slug}
+                />
+              </div>
 
-              </div>    
+              {/* Category tag */}
+              <div className="flex items-center gap-2 pt-2 text-xs text-slate-500">
+                <span className="font-medium">Category:</span>
+                <Link
+                  href={`/products?category=${productDetails.product_type}&page=1`}
+                  className="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#0573f0] transition-colors font-medium cursor-pointer"
+                >
+                  {productDetails.product_type}
+                </Link>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Tabs: Description & Reviews */}
+      <section className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 mt-10 sm:mt-16">
+        <ChangeStateAtDetailPage
+          productId={productDetails._id}
+          product_name={productDetails.product_name}
+          product_description={productDetails.product_description}
+          product_thumb={productDetails.product_thumb}
+          product_images={productDetails.product_images}
+        />
       </section>
 
-      <section className={`w-full max-w-[500px] lg:max-w-[1280px] xl:max-w-[1536px] mx-auto mt-20`}>
-        <ChangeStateAtDetailPage product_name={productDetails.product_name} product_description={productDetails.product_description} product_thumb={productDetails.product_thumb} product_images={productDetails.product_images} />
-      </section>
-
-      <section className={`${styles.relate_product} overflow-hidden-auto mt-15`}>
-        <div className={`${styles.relate_product_container}`}>
-          <p className="pb-5 text-2xl font-bold">Related products</p>
-          <ProductGrid products={productsByCategory} cartRem={5} numOfProduct={6}/>               
+      {/* Related Products */}
+      <section className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 mt-12 sm:mt-20">
+        <div>
+          <h2 className="pb-6 text-xl sm:text-2xl font-bold text-slate-900">Related products</h2>
+          <ProductGrid products={productsByCategory} cartRem={1} numOfProduct={6}/>               
         </div>
       </section>
       
-      <section className={`${styles.cartTab} `}>
-            <CartTab />
-        </section>
+      {/* Cart Drawer */}
+      <div>
+        <CartTab />
+      </div>
     </section>
   );
 };

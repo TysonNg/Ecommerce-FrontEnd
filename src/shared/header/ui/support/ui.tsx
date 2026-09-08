@@ -1,15 +1,25 @@
-import styles from './supports.module.scss'
+import Link from 'next/link';
 
 export const Supports = () => {
-       return (
-        <div className={`${styles.supports_container}`}>
-            <ul className='supports flex flex-row flex-wrap gap-5 basis-1/3 text-sm'>
-                <li className='supports__FAQ'>FAQs</li>
-                <li className='supports__help'>Help</li>
-                <li className='supports__support'>Support</li>
-            </ul>
-
-        </div>
-            
-       )
-}
+  return (
+    <ul className="flex items-center gap-4 lg:gap-6 text-xs tracking-wide text-white/85 whitespace-nowrap py-2.5">
+      <li>
+        <Link href="/faq" className="hover:text-white transition-colors duration-150">
+          FAQs
+        </Link>
+      </li>
+      <li className="text-white/30 text-[10px] select-none">•</li>
+      <li>
+        <Link href="/contact" className="hover:text-white transition-colors duration-150">
+          Help
+        </Link>
+      </li>
+      <li className="text-white/30 text-[10px] select-none">•</li>
+      <li>
+        <Link href="/contact" className="hover:text-white transition-colors duration-150">
+          Support
+        </Link>
+      </li>
+    </ul>
+  );
+};
