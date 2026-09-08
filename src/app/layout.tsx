@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.scss";
+import "./globals.css";
 import "../lib/fontawersome";
 import AppFrame from './AppFrame';
 
