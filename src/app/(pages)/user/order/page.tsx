@@ -5,7 +5,6 @@ import { useEffect, useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCalendar,
-    faCircleInfo,
     faShoppingBag,
     faLocationDot,
     faPhone,

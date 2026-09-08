@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useToast, ToastItem } from "@/app/context/ToastContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,6 +20,13 @@ function ToastSingleItem({ toast }: { toast: ToastItem }) {
 
   const duration = toast.duration || 4000;
 
+  const handleClose = useCallback(() => {
+    setIsLeaving(true);
+    setTimeout(() => {
+      removeToast(toast.id);
+    }, 250);
+  }, [removeToast, toast.id]);
+
   useEffect(() => {
     if (isPaused) return;
 
@@ -38,14 +45,7 @@ function ToastSingleItem({ toast }: { toast: ToastItem }) {
     }, intervalTime);
 
     return () => clearInterval(interval);
-  }, [isPaused, duration]);
-
-  const handleClose = () => {
-    setIsLeaving(true);
-    setTimeout(() => {
-      removeToast(toast.id);
-    }, 250);
-  };
+  }, [isPaused, duration, handleClose]);
 
   const getIcon = () => {
     switch (toast.type) {

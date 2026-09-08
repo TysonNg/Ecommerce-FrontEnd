@@ -15,10 +15,10 @@ import { faPlus, faBoxArchive, faCircleCheck } from "@fortawesome/free-solid-svg
 
 
 
+
 export default function Layout({children}: {children: React.ReactNode}) {
     const [id, setId] = useState<string | null>()
 
-    const [activeItem, setActiveItem] = useState<string>('')
     const [draftItems, setDraftItems] = useState<number>()
     const [publishItems, setPublishItems] = useState<number>()
     const [shop, setShop] = useState<Shop | null | undefined>(undefined)
@@ -27,12 +27,7 @@ export default function Layout({children}: {children: React.ReactNode}) {
     const router = useRouter()
     const pathname = usePathname()
     const handleItemClick = (item: string) =>{
-        setActiveItem(item)
         router.push(`/user/shop/${item}`)
-    }
-
-    const getItemClass = (item: string | undefined) => {
-        return (activeItem === item? "border-y border-[#d3d3d3]" :"")
     }
 
     useEffect(() => {

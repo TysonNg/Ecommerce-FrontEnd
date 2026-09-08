@@ -2,7 +2,7 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { searchProducts } from "@/features/products/data/data";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,7 +18,7 @@ interface ProductSearch {
   product_type?: string;
 }
 
-export const SearchBar = () => {
+const SearchBarInner = () => {
   const apiKey: string = `${process.env.NEXT_PUBLIC_API_KEY}`;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -193,5 +193,31 @@ export const SearchBar = () => {
         </div>
       )}
     </div>
+  );
+};
+
+function SearchBarFallback() {
+  return (
+    <div className="relative w-full max-w-[240px] xs:max-w-[300px] sm:max-w-[380px] md:max-w-[440px]">
+      <div className="flex flex-row items-stretch w-full h-11 bg-white rounded-lg shadow-sm overflow-hidden">
+        <input
+          disabled
+          className="flex-1 min-w-0 h-full bg-transparent text-slate-800 text-sm pl-4 pr-2 outline-none placeholder:text-slate-400 font-normal border-none"
+          type="text"
+          placeholder="Type to search..."
+        />
+        <div className="h-full px-4 flex items-center justify-center text-[#0573f0]">
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="text-base" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export const SearchBar = () => {
+  return (
+    <Suspense fallback={<SearchBarFallback />}>
+      <SearchBarInner />
+    </Suspense>
   );
 };

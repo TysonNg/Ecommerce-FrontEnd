@@ -58,13 +58,11 @@ export function ProductCard(props: ProductCardProps) {
     product_prevPrice,
     product_slug,
     product_shop,
-    cartRem,
     product_ratingsAverage,
     product_ratingsAvenrage,
     product_reviewsCount,
   } = props;
 
-  const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
 
   const { toast } = useToast();
@@ -172,8 +170,6 @@ export function ProductCard(props: ProductCardProps) {
     <li
       key={_id}
       className="group flex flex-col justify-between p-2.5 sm:p-4 bg-white rounded-xl border border-slate-100/90 hover:border-blue-100 hover:shadow-md transition-all duration-300 relative text-dark h-full list-none"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative w-full aspect-square flex items-center justify-center bg-slate-50/50 rounded-lg overflow-hidden mb-2">
         <a href={`/products/${_id}/${product_slug}`} className="w-full h-full flex items-center justify-center">

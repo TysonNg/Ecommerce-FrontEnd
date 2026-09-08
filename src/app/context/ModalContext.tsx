@@ -44,7 +44,7 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
       }else{
         setIsPageHaveCartTab(true)
       }
-    })
+    }, [pathname])
     
     return (
       <ModalContext.Provider value={{ isModalOpen, openModal, closeModal ,isCartModalOpen,openCartModal,closeCartModal,isPageHaveCartTab}}>

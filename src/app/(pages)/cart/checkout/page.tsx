@@ -239,10 +239,14 @@ const CheckOutPage = () => {
           message: res?.message || "Could not process order. Please verify your details and try again.",
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again.";
       toast.error({
         title: "Order Error",
-        message: err?.message || "An unexpected error occurred. Please try again.",
+        message,
       });
     } finally {
       setIsSubmitting(false);

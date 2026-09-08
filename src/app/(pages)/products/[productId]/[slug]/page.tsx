@@ -1,11 +1,11 @@
 import { getProductDetail, getRelatedProductByCategory } from "@/features/products/data/data";
-import styles from "./detail.module.scss";
 import { BtnToSlideImagesProduct } from "@/features/products/components/buttons/BtnToSlideImageProduct";
 import HandleCart from "@/features/products/components/buttons/HandleCart";
 import { ChangeStateAtDetailPage } from "@/features/products/components/buttons/ChangeStateAtBottomDetailPage";
 import { ProductGrid } from "@/features/products/components/ProductCard";
 import { CartTab } from "@/features/cart/components/cartTab";
 import Link from "next/link";
+import { Suspense } from "react";
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
@@ -154,13 +154,15 @@ const ProductDetail = async ({ params }: { params: Params }) => {
 
       {/* Tabs: Description & Reviews */}
       <section className="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 mt-10 sm:mt-16">
-        <ChangeStateAtDetailPage
-          productId={productDetails._id}
-          product_name={productDetails.product_name}
-          product_description={productDetails.product_description}
-          product_thumb={productDetails.product_thumb}
-          product_images={productDetails.product_images}
-        />
+        <Suspense fallback={null}>
+          <ChangeStateAtDetailPage
+            productId={productDetails._id}
+            product_name={productDetails.product_name}
+            product_description={productDetails.product_description}
+            product_thumb={productDetails.product_thumb}
+            product_images={productDetails.product_images}
+          />
+        </Suspense>
       </section>
 
       {/* Related Products */}

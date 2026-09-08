@@ -32,18 +32,30 @@ interface Order {
     user_payment: {
         method: string
     }
- }
+}
+
+interface AxiosErrorLike {
+  response?: {
+    data?: {
+      message?: string;
+      error?: string;
+    };
+  };
+  message?: string;
+}
+
 export async function OrderByUser(payload: Order) {
   try {
     const res = await api.post('/checkout/handleOrder', payload);
     if (!res.data) throw new Error('No response data from server');
     return { success: true, data: res.data };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Fail to fetch OrderByUser:', error);
+    const err = error as AxiosErrorLike;
     const message =
-      error?.response?.data?.message ||
-      error?.response?.data?.error ||
-      error?.message ||
+      err?.response?.data?.message ||
+      err?.response?.data?.error ||
+      err?.message ||
       'Failed to place order. Please try again.';
     return { success: false, message };
   }

@@ -27,7 +27,6 @@ const ProductsPage = () => {
     };
     const [products, setProducts] = useState<CatalogProduct[]>([]);
     const [allResults, setAllResults] = useState<CatalogProduct[]>([]);
-    const [categoryParams, setCategoryParams] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState<boolean>(false);
 
@@ -42,7 +41,6 @@ const ProductsPage = () => {
     const searchParam = searchParams.get('search')?.trim() ?? "";
 
     useEffect(() => {
-        setCategoryParams(categoryParam);
         setIsLoading(true);
 
         const fetchProducts = async () => {
