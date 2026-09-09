@@ -42,13 +42,9 @@ export const Header = () => {
         isScrolled ? "shadow-lg shadow-black/15" : ""
       }`}
     >
-      {/* Top utility bar - visible on tablet and desktop (md:block), hidden on mobile (< 768px) */}
-      <div
-        className={`bg-[#0769da] w-full transition-all duration-300 overflow-hidden hidden md:block ${
-          isScrolled ? "max-h-0 opacity-0" : "max-h-12 opacity-100"
-        }`}
-      >
-        <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-white">
+      {/* Top utility bar - sticky together with header when scrolling */}
+      <div className="bg-[#0769da] w-full border-b border-white/10 transition-colors duration-200">
+        <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-white overflow-x-auto scrollbar-none">
           <Supports />
           <RightTopHeader />
         </div>

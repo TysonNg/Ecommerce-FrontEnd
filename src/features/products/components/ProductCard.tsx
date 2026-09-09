@@ -12,9 +12,9 @@ import { useModal } from "@/app/context/ModalContext";
 interface ProductCardProps {
   _id: string;
   product_name: string;
-  product_prevPrice: string;
+  product_prevPrice?: number | string;
   product_price: number;
-  product_shop: string;
+  product_shop: any;
   product_slug: string;
   product_thumb: string;
   cartRem: number;
@@ -173,7 +173,7 @@ export function ProductCard(props: ProductCardProps) {
     >
       <div className="relative w-full aspect-square flex items-center justify-center bg-slate-50/50 rounded-lg overflow-hidden mb-2">
         <a href={`/products/${_id}/${product_slug}`} className="w-full h-full flex items-center justify-center">
-          {Boolean(product_prevPrice) && (
+          {Number(product_prevPrice) > 0 && (
             <span
               className="absolute top-2 left-2 z-10 border border-slate-200 bg-white/95 backdrop-blur-xs rounded-full text-[10px] sm:text-xs font-semibold text-slate-700 px-2 py-0.5 shadow-2xs"
             >
@@ -213,7 +213,7 @@ export function ProductCard(props: ProductCardProps) {
         </div>
 
         <div className="mt-1 pt-1">
-          {product_prevPrice ? (
+          {Number(product_prevPrice) > 0 ? (
             <div className="flex items-baseline gap-1.5 flex-wrap">
               <span className="text-[11px] sm:text-xs line-through text-slate-400">
                 ${product_prevPrice}.00

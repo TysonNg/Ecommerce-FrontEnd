@@ -8,7 +8,6 @@ export const RightTopHeader = () => {
           Shipping & return
         </Link>
       </li>
-      <li className="text-white/30 text-[10px] select-none">•</li>
       <li>
         <Link href="/orders" className="hover:text-white transition-colors duration-150">
           Track order

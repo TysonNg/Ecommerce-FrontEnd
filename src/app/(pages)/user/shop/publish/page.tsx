@@ -6,6 +6,7 @@ import { CartTab } from "@/features/cart/components/cartTab";
 import { getAllPublish, unPublish } from "@/features/products/actions/publish";
 import { getAllDiscountOfProduct } from "@/features/discount/data/data";
 import Cookies from "js-cookie";
+import { useToast } from "@/app/context/ToastContext";
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
@@ -42,7 +43,7 @@ interface DiscountsShop{
 
 }
 const PublishPage = () => {
-
+    const { toast } = useToast();
     const id = Cookies.get('_id')
 
     const [publishDatas, setPublishDatas] = useState<PublishProduct[]>([])
@@ -70,12 +71,18 @@ const PublishPage = () => {
     const handleUnpublish = async(i: number) => {
             const res = await unPublish(publishDatas[i]._id)
             if(res){
-                alert('Publish Successfully!')
+                toast.success({
+                    title: "Unpublished Successfully",
+                    message: "Product has been moved to draft products."
+                })
                 setPublishDatas((prev) => (prev.filter((item) => item._id !== publishDatas[i]._id)))
                 window.dispatchEvent(new Event('ChangeQuantityDraftAndPublish'))
                 return res
             }else{
-                alert('Unpublish Error!')
+                toast.error({
+                    title: "Unpublish Error",
+                    message: "Failed to unpublish product. Please try again."
+                })
                 return
             }
     }

@@ -15,7 +15,7 @@ export default function AppFrame({ children }: { children: React.ReactNode }) {
       <div className="site">
         <InitGuestId />
         <Header />
-        {children}
+        <main className="flex-1 w-full">{children}</main>
         <LoginModal />
         <Footer />
       </div>

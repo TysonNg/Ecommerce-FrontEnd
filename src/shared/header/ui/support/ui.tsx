@@ -8,13 +8,11 @@ export const Supports = () => {
           FAQs
         </Link>
       </li>
-      <li className="text-white/30 text-[10px] select-none">•</li>
       <li>
         <Link href="/contact" className="hover:text-white transition-colors duration-150">
           Help
         </Link>
       </li>
-      <li className="text-white/30 text-[10px] select-none">•</li>
       <li>
         <Link href="/contact" className="hover:text-white transition-colors duration-150">
           Support

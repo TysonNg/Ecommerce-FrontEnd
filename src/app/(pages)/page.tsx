@@ -24,7 +24,7 @@ export const fetchCache = "force-no-store";
 type Product = {
     _id: string;
     product_name: string;
-    product_prevPrice: string;
+    product_prevPrice?: number | string;
     product_price:number;
     product_shop: string;
     product_slug: string;
@@ -248,7 +248,7 @@ export default async function Home() {
           <div className="w-full max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {bodyBanner.map((banner, index) => (
               <div key={index} className="w-full rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
-                <Link href="/products" className="block relative w-full h-[140px] sm:h-[200px]">
+                <Link href="/products" className="block relative w-full aspect-[588/160]">
                   <Image src={banner.url} alt={banner.name} fill sizes="(max-width: 640px) 100vw, 600px" className="object-cover" />
                 </Link>
               </div>
@@ -322,13 +322,13 @@ export default async function Home() {
         {/* Full-width Promotional Banner */}
         <section className="mt-10 px-4">
           <div className="w-full max-w-[1200px] mx-auto rounded-xl overflow-hidden shadow-xs">
-            <Link href="/products" className="block relative w-full h-[90px] sm:h-[130px] md:h-[150px]">
+            <Link href="/products" className="block relative w-full aspect-[10/1] min-h-[72px] sm:min-h-0">
               <Image
                 src="https://websitedemos.net/electronic-store-04/wp-content/uploads/sites/1055/2022/03/electronic-store-promotional-banner-fwidth-1.jpg"
                 fill
                 sizes="(max-width: 1200px) 100vw, 1200px"
                 alt="banner"
-                className="object-cover"
+                className="object-cover object-left sm:object-center"
               />
             </Link>
           </div>

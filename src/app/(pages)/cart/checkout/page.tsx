@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faCheckCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { OrderByUser } from "@/features/order/actions/orderByUser";
 import { useToast } from "@/app/context/ToastContext";
+import { useModal } from "@/app/context/ModalContext";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -62,7 +63,7 @@ interface UserAddress {
   street: string;
   city: string;
   country: string;
-  phone: number;
+  phone: string | number;
 }
 
 interface Payment {
@@ -71,6 +72,7 @@ interface Payment {
 
 const CheckOutPage = () => {
   const { toast } = useToast();
+  const { openModal } = useModal();
   const id: string | undefined = Cookies.get("_id");
   const cartUserId: string | undefined = Cookies.get(`cartId_${id}`);
 
@@ -82,7 +84,7 @@ const CheckOutPage = () => {
     street: "",
     city: "",
     country: "",
-    phone: 0,
+    phone: "",
   });
   const [payment, setPayment] = useState<Payment>({ method: "cash" });
   const [isOrdered, setIsOrdered] = useState<boolean>(false);
@@ -156,7 +158,10 @@ const CheckOutPage = () => {
       toast.error({
         title: "Login Required",
         message: "You are not logged in. Please sign in to place an order.",
+        actionLabel: "Sign In",
+        onAction: openModal,
       });
+      openModal();
       return;
     }
 
@@ -202,10 +207,11 @@ const CheckOutPage = () => {
       return;
     }
 
-    if (!userAddress.phone || isNaN(userAddress.phone) || userAddress.phone <= 0) {
+    const cleanPhone = String(userAddress.phone || "").trim();
+    if (!cleanPhone || cleanPhone.length < 8) {
       toast.error({
         title: "Invalid Phone",
-        message: "Please enter a valid numeric phone number.",
+        message: "Please enter a valid phone number (at least 8 digits).",
       });
       return;
     }
@@ -330,15 +336,16 @@ const CheckOutPage = () => {
                 />
                 <input
                   className="p-2.5 rounded-md border border-[#dce3e5] w-full text-sm text-[#171717] placeholder:text-slate-400 focus:outline-none focus:border-[#0573f0] focus:ring-1 focus:ring-[#0573f0] transition-colors"
-                  type="text"
-                  value={userAddress.phone || ""}
+                  type="tel"
                   placeholder="Phone *"
-                  onChange={(e) =>
+                  value={userAddress.phone || ""}
+                  onChange={(e) => {
+                    const clean = e.target.value.replace(/[^0-9+]/g, '');
                     setUserAddress((prev: UserAddress) => ({
                       ...prev,
-                      phone: parseInt(e.target.value) || 0,
-                    }))
-                  }
+                      phone: clean,
+                    }));
+                  }}
                 />
               </div>
             </div>

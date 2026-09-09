@@ -4,6 +4,7 @@ import HandleCart from "@/features/products/components/buttons/HandleCart";
 import { ChangeStateAtDetailPage } from "@/features/products/components/buttons/ChangeStateAtBottomDetailPage";
 import { ProductGrid } from "@/features/products/components/ProductCard";
 import { CartTab } from "@/features/cart/components/cartTab";
+import { ShopSellerCard, type ShopInfo } from "@/features/shop/components/ShopSellerCard";
 import Link from "next/link";
 import { Suspense } from "react";
 export const dynamic = "force-dynamic";
@@ -16,14 +17,14 @@ interface ProductInfo {
   product_description: string;
   product_images: [];
   product_quantity: number;
-  product_prevPrice: string;
+  product_prevPrice?: number | string;
   product_attributes: {
     brand: string;
     material: string;
     model: string;
   };
   product_type: string;
-  product_shop: string;
+  product_shop: ShopInfo | string;
   product_thumb: string;
   product_slug: string;
   cartRem: number;
@@ -80,11 +81,11 @@ const ProductDetail = async ({ params }: { params: Params }) => {
 
               {/* Price */}
               <div className="flex items-baseline gap-3 pt-1">
-                {productDetails.product_prevPrice && (
+                {Number(productDetails.product_prevPrice) > 0 ? (
                   <span className="text-base sm:text-lg line-through text-slate-400">
                     ${productDetails.product_prevPrice}.00
                   </span>
-                )}
+                ) : null}
                 <span className="text-2xl sm:text-3xl font-bold text-[#0573f0]">
                   ${productDetails.product_price}.00
                 </span>
@@ -130,7 +131,7 @@ const ProductDetail = async ({ params }: { params: Params }) => {
                 <HandleCart
                   name={productDetails.product_name}
                   productId={productDetails._id}
-                  shopId={productDetails.product_shop}
+                  shopId={typeof productDetails.product_shop === 'object' ? productDetails.product_shop?._id : productDetails.product_shop}
                   price={productDetails.product_price}
                   imgThumb={productDetails.product_thumb}
                   slug={slug}
@@ -147,6 +148,9 @@ const ProductDetail = async ({ params }: { params: Params }) => {
                   {productDetails.product_type}
                 </Link>
               </div>
+
+              {/* Seller Information */}
+              <ShopSellerCard shop={productDetails.product_shop} />
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { createProduct } from "@/features/products/actions/product";
 import { CartTab } from "@/features/cart/components/cartTab";
+import { useToast } from "@/app/context/ToastContext";
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
@@ -80,7 +81,7 @@ const categories = [
 
 
 const ProductPage = () => {
-    
+    const { toast } = useToast();
     const shopId = Cookies.get("_id")
     
     const defaultProduct = {
@@ -160,13 +161,13 @@ const ProductPage = () => {
     
     const handleDeleteImageThumb = async() => {
         if(!publicIdThumb){
-            alert("not found imgThumb")
+            toast.error({ title: "Error", message: "Thumbnail image not found" })
             return;
         }
         try {
             const res = await axios.post("/api/deleteImageCloudinary", {publicId: publicIdThumb})
             if(res.data?.success){
-                alert('Delete thumb successfully!')
+                toast.success({ title: "Deleted", message: "Thumbnail removed successfully" })
                 localStorage.removeItem('imgThumbUrl')
                 setImgThumb("")
                 setPublicIdThumb("")
@@ -174,21 +175,19 @@ const ProductPage = () => {
             }
         } catch (error) {
             console.log(error);
-            
         }
     }
     
 
     const handleDeleteImage = async(imgUrl : string,i: number) => {
         if(!publicIdImage){
-            alert("not found imgThumb")
+            toast.error({ title: "Error", message: "Image not found" })
             return;
         }
         try {
             const res = await axios.post("/api/deleteImageCloudinary", {publicId: publicIdImage[i]})
             if(res.data){
-                alert('Delete image successfully!')
-                
+                toast.success({ title: "Deleted", message: "Image removed successfully" })
             }
             
             setPublicIdImage((prev) : string[] => {
@@ -209,22 +208,21 @@ const ProductPage = () => {
 
 
     const handleCreateProduct = async() => {
-        
         const {product_name,product_images,product_description,product_price,product_quantity,product_thumb,product_type, product_prevPrice} = product
         
         if(product_name === "" || product_price === 1 || product_description === "" || product_quantity === 0  || product_type === "" || product_thumb === "" || product_images.length === 0)
         {
-            alert("Pls fill fully properties")
+            toast.error({ title: "Missing Fields", message: "Please fill in all product attributes and upload images." })
             return;
         }
 
         if (product_prevPrice > 1 && (product_prevPrice <= product_price)){
-            alert("Previous price must higher than price")
+            toast.error({ title: "Invalid Pricing", message: "Previous price must be higher than the regular selling price." })
             return;
         }
         const res = await createProduct(product)
         if(res){
-            alert('Create Product Successfully !!!!')
+            toast.success({ title: "Product Created", message: "Your product has been added to drafts successfully!" })
             const keyRemove = ["imgThumbUrl","imgsUrl",'idThumb','idImg']
             keyRemove.forEach(key => localStorage.removeItem(key))
             setIsSuccess(true)

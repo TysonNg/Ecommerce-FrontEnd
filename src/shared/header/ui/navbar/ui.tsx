@@ -105,6 +105,18 @@ export const Navbar = (props: NavBarProps) => {
     const storedActive = String(localStorage.getItem('isActive') || 'off');
     setName(storedName ? storedName : "");
     setActive(storedActive ? storedActive : "");
+
+    const syncUserAuth = () => {
+      const latestName = localStorage.getItem('name');
+      const latestActive = String(localStorage.getItem('isActive') || 'off');
+      setName(latestName ? latestName : "");
+      setActive(latestActive ? latestActive : "");
+    };
+
+    window.addEventListener('user-auth-change', syncUserAuth);
+    return () => {
+      window.removeEventListener('user-auth-change', syncUserAuth);
+    };
   }, [active]);
 
   return (

@@ -8,14 +8,14 @@ interface ProductInfo {
   product_price: number;
   product_description: string;
   product_images: string[];
-  product_prevPrice: string;
+  product_prevPrice?: number | string;
   product_attributes: {
     brand: string;
     material: string;
     model: string;
   };
   product_type: string;
-  product_shop: string;
+  product_shop: any;
   product_thumb: string;
   product_slug: string;
   cartRem: number;

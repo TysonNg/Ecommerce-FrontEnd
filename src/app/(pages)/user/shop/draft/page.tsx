@@ -5,6 +5,7 @@ import { getAllDraft, publishProduct } from "@/features/products/actions/draft"
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { useToast } from "@/app/context/ToastContext";
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
@@ -31,6 +32,7 @@ interface DraftProduct {
 }
 
 const DraftPage = () => {
+    const { toast } = useToast();
     const id = Cookies.get('_id')
     
     const [draftDatas, setDraftDatas] = useState<DraftProduct[]>([])
@@ -52,13 +54,19 @@ const DraftPage = () => {
     const handlePublish = async(i: number) => {
         const res = await publishProduct(draftDatas[i]._id)
         if(res){
-            alert('Publish Successfully!')
+            toast.success({
+                title: "Published Successfully",
+                message: `Product has been published to the public catalog.`
+            })
             setDraftDatas((prev) => (prev.filter((item) => item._id !== draftDatas[i]._id)))
             window.dispatchEvent(new Event('ChangeQuantityDraftAndPublish'))
 
             return res
         }else{
-            alert('Publish Error!')
+            toast.error({
+                title: "Publish Error",
+                message: "Failed to publish product. Please try again."
+            })
             return
         }
     }

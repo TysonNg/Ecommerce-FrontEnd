@@ -8,7 +8,7 @@ const rootApi: string = `${process.env.NEXT_PUBLIC_API_URL}`
 interface ItemRelateCategory{
   _id: string;
   product_name: string;
-  product_prevPrice: string;
+  product_prevPrice?: number | string;
   product_shop: string;
   product_slug: string;
   product_thumb: string;

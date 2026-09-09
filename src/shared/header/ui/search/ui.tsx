@@ -164,16 +164,16 @@ const SearchBarInner = () => {
                         {item.product_name}
                       </h5>
                       <div className="flex items-center gap-2 mt-1">
-                        {item.product_prevPrice && (
+                        {Number(item.product_prevPrice) > 0 ? (
                           <span className="text-[11px] line-through text-slate-400">
                             ${item.product_prevPrice}.00
                           </span>
-                        )}
-                        {item.product_price && (
+                        ) : null}
+                        {item.product_price ? (
                           <span className="text-xs font-bold text-slate-900">
                             ${item.product_price}.00
                           </span>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                   </Link>

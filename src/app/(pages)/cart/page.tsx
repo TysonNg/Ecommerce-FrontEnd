@@ -13,6 +13,8 @@ import { getAllDiscountOfProduct } from "@/features/discount/data/data";
 import ListDiscountsOfProduct from "@/features/discount/components/ListDiscountsOfProduct";
 import { amountDiscount } from "@/features/discount/actions/amountDiscount";
 import { cancelDiscount } from "@/features/discount/actions/cancelDiscount";
+import { useToast } from "@/app/context/ToastContext";
+import { useModal } from "@/app/context/ModalContext";
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
@@ -118,6 +120,9 @@ export default function CartPage() {
   const refreshToken: string | undefined = Cookies.get("refreshToken");
   const cartUserId: string | undefined = Cookies.get(`cartId_${id}`);
   const tempId: string | undefined = Cookies.get("tempId");
+
+  const { toast } = useToast();
+  const { openModal } = useModal();
 
   const [cart, setCart] = useState<Array<ProductsCart>>([]);
   const [checkoutData, setCheckoutData] = useState<Checkout>();
@@ -280,7 +285,13 @@ export default function CartPage() {
   const getDiscountsOfProduct = async (productId: string) => {
 
     if (!id && !refreshToken) {
-      alert("Pls Login to use Discount!!!");
+      toast.info({
+        title: "Login Required",
+        message: "Please sign in to view and apply shop discounts.",
+        actionLabel: "Sign In",
+        onAction: openModal,
+      });
+      openModal();
       return;
     }
     const res = await getAllDiscountOfProduct(productId);
